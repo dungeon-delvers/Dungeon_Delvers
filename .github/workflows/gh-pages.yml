@@ -1,7 +1,11 @@
 # Created by MichaelCurrin
 # https://gist.github.com/MichaelCurrin/a698731096f78240f653faf9a9127cba
 
-name: Build and deploy 
+name: Build and deploy
+
+permissions:
+  contents: read
+  pages: write
 
 on:
   push:
@@ -17,7 +21,7 @@ jobs:
         uses: actions/checkout@master
         with:
           persist-credentials: false
-          submodules: true  # TODO remove this if not using submodules in Hexo
+          submodules: true # TODO remove this if not using submodules in Hexo
 
       - name: Install 🔧
         run: npm install

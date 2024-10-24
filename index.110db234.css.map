@@ -1,0 +1,1 @@
+{"mappings":"AAAA","sources":["client/public/styles.css"],"sourcesContent":["html, body {\n  /* background-color: black; */\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  height: 100%;\n}"],"names":[],"version":3,"file":"index.110db234.css.map","sourceRoot":"/__parcel_source_root/"}

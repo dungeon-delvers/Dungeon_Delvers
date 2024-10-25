@@ -12,7 +12,7 @@
     "build": "parcel build ./public/index.html --public-url ./",
     "clean": "rm -rf .parcel-cache dist",
     "deploy-demo": "git push origin :gh-pages && git subtree push --prefix dist origin gh-pages",
-    "start": "parcel --open chrome ./public/index.html",
+    "start": "node ./build.mjs --open chrome ./public/index.html",
     "test": "jest"
   },
   "keywords": [
@@ -31,25 +31,32 @@
     "@babylonjs/inspector": "^7.10.2",
     "@babylonjs/loaders": "^7.10.2",
     "@babylonjs/materials": "^7.12.0",
-    "@parcel/config-default": "^2.9.2",
-    "@parcel/core": "^2.9.2",
-    "@parcel/transformer-js": "^2.12.0",
-    "@parcel/transformer-raw": "^2.12.0",
-    "@parcel/types": "^2.9.2",
-    "@parcel/watcher": "^2.4.1",
     "alea": "^1.0.1",
     "delaunay-triangulate": "^1.1.6",
     "dotenv": "^16.4.5",
     "earcut": "^2.2.4",
-    "parcel": "^2.9.2",
     "simplex-noise": "^4.0.1",
     "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
+    "@parcel/config-default": "^2.9.2",
+    "@parcel/core": "^2.12.0",
+    "@parcel/transformer-js": "^2.12.0",
+    "@parcel/transformer-raw": "^2.12.0",
+    "@parcel/types": "^2.9.2",
+    "@parcel/watcher": "^2.4.1",
     "@types/earcut": "^2.1.1",
     "@types/jest": "^29.5.12",
+    "crypto-browserify": "^3.12.1",
+    "events": "^3.3.0",
     "jest": "^29.7.0",
+    "os-browserify": "^0.3.0",
+    "parcel": "^2.12.0",
     "parcel-reporter-static-files-copy": "^1.5.3",
-    "ts-jest": "^29.2.4"
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "ts-jest": "^29.2.4",
+    "vm-browserify": "^1.1.2"
   }
 }

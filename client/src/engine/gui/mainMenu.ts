@@ -1,4 +1,11 @@
-import { Color3, Color4, Engine, Scene, SceneLoader, Animation } from '@babylonjs/core'
+import {
+  Color3,
+  Color4,
+  Engine,
+  Scene,
+  SceneLoader,
+  Animation,
+} from '@babylonjs/core'
 import { FullScreenMenu } from './fullScreenMenu'
 import { Button, TextBlock, InputText, InputPassword } from '@babylonjs/gui'
 import dungeonEntrance from '../../../public/assets/models/Main_Menu_Background.glb'
@@ -10,13 +17,18 @@ type MainMenuActions = {
 }
 
 export class Login extends FullScreenMenu {
-  constructor(canvas: HTMLCanvasElement, engine: Engine, scene: Scene, action: () => Promise<void>) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    engine: Engine,
+    scene: Scene,
+    action: () => Promise<void>,
+  ) {
     const menuId = 'main_menu'
     super(canvas, engine, menuId, new Color4(0.67, 0.47, 0.16), scene)
     const title = new TextBlock(`${menuId}__title`, 'Dungeon Delvers')
     const colors = {
       white: new Color3(1, 1, 1),
-      red: new Color3(1, 0, 0)
+      red: new Color3(1, 0, 0),
     }
     title.fontSize = 48
     title.width = '500px'
@@ -38,30 +50,29 @@ export class Login extends FullScreenMenu {
     login.width = '500px'
     login.onPointerDownObservable.add(async () => {
       const login = async () => {
-        const response = await fetch('http://localhost:4000/login', {
+        const response = await fetch('http://localhost:4001/api/login', {
           method: 'POST',
           mode: 'cors',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             username: username.text,
-            password: password.text
-          })
+            password: password.text,
+          }),
         })
-        if (response.status === 200) {
-          return response.json()
 
+        if (response.ok) {
+          return await response.json()
         } else {
-          controls.forEach((control) => {
+          controls.forEach(control => {
             control.color = colors.red.toHexString()
           })
         }
       }
-      login().then((data) => {
+      login().then(data => {
         if (data) {
-          const { token } = data;
-          localStorage.setItem('token', token);
+          localStorage.setItem('dd_auth', JSON.stringify(data))
           action()
         }
       })

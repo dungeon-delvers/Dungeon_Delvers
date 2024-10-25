@@ -9,7 +9,7 @@ import Logger from './loaders/logger'
 async function startServer() {
   const app = express()
   const { default: loaders } = await import('./loaders')
-  loaders({ expressApp: app })
+  loaders(app)
   app.listen(config.port, () => {
     Logger.info(`
       ################################################

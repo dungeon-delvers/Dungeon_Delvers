@@ -1,12 +1,8 @@
-import { Express } from 'express'
+import { Application } from 'express'
 import Logger from './logger'
 import expressLoader from './express'
 
-type LoaderArgs = {
-  expressApp: Express
-}
-
-export default async ({ expressApp }: LoaderArgs) => {
-  await expressLoader({ app: expressApp })
+export default async (app: Application) => {
+  await expressLoader(app)
   Logger.info('✌️ Express loaded')
 }

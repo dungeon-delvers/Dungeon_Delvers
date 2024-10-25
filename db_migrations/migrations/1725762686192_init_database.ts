@@ -1,6 +1,7 @@
-import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate'
+import { MigrationBuilder } from 'node-pg-migrate'
 
 export async function up(pgm: MigrationBuilder): Promise<void> {
+  pgm.createType('user_role', ['ADMIN', 'BANNED', 'USER'])
   pgm.createType('class', ['FIGHTER', 'MAGE', 'SCOUT', 'HEALER'])
   pgm.createType('race', ['HUMAN', 'GOBLIN', 'DWARF', 'ORC'])
   pgm.createType('npc_type', [
@@ -64,6 +65,22 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
     'neck',
     'ring',
   ])
+  pgm.createTable('app_user', {
+    id: { type: 'id', primaryKey: true },
+    username: { type: 'varchar(300)', notNull: true },
+    passwordHash: { type: 'varchar(300)', notNull: true },
+    email: { type: 'varchar(300)', notNull: true },
+    createdAt: {
+      type: 'timestamp',
+      notNull: true,
+      default: pgm.func('current_timestamp'),
+    },
+    updatedAt: {
+      type: 'timestamp',
+      notNull: true,
+      default: pgm.func('current_timestamp'),
+    },
+  })
   pgm.createTable('player_character', {
     id: 'id',
     // We'll need the userID at some point

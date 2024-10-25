@@ -4,7 +4,7 @@
   "description": "The Node backend server for Dungeon Delvers",
   "main": "server.js",
   "scripts": {
-    "start:dev": "nodemon server.ts",
+    "start": "nodemon server.ts",
     "test": "jest --config ./jest.config.js"
   },
   "keywords": [

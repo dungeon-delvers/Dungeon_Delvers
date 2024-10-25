@@ -4,7 +4,7 @@
   "description": "Simple workspace to perform database migrations",
   "main": "index.ts",
   "scripts": {
-    "migrate": "node-pg-migrate --tsconfig=\"./tsconfig.json\""
+    "migrate": "node-pg-migrate up --tsconfig=\"./tsconfig.json\""
   },
   "keywords": [
     "MySQL",

@@ -111,7 +111,7 @@ export class Game {
   private async _main(): Promise<void> {
     // const token = localStorage.getItem('token');
     // if (!token) {
-    //   await this._goToLogin()
+    await this._goToLogin()
     // }
     // const res = await fetch('http://localhost:4000/self', {
     //   mode: 'cors',
@@ -124,7 +124,7 @@ export class Game {
     // } else {
     //   await this._goToLogin()
     // }
-    this._goToGame()
+    // this._goToGame()
     // run the main render loop
     this._engine.runRenderLoop(() => {
       switch (this._state) {

@@ -13,7 +13,7 @@ export const createUser = async (
   return await pool.query(query)
 }
 
-export const userFromEmail = async (username: string) => {
+export const userFromUsername = async (username: string) => {
   const query = {
     text: 'SELECT * FROM app_user WHERE username = $1',
     values: [username],

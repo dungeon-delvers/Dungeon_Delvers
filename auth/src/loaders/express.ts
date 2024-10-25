@@ -1,9 +1,9 @@
-import express from 'express'
+import { json, Application } from 'express'
 import cors from 'cors'
 import config from '../config'
 import routes from '../api'
 import auth from '../services/auth'
-export default ({ app }: { app: express.Application }) => {
+export default (app: Application) => {
   app.get('/status', (req, res) => {
     res.status(200).end()
   })
@@ -19,9 +19,8 @@ export default ({ app }: { app: express.Application }) => {
   // Alternate description:
   // Enable Cross Origin Resource Sharing to all origins by default
   app.use(cors())
-  app.use(express.json())
   auth(app)
   // Transforms the raw string of req.body into json
-  app.use(express.json())
+  app.use(json())
   app.use(config.api.prefix, routes())
 }

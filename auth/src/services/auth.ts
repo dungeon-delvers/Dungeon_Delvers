@@ -1,27 +1,12 @@
 import session from 'express-session'
 import passport from 'passport'
-import { Strategy as LocalStrategy } from 'passport-local'
-import bcrypt from 'bcrypt'
 import { pool } from './database/postgres'
 import express from 'express'
-
-// export const signUp = async (email: string, password: string, name: string) => {
-//   const salt = crypto.randomBytes(16).toString('hex')
-//   const hash = crypto
-//     .pbkdf2Sync(password, salt, 1000, 64, 'sha512')
-//     .toString('hex')
-//   const query = {
-//     text: 'INSERT INTO users(email, password, salt, name) VALUES($1, $2, $3, $4)',
-//     values: [email, hash, salt, name],
-//   }
-//   await pool.query(query)
-// }
 
 type User = {
   id: number
   email: string
   password: string
-  salt: string
 }
 
 export default (app: express.Application) => {
@@ -40,7 +25,6 @@ export default (app: express.Application) => {
   )
 
   passport.serializeUser((user, done) => {
-    console.log('SERIAL', user)
     done(null, (user as User).id)
   })
 
@@ -56,22 +40,6 @@ export default (app: express.Application) => {
     const user = rows[0]
     done(null, user)
   })
-  passport.use(
-    new LocalStrategy(async (email: string, password: string, done) => {
-      console.log('LOCAL_STRATEGY', email, password)
-      // console.log('Are we hitting the Auth Service?')
-      const query = {
-        text: 'SELECT * FROM users WHERE email = $1',
-        values: [email],
-      }
-      const { rows } = await pool.query(query)
-      if (rows.length === 0) {
-        return done(null, false, { message: 'Incorrect username or password.' })
-      }
-      const user = rows[0]
-      const hash = await bcrypt.hashSync(password, user.salt)
-    }),
-  )
   app.use(passport.initialize())
   app.use(passport.session())
 }

@@ -1,27 +1,27 @@
 import { Router } from 'express'
-import logger from '../../loaders/logger'
 import passport from 'passport'
-import Logger from '../../loaders/logger'
 import {
   createUser,
   generatePasswordHash,
-  userFromEmail,
+  userFromUsername,
 } from '../../models/user'
 import { validateUser } from '../../models/validation'
 
 export default (router: Router) => {
   router.post('/login', async (req, res, next) => {
-    const result = await userFromEmail(req.body.username)
-    result &&
+    const result = await userFromUsername(req.body.username)
+    if (result) {
       req.login(
         { ...result, username: req.body.username, password: req.body.password },
         async err => {
           if (err) {
+            console.log(err)
             next(err)
           } else {
             try {
               passport.authenticate('LocalStrategy')(req, res, function () {
-                res.status(201).json('authenticated')
+                delete result.passwordHash
+                res.status(200).json(result)
               })
             } catch (error) {
               res.status(400).json({
@@ -31,6 +31,9 @@ export default (router: Router) => {
           }
         },
       )
+    } else {
+      res.status(400).json({ message: 'User not found' })
+    }
   })
   router.post('/signup', async (req, res) => {
     const { error } = validateUser(req.body)

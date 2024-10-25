@@ -36,6 +36,7 @@
     "@parcel/transformer-js": "^2.12.0",
     "@parcel/transformer-raw": "^2.12.0",
     "@parcel/types": "^2.9.2",
+    "@parcel/watcher": "^2.4.1",
     "alea": "^1.0.1",
     "delaunay-triangulate": "^1.1.6",
     "dotenv": "^16.4.5",

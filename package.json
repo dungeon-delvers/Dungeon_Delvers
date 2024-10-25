@@ -10,7 +10,7 @@
   "description": "Online 3D Dungeon Crawler made with BabylonJS",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build --workspace=client",
+    "build:client": "npm run build --workspace=client",
     "clean": "npm run clean --workspace=client",
     "deploy-demo": "npm run deploy-demo --workspace=client",
     "start": "concurrently \"npm run start --workspace=client\" \"npm run start --workspace=auth\"",

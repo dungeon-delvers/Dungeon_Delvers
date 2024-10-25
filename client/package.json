@@ -9,10 +9,10 @@
     "app": "dist"
   },
   "scripts": {
-    "build": "parcel build ./public/index.html --public-url ./",
+    "build": "node ./build.mjs",
     "clean": "rm -rf .parcel-cache dist",
     "deploy-demo": "git push origin :gh-pages && git subtree push --prefix dist origin gh-pages",
-    "start": "node ./build.mjs --open chrome ./public/index.html",
+    "start": "node ./build.mjs --watch",
     "test": "jest"
   },
   "keywords": [

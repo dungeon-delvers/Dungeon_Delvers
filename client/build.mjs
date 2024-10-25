@@ -32,4 +32,4 @@ try {
   console.log(err.diagnostics)
 }
 
-await bundler.watch()
+process.argv.includes('--watch') && (await bundler.watch())

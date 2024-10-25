@@ -50,17 +50,20 @@ export class Login extends FullScreenMenu {
     login.width = '500px'
     login.onPointerDownObservable.add(async () => {
       const login = async () => {
-        const response = await fetch('http://localhost:4001/api/login', {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `${process.env.AUTH_SERVER_URL}${process.env.AUTH_SERVER_PORT ? `:${process.env.AUTH_SERVER_PORT}` : ''}/api/login`,
+          {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: username.text,
+              password: password.text,
+            }),
           },
-          body: JSON.stringify({
-            username: username.text,
-            password: password.text,
-          }),
-        })
+        )
 
         if (response.ok) {
           return await response.json()

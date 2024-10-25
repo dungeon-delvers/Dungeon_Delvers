@@ -1,8 +1,15 @@
 .DS_Store
 .parcel-cache
 node_modules
+auth/package-lock.json
+auth/node_modules
 client/node_modules
 client/.parcel-cache
 client/dist
+client/package-lock.json
+db_migration/package-lock.json
+db_migration/node_modules
 server/node_modules
+server/package-lock.json
 .vercel
+package-lock.json

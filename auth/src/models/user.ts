@@ -1,3 +1,4 @@
+import { query } from 'express'
 import { pool } from '../services/database/postgres'
 import bcrypt from 'bcrypt'
 
@@ -17,6 +18,15 @@ export const userFromUsername = async (username: string) => {
   const query = {
     text: 'SELECT * FROM app_user WHERE username = $1',
     values: [username],
+  }
+  const { rows } = await pool.query(query)
+  return rows[0]
+}
+
+export const userFromEmail = async (email: string) => {
+  const query = {
+    text: 'SELECT * FROM app_user WHERE email = $1',
+    values: [email],
   }
   const { rows } = await pool.query(query)
   return rows[0]

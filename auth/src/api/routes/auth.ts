@@ -3,6 +3,7 @@ import passport from 'passport'
 import {
   createUser,
   generatePasswordHash,
+  userFromEmail,
   userFromUsername,
 } from '../../models/user'
 import { validateUser } from '../../models/validation'
@@ -42,7 +43,14 @@ export default (router: Router) => {
       return res.status(400).json({ message: error.message })
     } else {
       const { email, username, password } = req.body
-
+      const emailExists = await userFromEmail(email)
+      if (emailExists) {
+        return res.status(409).json({ message: 'Email already exists' })
+      }
+      const usernameExists = await userFromUsername(username)
+      if (usernameExists) {
+        return res.status(409).json({ message: 'Username already exists' })
+      }
       const passwordHash = await generatePasswordHash(password)
       const result = await createUser(email, passwordHash, username)
       if (result) {

@@ -1,5 +1,5 @@
 import { json, Application } from 'express'
-import  from 'cors'
+import cors from 'cors'
 import config from '../config'
 import routes from '../api'
 import auth from '../services/auth'

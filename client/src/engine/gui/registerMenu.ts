@@ -2,10 +2,12 @@ import {
   AdvancedDynamicTexture,
   Button,
   InputPassword,
-  InputText,
   StackPanel,
   TextBlock,
 } from '@babylonjs/gui'
+
+import InputText from './components/InputText'
+import Label from './components/Label'
 
 export const registerMenu = () => {
   const menuId = 'register_menu'
@@ -26,20 +28,10 @@ export const registerMenu = () => {
   title.width = '500px'
   title.color = '#ffffff'
   title.height = '150px'
-  const emailLabel = new TextBlock(`${menuId}__email_label`, 'Email:')
-  emailLabel.color = '#ffffff'
-  emailLabel.height = '40px'
-  const email = new InputText()
-  email.color = '#ffffff'
-  email.width = '500px'
-  email.height = '40px'
-  const usernameLabel = new TextBlock(`${menuId}__username_label`, 'Username:')
-  usernameLabel.color = '#ffffff'
-  usernameLabel.height = '40px'
-  const username = new InputText()
-  username.color = '#ffffff'
-  username.width = '500px'
-  username.height = '40px'
+  const username = new InputText('username')
+  const usernameLabel = new Label(`${menuId}__username_label`, 'Username:')
+  const email = new InputText('email')
+  const emailLabel = new Label(`${menuId}__email_label`, 'Email:')
   const passwordLabel = new TextBlock(`${menuId}__password_label`, 'Password:')
   passwordLabel.color = '#ffffff'
   passwordLabel.height = '40px'
@@ -61,8 +53,9 @@ export const registerMenu = () => {
   const register = Button.CreateSimpleButton(`${menuId}__register`, 'Register')
   register.width = '240px'
   register.height = '40px'
+  register.color = '#ffffff'
   register.onPointerClickObservable.add(() => {
-    const login = async () => {
+    const register = async () => {
       const response = await fetch(
         `${process.env.AUTH_SERVER_URL}${process.env.AUTH_SERVER_PORT ? `:${process.env.AUTH_SERVER_PORT}` : ''}/api/signup`,
         {
@@ -82,11 +75,19 @@ export const registerMenu = () => {
 
       if (response.ok) {
         return await response.json()
-      } else {
+      } if (response.status === 409) {
+        const data = await response.json()
+        if (data.message === 'Email already exists') {
+          email.color = '#ff0000';
+        } else if (data.message === 'Username already exists') {
+          username.color = '#ff0000';
+        }
+      }
+      else {
         alert('Failed to register')
       }
     }
-    login().then(data => {
+    register().then(data => {
       if (data) {
         alert('Registered successfully')
       }
@@ -96,14 +97,14 @@ export const registerMenu = () => {
   const stack = new StackPanel('register_stack')
   stack.adaptHeightToChildren = true
   stack.addControl(title)
-  stack.addControl(emailLabel)
-  stack.addControl(email)
   stack.addControl(usernameLabel)
   stack.addControl(username)
-  stack.addControl(passwordLabel)
-  stack.addControl(password)
-  stack.addControl(confirmPasswordLabel)
-  stack.addControl(confirmPassword)
+  stack.addControl(emailLabel)
+  stack.addControl(email)
+  // stack.addControl(passwordLabel)
+  // stack.addControl(password)
+  // stack.addControl(confirmPasswordLabel)
+  // stack.addControl(confirmPassword)
   stack.addControl(register)
   advancedTexture.addControl(stack)
 }

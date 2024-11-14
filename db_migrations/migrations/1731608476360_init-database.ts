@@ -65,62 +65,6 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
     'neck',
     'ring',
   ])
-  pgm.createTable('app_user', {
-    id: { type: 'id', primaryKey: true },
-    username: { type: 'varchar(300)', notNull: true },
-    passwordHash: { type: 'varchar(300)', notNull: true },
-    email: { type: 'varchar(300)', notNull: true },
-    createdAt: {
-      type: 'timestamp',
-      notNull: true,
-      default: pgm.func('current_timestamp'),
-    },
-    updatedAt: {
-      type: 'timestamp',
-      notNull: true,
-      default: pgm.func('current_timestamp'),
-    },
-  })
-  pgm.createTable('player_character', {
-    id: 'id',
-    // We'll need the userID at some point
-    // user_id: { type: 'integer', notNull: true },
-    name: { type: 'varchar(300)', notNull: true },
-    surname: { type: 'varchar(300)' },
-    class: { type: 'class', notNull: true },
-    con: { type: 'integer', notNull: true },
-    dex: { type: 'integer', notNull: true },
-    int: { type: 'integer', notNull: true },
-    mig: { type: 'integer', notNull: true },
-    per: { type: 'integer', notNull: true },
-    res: { type: 'integer', notNull: true },
-    level: { type: 'integer', notNull: true, default: 1 },
-    current_health: { type: 'integer', notNull: true },
-    zoneId: { type: 'integer' },
-    locX: { type: 'integer' },
-    locY: { type: 'integer' },
-    locZ: { type: 'integer' },
-  })
-  pgm.createTable('message', {
-    id: 'id',
-    type: { type: 'message_type', notNull: true },
-    characterId: { type: 'integer', notNull: true },
-    reciepientId: { type: 'integer' },
-    message: { type: 'varchar(1000)', notNull: true },
-    createdAt: {
-      type: 'timestamp',
-      notNull: true,
-      default: pgm.func('current_timestamp'),
-    },
-  })
-  pgm.createTable('friend', {
-    characterId: { type: 'integer', notNull: true },
-    friendId: { type: 'integer', notNull: true },
-  })
-  pgm.createTable('blocked', {
-    characterId: { type: 'integer', notNull: true },
-    blockedId: { type: 'integer', notNull: true },
-  })
   pgm.createTable('ability', {
     id: 'id',
     name: { type: 'varchar(300)', notNull: true },
@@ -145,6 +89,33 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
     abilityId: { type: 'integer', notNull: true },
     stat: { type: 'stat', notNull: true },
     value: { type: 'integer', notNull: true },
+  })
+  pgm.createTable('app_user', {
+    id: 'id',
+    email: { type: 'varchar(300)', notNull: true },
+    password_hash: { type: 'varchar(300)', notNull: true },
+    username: { type: 'varchar(300)', notNull: true },
+    role: { type: 'user_role', notNull: true, default: 'USER' },
+    loggedin: { type: 'boolean', notNull: true, default: false },
+    currentCharacterId: { type: 'integer' },
+    createdAt: {
+      type: 'timestamp',
+      notNull: true,
+      default: pgm.func('current_timestamp'),
+    },
+    updatedAt: {
+      type: 'timestamp',
+      notNull: true,
+      default: pgm.func('current_timestamp'),
+    },
+  })
+  pgm.createTable('blocked', {
+    characterId: { type: 'integer', notNull: true },
+    blockedId: { type: 'integer', notNull: true },
+  })
+  pgm.createTable('friend', {
+    characterId: { type: 'integer', notNull: true },
+    friendId: { type: 'integer', notNull: true },
   })
   pgm.createTable('inventory', {
     id: 'id',
@@ -172,6 +143,18 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
     stat: { type: 'stat', notNull: true },
     value: { type: 'integer', notNull: true },
   })
+  pgm.createTable('message', {
+    id: 'id',
+    type: { type: 'message_type', notNull: true },
+    characterId: { type: 'integer', notNull: true },
+    reciepientId: { type: 'integer' },
+    message: { type: 'varchar(1000)', notNull: true },
+    createdAt: {
+      type: 'timestamp',
+      notNull: true,
+      default: pgm.func('current_timestamp'),
+    },
+  })
   pgm.createTable('non_player_character', {
     id: 'id',
     name: { type: 'varchar(300)', notNull: true },
@@ -194,6 +177,25 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
     npcId: { type: 'integer', notNull: true },
     abilityId: { type: 'integer', notNull: true },
   })
+  pgm.createTable('player_character', {
+    id: 'id',
+    user_id: { type: 'integer', notNull: true },
+    name: { type: 'varchar(300)', notNull: true },
+    surname: { type: 'varchar(300)' },
+    class: { type: 'class', notNull: true },
+    con: { type: 'integer', notNull: true },
+    dex: { type: 'integer', notNull: true },
+    int: { type: 'integer', notNull: true },
+    mig: { type: 'integer', notNull: true },
+    per: { type: 'integer', notNull: true },
+    res: { type: 'integer', notNull: true },
+    level: { type: 'integer', notNull: true, default: 1 },
+    current_health: { type: 'integer', notNull: true },
+    zoneId: { type: 'integer' },
+    locX: { type: 'integer' },
+    locY: { type: 'integer' },
+    locZ: { type: 'integer' },
+  })
   pgm.createTable('zone', {
     id: 'id',
     name: { type: 'varchar(300)', notNull: true },
@@ -205,6 +207,7 @@ export async function down(pgm: MigrationBuilder): Promise<void> {
   pgm.dropTable('ability_effect')
   pgm.dropTable('ability_stat')
   pgm.dropTable('ability')
+  pgm.dropTable('app_user')
   pgm.dropTable('blocked')
   pgm.dropTable('friend')
   pgm.dropTable('inventory')

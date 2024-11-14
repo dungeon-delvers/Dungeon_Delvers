@@ -7,7 +7,13 @@ import {
   Animation,
 } from '@babylonjs/core'
 import { FullScreenMenu } from './fullScreenMenu'
-import { Button, TextBlock, InputText, InputPassword } from '@babylonjs/gui'
+import {
+  Button,
+  TextBlock,
+  InputText,
+  InputPassword,
+  StackPanel,
+} from '@babylonjs/gui'
 import dungeonEntrance from '../../../public/assets/models/Main_Menu_Background.glb'
 
 type MainMenuActions = {
@@ -33,7 +39,7 @@ export class Login extends FullScreenMenu {
     title.fontSize = 48
     title.width = '500px'
     title.color = '#ffffff'
-    title.paddingBottom = '80px'
+    title.height = '150px'
     const usernameLabel = new TextBlock(
       `${menuId}__username_label`,
       'Username:',
@@ -47,7 +53,14 @@ export class Login extends FullScreenMenu {
     const password = new InputPassword()
     password.width = '500px'
     const login = Button.CreateSimpleButton(`${menuId}__login`, 'Login')
-    login.width = '500px'
+    const register = Button.CreateSimpleButton(
+      `${menuId}__register`,
+      'Register',
+    )
+    login.width = '240px'
+    register.width = '240px'
+    login.left = '-130px'
+    register.left = '130px'
     login.onPointerDownObservable.add(async () => {
       const login = async () => {
         const response = await fetch(
@@ -80,13 +93,20 @@ export class Login extends FullScreenMenu {
         }
       })
     })
+
+    register.onPointerDownObservable.add(() => {})
+    const buttonPanel = new StackPanel('buttonPanel')
+    buttonPanel.width = '500px'
+    buttonPanel.addControl(login)
+    buttonPanel.addControl(register)
+
     const controls = [
       title,
       usernameLabel,
       username,
       passwordLabel,
       password,
-      login,
+      buttonPanel,
     ]
     const buttonHeight = 60
     controls.forEach((control, index) => {

@@ -33,6 +33,7 @@ import test_level from '../../public/assets/zones/rook_tower_06_25_2024.glb'
 import rat from '../../public/assets/models/low_poly_rat.glb'
 import cement from '../../public/assets/textures/polished-concrete-11811-in-architextures.jpg'
 import tile from '../../public/assets/textures/demountable-ceiling-tile-stack-9606-in-architextures.jpg'
+import { registerMenu } from './gui/registerMenu'
 
 export enum GAME_STATE {
   LOGIN = 0,
@@ -111,8 +112,9 @@ export class Game {
   private async _main(): Promise<void> {
     // const token = localStorage.getItem('token');
     // if (!token) {
-    await this._goToLogin()
+    // await this._goToLogin()
     // }
+    await this._goToSignup()
     // const res = await fetch('http://localhost:4000/self', {
     //   mode: 'cors',
     //   headers: {
@@ -163,6 +165,10 @@ export class Game {
       this._goToCharacterSelect.bind(this),
     )
     this._scene = mainMenu.scene
+  }
+
+  private async _goToSignup() {
+    registerMenu()
   }
 
   private async _setUpGame() {

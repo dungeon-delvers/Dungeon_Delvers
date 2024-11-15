@@ -3,11 +3,11 @@ import dotenv from 'dotenv'
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
-const envFound = dotenv.config()
+const envFound = dotenv.config({ path: `${__dirname}/../../../.env` })
 if (envFound.error) {
   // This error should crash whole process
 
-  throw new Error("⚠️  Couldn't find .env file  ⚠️")
+  throw new Error(`⚠️  Couldn't find .env file ${__dirname}/../.env ⚠️`)
 }
 
 export default {
@@ -17,7 +17,7 @@ export default {
   /**
    * Your favorite port
    */
-  port: parseInt(process.env.PORT as string, 10),
+  port: parseInt(process.env.AUTH_SERVER_PORT as string, 10),
 
   database: {
     user: process.env.DB_USER,

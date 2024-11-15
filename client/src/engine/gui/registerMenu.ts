@@ -1,12 +1,12 @@
 import {
   AdvancedDynamicTexture,
   Button,
-  InputPassword,
   StackPanel,
   TextBlock,
 } from '@babylonjs/gui'
 
 import InputText from './components/InputText'
+import InputPassword from './components/InputPassword'
 import Label from './components/Label'
 
 export const registerMenu = () => {
@@ -30,26 +30,15 @@ export const registerMenu = () => {
   title.height = '150px'
   const username = new InputText('username')
   const usernameLabel = new Label(`${menuId}__username_label`, 'Username:')
-  const email = new InputText('email')
-  const emailLabel = new Label(`${menuId}__email_label`, 'Email:')
-  const passwordLabel = new TextBlock(`${menuId}__password_label`, 'Password:')
-  passwordLabel.color = '#ffffff'
-  passwordLabel.height = '40px'
+  const email = new InputText(`${menuId}_email_input`)
+  const emailLabel = new Label(`${menuId}_email_label`, 'Email:')
+  const passwordLabel = new Label(`${menuId}_password_label`, 'Password:')
   const password = new InputPassword()
-  password.width = '500px'
-  password.height = '40px'
-  password.color = '#ffffff'
-
-  const confirmPasswordLabel = new TextBlock(
+  const confirmPasswordLabel = new Label(
     `${menuId}__password_label`,
     'Confirm Password:',
   )
-  confirmPasswordLabel.color = '#ffffff'
-  confirmPasswordLabel.height = '40px'
   const confirmPassword = new InputPassword()
-  confirmPassword.width = '500px'
-  confirmPassword.height = '40px'
-  confirmPassword.color = '#ffffff'
   const register = Button.CreateSimpleButton(`${menuId}__register`, 'Register')
   register.width = '240px'
   register.height = '40px'
@@ -75,15 +64,15 @@ export const registerMenu = () => {
 
       if (response.ok) {
         return await response.json()
-      } if (response.status === 409) {
+      }
+      if (response.status === 409) {
         const data = await response.json()
         if (data.message === 'Email already exists') {
-          email.color = '#ff0000';
+          email.color = '#ff0000'
         } else if (data.message === 'Username already exists') {
-          username.color = '#ff0000';
+          username.color = '#ff0000'
         }
-      }
-      else {
+      } else {
         alert('Failed to register')
       }
     }
@@ -101,10 +90,10 @@ export const registerMenu = () => {
   stack.addControl(username)
   stack.addControl(emailLabel)
   stack.addControl(email)
-  // stack.addControl(passwordLabel)
-  // stack.addControl(password)
-  // stack.addControl(confirmPasswordLabel)
-  // stack.addControl(confirmPassword)
+  stack.addControl(passwordLabel)
+  stack.addControl(password)
+  stack.addControl(confirmPasswordLabel)
+  stack.addControl(confirmPassword)
   stack.addControl(register)
   advancedTexture.addControl(stack)
 }

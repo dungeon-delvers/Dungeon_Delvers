@@ -1,8 +1,8 @@
-import { InputText } from '@babylonjs/gui'
+import { InputPassword } from '@babylonjs/gui'
 
-export default class StyledInputText extends InputText {
-  constructor(name: string) {
-    super(name)
+export default class StyledInputPassword extends InputPassword {
+  constructor() {
+    super()
     this.color = '#ffffff'
     this.fontSize = 24
     this.height = '60px'

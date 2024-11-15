@@ -1,6 +1,5 @@
 import request from 'supertest'
 import express from 'express'
-import session from 'express-session'
 import passport from 'passport'
 import auth from './auth'
 import { Pool } from 'pg'

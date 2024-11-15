@@ -18,8 +18,8 @@ declare global {
   }
 }
 
-dotenv.config();
-const port = process.env.PORT ? parseInt(process.env.PORT) : 4000;
+dotenv.config({ path: `${__dirname}/../.env` })
+const port = process.env.GAME_SEVER_PORT ? parseInt(process.env.GAME_SEVER_PORT) : 4000;
 const jwtSecret = process.env.JWT_SECRET || 'Mys3cr3t'
 
 const app = express();

@@ -9,5 +9,8 @@ export default class StyledInputText extends InputText {
     this.width = '500px'
     this.paddingBottom = '20px'
     this.fontFamily = 'Goudy Bookletter'
+    this.onFocusObservable.add(() => {
+      this.color = '#ffffff'
+    })
   }
 }

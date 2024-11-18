@@ -38,7 +38,7 @@ export class Game {
   }
 
   private async _init() {
-    this._state = GAME_STATE.LOGIN
+    this._state = localStorage.getItem('dd_auth') ? GAME_STATE.CHARACTER_SELECT : GAME_STATE.LOGIN
     this._engine = (await EngineFactory.CreateAsync(
       this._canvas,
       undefined,

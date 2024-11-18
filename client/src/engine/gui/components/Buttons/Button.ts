@@ -41,6 +41,5 @@ export default class StyledButton extends Button {
         ? this._options.color
         : this._options.disabledColorItem
     })
-    console.log(this.color)
   }
 }

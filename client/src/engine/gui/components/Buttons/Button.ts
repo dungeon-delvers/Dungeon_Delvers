@@ -27,7 +27,9 @@ export default class StyledButton extends Button {
   constructor(name: string, text: string, options?: Partial<ButtonOptions>) {
     super(name)
     this._options = { ...this._options, ...options }
-    this.addControl(new TextBlock(`${name}_text_block`, text))
+    const textBlock = new TextBlock(`${name}_text_block`, text)
+    console.log(textBlock)
+    this.addControl(textBlock)
     this.background = this._options.background
     this.color = this._options.color
     this.disabledColor = this._options.disabledColor

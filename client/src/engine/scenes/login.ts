@@ -20,26 +20,26 @@ enum LABEL_ELEMENTS {
 const LOGIN = `${menu_id}_login_button`
 const REGISTER = `${menu_id}_cancel_button`
 
-const formElements = {
-  [LABEL_ELEMENTS.USERNAME_LABEL]: new Label(LABEL_ELEMENTS.USERNAME_LABEL, 'Username:'),
-  [INPUT_ELEMENTS.USERNAME]: new InputText(INPUT_ELEMENTS.USERNAME),
-  [LABEL_ELEMENTS.PASSWORD_LABEL]: new Label(LABEL_ELEMENTS.PASSWORD_LABEL, 'Password:'),
-  [INPUT_ELEMENTS.PASSWORD]: new InputPassword(INPUT_ELEMENTS.PASSWORD),
-  [LOGIN]: new Accept(LOGIN, 'Login'),
-  [REGISTER]: new Button(REGISTER, 'Register'),
-}
-
-export default class LoginScene extends Menu<typeof formElements> {
+export default class LoginScene extends Menu {
   _goToCharacterSelect: () => void
+  _shouldLogin: boolean = false
+  private _loginFormElements = {
+    [LABEL_ELEMENTS.USERNAME_LABEL]: new Label(LABEL_ELEMENTS.USERNAME_LABEL, 'Username:'),
+    [INPUT_ELEMENTS.USERNAME]: new InputText(INPUT_ELEMENTS.USERNAME),
+    [LABEL_ELEMENTS.PASSWORD_LABEL]: new Label(LABEL_ELEMENTS.PASSWORD_LABEL, 'Password:'),
+    [INPUT_ELEMENTS.PASSWORD]: new InputPassword(INPUT_ELEMENTS.PASSWORD),
+    [LOGIN]: new Accept(LOGIN, 'Login'),
+    [REGISTER]: new Button(REGISTER, 'Register'),
+  }
   constructor(
     engine: Engine,
     _goToRegister: () => void,
     goToCharacterSelect: () => void,
   ) {
     super(engine, menu_id)
-    this.formElements = formElements
+    this.formElements = this._loginFormElements
+    this.formElements[INPUT_ELEMENTS.USERNAME].focus()
     this._goToCharacterSelect = goToCharacterSelect
-    this.formElements[LOGIN].isEnabled = false
     Object.values(INPUT_ELEMENTS).map(value => {
       const input = this.formElements[value]
       input &&
@@ -55,7 +55,7 @@ export default class LoginScene extends Menu<typeof formElements> {
     })
   }
   private validateInputs() {
-    this.formElements[LOGIN].isEnabled = Object.values(INPUT_ELEMENTS).reduce(
+    this._shouldLogin = Object.values(INPUT_ELEMENTS).reduce(
       (accumulator, value) => {
         const input = this.formElements[value] as InputElements
 
@@ -68,6 +68,12 @@ export default class LoginScene extends Menu<typeof formElements> {
     )
   }
   private async login() {
+    if (!this._shouldLogin) {
+      const error = new Error('Please fill out all fields')
+      error.name = 'LOGIN_ERROR'
+      this.renderError(error)
+      return
+    }
     const response = await fetch(
       `${process.env.AUTH_SERVER_URL}${process.env.AUTH_SERVER_PORT ? `:${process.env.AUTH_SERVER_PORT}` : ''}/api/login`,
       {
@@ -77,8 +83,8 @@ export default class LoginScene extends Menu<typeof formElements> {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: this.formElements[INPUT_ELEMENTS.USERNAME].text,
-          password: this.formElements[INPUT_ELEMENTS.PASSWORD].text,
+          username: this._loginFormElements[INPUT_ELEMENTS.USERNAME].text,
+          password: this._loginFormElements[INPUT_ELEMENTS.PASSWORD].text,
         }),
       },
     )
@@ -86,6 +92,12 @@ export default class LoginScene extends Menu<typeof formElements> {
     if (response.ok) {
       localStorage.setItem('dd_auth', await response.json())
       this._goToCharacterSelect()
+      Object.values(INPUT_ELEMENTS).map(value => {
+        const input = this._loginFormElements[value]
+        if (input) {
+          input.text = ''
+        }
+      })
     } else {
       const { message } = await response.json()
       console.log(message)

@@ -9,12 +9,12 @@ import {
 import { colors } from './colors'
 import { Cancel } from './Buttons'
 
-export default class Menu<T extends object> extends Scene {
+export default class Menu extends Scene {
   private _menuId: string
   private _menu: AdvancedDynamicTexture
   private _error: StackPanel | null = null
   private _form: StackPanel
-  private _formElements: T
+  private _formElements: Record<string, Control> = {}
   _goToCharacterSelect: () => void
   constructor(
     engine: Engine,
@@ -44,7 +44,7 @@ export default class Menu<T extends object> extends Scene {
     return this._formElements
   }
 
-  set formElements(elements: T) {
+  set formElements(elements: Record<string, Control>) {
     this._formElements = elements
     this.addFormElements()
   }

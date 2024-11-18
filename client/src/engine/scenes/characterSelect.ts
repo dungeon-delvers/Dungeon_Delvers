@@ -22,38 +22,39 @@ enum CHARACTER_ELEMENTS {
 
 const LOGOUT = `${menu_id}_logout_button`
 
-const formElements = {
-  [CHARACTER_ELEMENTS.CHARACTER_1]: new Button(
-    `${menu_id}_character_1`,
-    'Character 1',
-  ),
-  [CHARACTER_ELEMENTS.CHARACTER_2]: new Button(
-    `${menu_id}_character_2`,
-    'Character 2',
-  ),
-  [CHARACTER_ELEMENTS.CHARACTER_3]: new Button(
-    `${menu_id}_character_3`,
-    'Character 3',
-  ),
-  [CHARACTER_ELEMENTS.CHARACTER_4]: new Button(
-    `${menu_id}_character_4`,
-    'Character 4',
-  ),
-  [CHARACTER_ELEMENTS.CHARACTER_5]: new Button(
-    `${menu_id}_character_5`,
-    'Character 5',
-  ),
-  [CHARACTER_ELEMENTS.CHARACTER_6]: new Button(
-    `${menu_id}_character_6`,
-    'Character 6',
-  ),
-  [LOGOUT]: new Cancel(`${menu_id}_logout`, 'Logout'),
-}
+export default class CharacterSelect extends Menu {
+  private _characterSelectFormElements = {
+    [CHARACTER_ELEMENTS.CHARACTER_1]: new Button(
+      `${menu_id}_character_1`,
+      'Character 1',
+    ),
+    [CHARACTER_ELEMENTS.CHARACTER_2]: new Button(
+      `${menu_id}_character_2`,
+      'Character 2',
+    ),
+    [CHARACTER_ELEMENTS.CHARACTER_3]: new Button(
+      `${menu_id}_character_3`,
+      'Character 3',
+    ),
+    [CHARACTER_ELEMENTS.CHARACTER_4]: new Button(
+      `${menu_id}_character_4`,
+      'Character 4',
+    ),
+    [CHARACTER_ELEMENTS.CHARACTER_5]: new Button(
+      `${menu_id}_character_5`,
+      'Character 5',
+    ),
+    [CHARACTER_ELEMENTS.CHARACTER_6]: new Button(
+      `${menu_id}_character_6`,
+      'Character 6',
+    ),
+    [LOGOUT]: new Cancel(`${menu_id}_logout`, 'Logout'),
+  }
 
-export default class CharacterSelect extends Menu<typeof formElements> {
+
   constructor(engine: Engine, _goToLogin: () => void) {
     super(engine, menu_id)
-    this.formElements = formElements
+    this.formElements = this._characterSelectFormElements
     this.formElements[CHARACTER_ELEMENTS.CHARACTER_1].height = '80px'
     this.formElements[CHARACTER_ELEMENTS.CHARACTER_1].paddingTop = '20px'
 

@@ -31,29 +31,28 @@ const ERROR = `${menu_id}_error_label`
 const REGISTER = `${menu_id}_register_button`
 const CANCEL = `${menu_id}_cancel_button`
 
-const formElements = {
-  [ERROR]: new Label(ERROR, ''),
-  [LABEL_ELEMENTS.EMAIL_LABEL]: new Label(LABEL_ELEMENTS.EMAIL_LABEL, 'Email:'),
-  [INPUT_ELEMENTS.EMAIL]: new InputText(INPUT_ELEMENTS.EMAIL),
-  [LABEL_ELEMENTS.USERNAME_LABEL]: new Label(LABEL_ELEMENTS.USERNAME_LABEL, 'Username:'),
-  [INPUT_ELEMENTS.USERNAME]: new InputText(INPUT_ELEMENTS.USERNAME),
-  [LABEL_ELEMENTS.PASSWORD_LABEL]: new Label(LABEL_ELEMENTS.PASSWORD_LABEL, 'Password:'),
-  [INPUT_ELEMENTS.PASSWORD]: new InputPassword(INPUT_ELEMENTS.PASSWORD),
-  [LABEL_ELEMENTS.CONFIRMATION_LABEL]: new Label(
-    LABEL_ELEMENTS.CONFIRMATION_LABEL,
-    'Confirm Password:',
-  ),
-  [INPUT_ELEMENTS.CONFIRMATION]: new InputPassword(
-    `${menu_id}_confirmation_input`,
-  ),
-  [REGISTER]: new Accept(REGISTER, 'Register'),
-  [CANCEL]: new Cancel(CANCEL, 'Cancel'),
-}
-
-export default class RegisterScene extends Menu<typeof formElements> {
+export default class RegisterScene extends Menu {
+  private _registerFormElements = {
+    [ERROR]: new Label(ERROR, ''),
+    [LABEL_ELEMENTS.EMAIL_LABEL]: new Label(LABEL_ELEMENTS.EMAIL_LABEL, 'Email:'),
+    [INPUT_ELEMENTS.EMAIL]: new InputText(INPUT_ELEMENTS.EMAIL),
+    [LABEL_ELEMENTS.USERNAME_LABEL]: new Label(LABEL_ELEMENTS.USERNAME_LABEL, 'Username:'),
+    [INPUT_ELEMENTS.USERNAME]: new InputText(INPUT_ELEMENTS.USERNAME),
+    [LABEL_ELEMENTS.PASSWORD_LABEL]: new Label(LABEL_ELEMENTS.PASSWORD_LABEL, 'Password:'),
+    [INPUT_ELEMENTS.PASSWORD]: new InputPassword(INPUT_ELEMENTS.PASSWORD),
+    [LABEL_ELEMENTS.CONFIRMATION_LABEL]: new Label(
+      LABEL_ELEMENTS.CONFIRMATION_LABEL,
+      'Confirm Password:',
+    ),
+    [INPUT_ELEMENTS.CONFIRMATION]: new InputPassword(
+      `${menu_id}_confirmation_input`,
+    ),
+    [REGISTER]: new Accept(REGISTER, 'Register'),
+    [CANCEL]: new Cancel(CANCEL, 'Cancel'),
+  }
   constructor(engine: Engine, _goToLogin: () => void) {
     super(engine, menu_id)
-    this.formElements = formElements
+    this.formElements = this._registerFormElements
     this.formElements[REGISTER].isEnabled = false
     Object.values(INPUT_ELEMENTS).map(value => {
       const input = this.formElements[value]
@@ -73,7 +72,7 @@ export default class RegisterScene extends Menu<typeof formElements> {
     this.formElements[REGISTER].isEnabled = Object.values(
       INPUT_ELEMENTS,
     ).reduce((accumulator, value) => {
-      const input = this.formElements[value]
+      const input = this._registerFormElements[value]
 
       if (input) {
         accumulator = input.text !== ''
@@ -91,10 +90,10 @@ export default class RegisterScene extends Menu<typeof formElements> {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: this.formElements[INPUT_ELEMENTS.EMAIL].text,
-          username: this.formElements[INPUT_ELEMENTS.USERNAME].text,
-          password: this.formElements[INPUT_ELEMENTS.PASSWORD].text,
-          passwordRepeat: this.formElements[INPUT_ELEMENTS.CONFIRMATION].text,
+          email: this._registerFormElements[INPUT_ELEMENTS.EMAIL].text,
+          username: this._registerFormElements[INPUT_ELEMENTS.USERNAME].text,
+          password: this._registerFormElements[INPUT_ELEMENTS.PASSWORD].text,
+          passwordRepeat: this._registerFormElements[INPUT_ELEMENTS.CONFIRMATION].text,
         }),
       },
     )
@@ -105,9 +104,9 @@ export default class RegisterScene extends Menu<typeof formElements> {
     if (response.status === 409) {
       const data = await response.json()
       if (data.message === 'Email already exists') {
-        this.formElements[INPUT_ELEMENTS.EMAIL].color = colors.red.primary
+        this._registerFormElements[INPUT_ELEMENTS.EMAIL].color = colors.red.primary
       } else if (data.message === 'Username already exists') {
-        this.formElements[INPUT_ELEMENTS.USERNAME].color = colors.red.primary
+        this._registerFormElements[INPUT_ELEMENTS.USERNAME].color = colors.red.primary
       }
     } else if (!response.ok) {
     }

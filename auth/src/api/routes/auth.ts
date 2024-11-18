@@ -3,6 +3,7 @@ import passport from 'passport'
 import {
   createUser,
   generatePasswordHash,
+  loginUser,
   userFromEmail,
   userFromUsername,
 } from '../../models/user'
@@ -10,7 +11,7 @@ import { validateUser } from '../../models/validation'
 
 export default (router: Router) => {
   router.post('/login', async (req, res, next) => {
-    const result = await userFromUsername(req.body.username)
+    const result = await loginUser(req.body.username, req.body.password)
     if (result) {
       req.login(
         { ...result, username: req.body.username, password: req.body.password },
@@ -33,7 +34,7 @@ export default (router: Router) => {
         },
       )
     } else {
-      res.status(400).json({ message: 'User not found' })
+      res.status(400).json({ message: 'Incorrect username or password.' })
     }
   })
   router.post('/signup', async (req, res) => {

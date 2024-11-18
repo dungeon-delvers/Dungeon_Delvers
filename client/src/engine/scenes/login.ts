@@ -86,8 +86,12 @@ export default class LoginScene extends Menu<typeof formElements> {
     if (response.ok) {
       localStorage.setItem('dd_auth', await response.json())
       this._goToCharacterSelect()
-    } else if (response.ok) {
-      alert('Login error')
+    } else {
+      const { message } = await response.json()
+      console.log(message)
+      const error = new Error(message)
+      error.name = 'LOGIN_ERROR'
+      this.renderError(error)
     }
   }
 }

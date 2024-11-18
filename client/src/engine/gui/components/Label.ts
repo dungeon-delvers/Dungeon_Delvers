@@ -7,6 +7,7 @@ export default class Label extends TextBlock {
     this.fontFamily = 'Goudy Bookletter'
     this.text = text
     this.height = '40px'
+    this.width = '500px'
     this.paddingRight = '20px'
   }
 }

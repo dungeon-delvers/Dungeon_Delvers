@@ -14,6 +14,22 @@ export const createUser = async (
   return await pool.query(query)
 }
 
+export const loginUser = async (username: string, password: string) => {
+  const query = {
+    text: 'SELECT * FROM app_user WHERE username = $1',
+    values: [username],
+  }
+  const { rows } = await pool.query(query)
+  if (rows.length !== 0) {
+    const verified = await verifyPassword(password, rows[0].password_hash)
+    if (verified) {
+      return rows[0]
+    }
+  }
+  return null
+
+}
+
 export const userFromUsername = async (username: string) => {
   const query = {
     text: 'SELECT * FROM app_user WHERE username = $1',

@@ -10,12 +10,14 @@ import '@babylonjs/inspector'
 import '@babylonjs/loaders/glTF'
 
 import RegisterScene from './scenes/register'
+import LoginScene from './scenes/login'
+import CharacterSelect from './scenes/characterSelect'
 
 export enum GAME_STATE {
-  // LOGIN,
+  LOGIN,
   REGISTER,
   // SERVER_SELECT,
-  // CHARACTER_SELECT,
+  CHARACTER_SELECT,
   // CHARACTER_CREATION_RACE,
   // CHARACTER_CREATION_CLASS,
   // PLAYING,
@@ -36,13 +38,23 @@ export class Game {
   }
 
   private async _init() {
-    this._state = GAME_STATE.REGISTER
+    this._state = GAME_STATE.LOGIN
     this._engine = (await EngineFactory.CreateAsync(
       this._canvas,
       undefined,
     )) as Engine
     this._scenes = {
-      [GAME_STATE.REGISTER]: new RegisterScene(this._engine),
+      [GAME_STATE.LOGIN]: new LoginScene(
+        this._engine,
+        () => this._changeScene(GAME_STATE.REGISTER),
+        () => this._changeScene(GAME_STATE.CHARACTER_SELECT),
+      ),
+      [GAME_STATE.REGISTER]: new RegisterScene(this._engine, () =>
+        this._changeScene(GAME_STATE.LOGIN),
+      ),
+      [GAME_STATE.CHARACTER_SELECT]: new CharacterSelect(this._engine, () =>
+        this._changeScene(GAME_STATE.LOGIN),
+      ),
     }
     window.addEventListener('keydown', ev => {
       // Shift+Ctrl+Alt+I
@@ -64,6 +76,30 @@ export class Game {
       this._scene,
     )
     this._camera.attachControl(this._canvas, true)
+    this._engine.runRenderLoop(() => {
+      this._scene.render()
+    })
+  }
+
+  private _sceneSetter(state: GAME_STATE) {
+    this._state = state
+    this._scene = this._scenes[state]
+  }
+
+  private _changeScene(state: GAME_STATE) {
+    this._sceneSetter(state)
+    this._engine.stopRenderLoop()
+
+    this._camera = new ArcRotateCamera(
+      'Camera',
+      Math.PI / 2,
+      Math.PI / 2,
+      2,
+      Vector3.Zero(),
+      this._scene,
+    )
+    this._camera.attachControl(this._canvas, true)
+
     this._engine.runRenderLoop(() => {
       this._scene.render()
     })

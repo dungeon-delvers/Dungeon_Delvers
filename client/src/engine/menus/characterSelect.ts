@@ -1,4 +1,11 @@
-import { FollowCamera, Scene, SceneLoader, Vector3 } from '@babylonjs/core'
+import {
+  Color3,
+  FollowCamera,
+  HemisphericLight,
+  Scene,
+  SceneLoader,
+  Vector3,
+} from '@babylonjs/core'
 import { Button, Cancel } from '../gui/components/Buttons'
 import Menu from '../gui/components/Menu'
 import Title from '../gui/components/Title'
@@ -98,7 +105,7 @@ export default class CharacterSelect extends Menu {
       this._scene,
     )
     characterSelectScene.lights.forEach(light => {
-      light.intensity = 1
+      light.intensity = 20
     })
     const result = await CharacterModels.loadCharacterMeshes(this._scene)
     this._characters = Object.entries(result.characters).reduce(

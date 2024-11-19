@@ -12,18 +12,20 @@ import '@babylonjs/loaders/glTF'
 
 import titleMusic from '../../public/assets/audio/title.mp3'
 
-import RegisterScene from './scenes/register'
-import LoginScene from './scenes/login'
-import CharacterSelect from './scenes/characterSelect'
+import RegisterMenu from './menus/register'
+import LoginMenu from './menus/login'
+import CharacterMenu from './menus/characterSelect'
+import { AdvancedDynamicTexture, Control } from '@babylonjs/gui'
 
 export enum GAME_STATE {
+  MAIN_MENU,
+  CHARACTER_SELECT,
+}
+
+export enum MAIN_MENU_STATE {
   LOGIN,
   REGISTER,
-  // SERVER_SELECT,
   CHARACTER_SELECT,
-  // CHARACTER_CREATION_RACE,
-  // CHARACTER_CREATION_CLASS,
-  // PLAYING,
 }
 
 export class Game {
@@ -31,6 +33,9 @@ export class Game {
   private _camera: ArcRotateCamera
   private _canvas: HTMLCanvasElement
   private _state: GAME_STATE
+  private _menu: AdvancedDynamicTexture
+  private _main_menu_state: MAIN_MENU_STATE
+  private _main_menu_states: Record<MAIN_MENU_STATE, () => Control>
   private _scene: Scene
   private _scenes: Record<GAME_STATE, () => Scene>
 
@@ -41,30 +46,29 @@ export class Game {
   }
 
   private async _init() {
-    this._state = localStorage.getItem('dd_auth') ? GAME_STATE.CHARACTER_SELECT : GAME_STATE.LOGIN
+    this._main_menu_state = localStorage.getItem('dd_auth')
+      ? MAIN_MENU_STATE.CHARACTER_SELECT
+      : MAIN_MENU_STATE.LOGIN
     this._engine = (await EngineFactory.CreateAsync(
       this._canvas,
       undefined,
     )) as Engine
-    this._scenes = {
-      [GAME_STATE.LOGIN]: () => (
-        new LoginScene(
-          this._engine,
-          () => this._changeScene(GAME_STATE.REGISTER),
-          () => this._changeScene(GAME_STATE.CHARACTER_SELECT),
-        )
-      ),
-      [GAME_STATE.REGISTER]: () => (
-        new RegisterScene(this._engine, () =>
-          this._changeScene(GAME_STATE.LOGIN),
-        )
-      ),
-      [GAME_STATE.CHARACTER_SELECT]: () => (
-        new CharacterSelect(this._engine, () =>
-          this._changeScene(GAME_STATE.LOGIN),
-        )
-      ),
+    this._scene = new Scene(this._engine)
+    this._menu = AdvancedDynamicTexture.CreateFullscreenUI('main_menu')
+    this._main_menu_states = {
+      [MAIN_MENU_STATE.LOGIN]: () =>
+        new LoginMenu(
+          () => this._changeMenu(MAIN_MENU_STATE.REGISTER),
+          () => this._changeMenu(MAIN_MENU_STATE.CHARACTER_SELECT),
+        ),
+      [MAIN_MENU_STATE.REGISTER]: () =>
+        new RegisterMenu(() => this._changeMenu(MAIN_MENU_STATE.LOGIN)),
+      [MAIN_MENU_STATE.CHARACTER_SELECT]: () =>
+        new CharacterMenu(this._scene, () =>
+          this._changeMenu(MAIN_MENU_STATE.LOGIN),
+        ),
     }
+    this._menu.addControl(this._main_menu_states[this._main_menu_state]())
     window.addEventListener('keydown', ev => {
       // Shift+Ctrl+Alt+I
       if (ev.shiftKey && ev.ctrlKey && ev.key === 'I') {
@@ -75,7 +79,6 @@ export class Game {
         }
       }
     })
-    this._scene = this._scenes[this._state]()
     this._camera = new ArcRotateCamera(
       'Camera',
       Math.PI / 2,
@@ -87,22 +90,24 @@ export class Game {
     this._camera.attachControl(this._canvas, true)
     new Sound('title_music', titleMusic.split(/[?#]/)[0], null, null, {
       autoplay: true,
-      loop: true
-    });
+      loop: true,
+    })
     this._engine.runRenderLoop(() => {
       this._scene.render()
     })
-
   }
 
-  private _sceneSetter(state: GAME_STATE) {
-    this._scene.dispose()
-    this._state = state
-    this._scene = this._scenes[state]()
+  private _menuSetter(state: MAIN_MENU_STATE) {
+    this._menu.getChildren().forEach(child => {
+      child.dispose()
+    })
+    this._main_menu_state = state
+    console.log(this._main_menu_states[state])
+    this._menu.addControl(this._main_menu_states[state]())
   }
 
-  private _changeScene(state: GAME_STATE) {
-    this._sceneSetter(state)
+  private _changeMenu(state: MAIN_MENU_STATE) {
+    this._menuSetter(state)
     this._engine.stopRenderLoop()
 
     this._camera = new ArcRotateCamera(

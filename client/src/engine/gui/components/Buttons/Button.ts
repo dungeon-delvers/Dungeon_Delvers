@@ -28,7 +28,6 @@ export default class StyledButton extends Button {
     super(name)
     this._options = { ...this._options, ...options }
     const textBlock = new TextBlock(`${name}_text_block`, text)
-    console.log(textBlock)
     this.addControl(textBlock)
     this.background = this._options.background
     this.color = this._options.color

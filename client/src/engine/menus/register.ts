@@ -1,10 +1,3 @@
-import { Engine, Nullable, Scene } from '@babylonjs/core'
-import {
-  AdvancedDynamicTexture,
-  Control,
-  Rectangle,
-  StackPanel,
-} from '@babylonjs/gui'
 import InputText from '../gui/components/InputText'
 import InputPassword from '../gui/components/InputPassword'
 import Label from '../gui/components/Label'
@@ -31,15 +24,24 @@ const ERROR = `${menu_id}_error_label`
 const REGISTER = `${menu_id}_register_button`
 const CANCEL = `${menu_id}_cancel_button`
 
-export default class RegisterScene extends Menu {
+export default class Register extends Menu {
   private _shouldRegister: boolean = false
   private _registerFormElements = {
     [ERROR]: new Label(ERROR, ''),
-    [LABEL_ELEMENTS.EMAIL_LABEL]: new Label(LABEL_ELEMENTS.EMAIL_LABEL, 'Email:'),
+    [LABEL_ELEMENTS.EMAIL_LABEL]: new Label(
+      LABEL_ELEMENTS.EMAIL_LABEL,
+      'Email:',
+    ),
     [INPUT_ELEMENTS.EMAIL]: new InputText(INPUT_ELEMENTS.EMAIL),
-    [LABEL_ELEMENTS.USERNAME_LABEL]: new Label(LABEL_ELEMENTS.USERNAME_LABEL, 'Username:'),
+    [LABEL_ELEMENTS.USERNAME_LABEL]: new Label(
+      LABEL_ELEMENTS.USERNAME_LABEL,
+      'Username:',
+    ),
     [INPUT_ELEMENTS.USERNAME]: new InputText(INPUT_ELEMENTS.USERNAME),
-    [LABEL_ELEMENTS.PASSWORD_LABEL]: new Label(LABEL_ELEMENTS.PASSWORD_LABEL, 'Password:'),
+    [LABEL_ELEMENTS.PASSWORD_LABEL]: new Label(
+      LABEL_ELEMENTS.PASSWORD_LABEL,
+      'Password:',
+    ),
     [INPUT_ELEMENTS.PASSWORD]: new InputPassword(INPUT_ELEMENTS.PASSWORD),
     [LABEL_ELEMENTS.CONFIRMATION_LABEL]: new Label(
       LABEL_ELEMENTS.CONFIRMATION_LABEL,
@@ -51,8 +53,8 @@ export default class RegisterScene extends Menu {
     [REGISTER]: new Accept(REGISTER, 'Register'),
     [CANCEL]: new Cancel(CANCEL, 'Cancel'),
   }
-  constructor(engine: Engine, _goToLogin: () => void) {
-    super(engine, menu_id)
+  constructor(_goToLogin: () => void) {
+    super(menu_id)
     this.formElements = this._registerFormElements
     Object.values(INPUT_ELEMENTS).map(value => {
       const input = this.formElements[value]
@@ -69,16 +71,17 @@ export default class RegisterScene extends Menu {
     })
   }
   private validateInputs() {
-    this._shouldRegister = Object.values(
-      INPUT_ELEMENTS,
-    ).reduce((accumulator, value) => {
-      const input = this._registerFormElements[value]
+    this._shouldRegister = Object.values(INPUT_ELEMENTS).reduce(
+      (accumulator, value) => {
+        const input = this._registerFormElements[value]
 
-      if (input) {
-        accumulator = input.text !== ''
-      }
-      return accumulator
-    }, false)
+        if (input) {
+          accumulator = input.text !== ''
+        }
+        return accumulator
+      },
+      false,
+    )
   }
   private async register() {
     if (!this._shouldRegister) {
@@ -99,7 +102,8 @@ export default class RegisterScene extends Menu {
           email: this._registerFormElements[INPUT_ELEMENTS.EMAIL].text,
           username: this._registerFormElements[INPUT_ELEMENTS.USERNAME].text,
           password: this._registerFormElements[INPUT_ELEMENTS.PASSWORD].text,
-          passwordRepeat: this._registerFormElements[INPUT_ELEMENTS.CONFIRMATION].text,
+          passwordRepeat:
+            this._registerFormElements[INPUT_ELEMENTS.CONFIRMATION].text,
         }),
       },
     )
@@ -110,9 +114,11 @@ export default class RegisterScene extends Menu {
     if (response.status === 409) {
       const data = await response.json()
       if (data.message === 'Email already exists') {
-        this._registerFormElements[INPUT_ELEMENTS.EMAIL].color = colors.red.primary
+        this._registerFormElements[INPUT_ELEMENTS.EMAIL].color =
+          colors.red.primary
       } else if (data.message === 'Username already exists') {
-        this._registerFormElements[INPUT_ELEMENTS.USERNAME].color = colors.red.primary
+        this._registerFormElements[INPUT_ELEMENTS.USERNAME].color =
+          colors.red.primary
       }
     } else if (!response.ok) {
     }

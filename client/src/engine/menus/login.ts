@@ -1,10 +1,10 @@
-import { Engine } from '@babylonjs/core'
 import InputText from '../gui/components/InputText'
 import InputPassword from '../gui/components/InputPassword'
 import Label from '../gui/components/Label'
 import { Accept, Button } from '../gui/components/Buttons'
 import Menu from '../gui/components/Menu'
 import { InputElements } from '../gui/components/types'
+import Title from '../gui/components/Title'
 
 const menu_id = 'login_menu'
 
@@ -17,28 +17,31 @@ enum LABEL_ELEMENTS {
   PASSWORD_LABEL = `${menu_id}_password_label`,
 }
 
+const TITLE = `${menu_id}_title`
 const LOGIN = `${menu_id}_login_button`
 const REGISTER = `${menu_id}_cancel_button`
 
-export default class LoginScene extends Menu {
+export default class Login extends Menu {
   _goToCharacterSelect: () => void
   _shouldLogin: boolean = false
   private _loginFormElements = {
-    [LABEL_ELEMENTS.USERNAME_LABEL]: new Label(LABEL_ELEMENTS.USERNAME_LABEL, 'Username:'),
+    [TITLE]: new Title(TITLE, 'Dungeon Delvers'),
+    [LABEL_ELEMENTS.USERNAME_LABEL]: new Label(
+      LABEL_ELEMENTS.USERNAME_LABEL,
+      'Username:',
+    ),
     [INPUT_ELEMENTS.USERNAME]: new InputText(INPUT_ELEMENTS.USERNAME),
-    [LABEL_ELEMENTS.PASSWORD_LABEL]: new Label(LABEL_ELEMENTS.PASSWORD_LABEL, 'Password:'),
+    [LABEL_ELEMENTS.PASSWORD_LABEL]: new Label(
+      LABEL_ELEMENTS.PASSWORD_LABEL,
+      'Password:',
+    ),
     [INPUT_ELEMENTS.PASSWORD]: new InputPassword(INPUT_ELEMENTS.PASSWORD),
     [LOGIN]: new Accept(LOGIN, 'Login'),
     [REGISTER]: new Button(REGISTER, 'Register'),
   }
-  constructor(
-    engine: Engine,
-    _goToRegister: () => void,
-    goToCharacterSelect: () => void,
-  ) {
-    super(engine, menu_id)
+  constructor(_goToRegister: () => void, goToCharacterSelect: () => void) {
+    super(menu_id)
     this.formElements = this._loginFormElements
-    this.formElements[INPUT_ELEMENTS.USERNAME].focus()
     this._goToCharacterSelect = goToCharacterSelect
     Object.values(INPUT_ELEMENTS).map(value => {
       const input = this.formElements[value]

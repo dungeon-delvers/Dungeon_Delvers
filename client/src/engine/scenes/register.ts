@@ -32,6 +32,7 @@ const REGISTER = `${menu_id}_register_button`
 const CANCEL = `${menu_id}_cancel_button`
 
 export default class RegisterScene extends Menu {
+  private _shouldRegister: boolean = false
   private _registerFormElements = {
     [ERROR]: new Label(ERROR, ''),
     [LABEL_ELEMENTS.EMAIL_LABEL]: new Label(LABEL_ELEMENTS.EMAIL_LABEL, 'Email:'),
@@ -53,7 +54,6 @@ export default class RegisterScene extends Menu {
   constructor(engine: Engine, _goToLogin: () => void) {
     super(engine, menu_id)
     this.formElements = this._registerFormElements
-    this.formElements[REGISTER].isEnabled = false
     Object.values(INPUT_ELEMENTS).map(value => {
       const input = this.formElements[value]
       input &&
@@ -69,7 +69,7 @@ export default class RegisterScene extends Menu {
     })
   }
   private validateInputs() {
-    this.formElements[REGISTER].isEnabled = Object.values(
+    this._shouldRegister = Object.values(
       INPUT_ELEMENTS,
     ).reduce((accumulator, value) => {
       const input = this._registerFormElements[value]
@@ -81,6 +81,12 @@ export default class RegisterScene extends Menu {
     }, false)
   }
   private async register() {
+    if (!this._shouldRegister) {
+      const error = new Error('Please fill out all fields')
+      error.name = 'LOGIN_ERROR'
+      this.renderError(error)
+      return
+    }
     const response = await fetch(
       `${process.env.AUTH_SERVER_URL}${process.env.AUTH_SERVER_PORT ? `:${process.env.AUTH_SERVER_PORT}` : ''}/api/signup`,
       {

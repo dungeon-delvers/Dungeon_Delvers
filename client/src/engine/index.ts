@@ -3,11 +3,14 @@ import {
   Engine,
   EngineFactory,
   Scene,
+  Sound,
   Vector3,
 } from '@babylonjs/core'
 import '@babylonjs/core/Debug/debugLayer'
 import '@babylonjs/inspector'
 import '@babylonjs/loaders/glTF'
+
+import titleMusic from '../../public/assets/audio/title.mp3'
 
 import RegisterScene from './scenes/register'
 import LoginScene from './scenes/login'
@@ -82,9 +85,14 @@ export class Game {
       this._scene,
     )
     this._camera.attachControl(this._canvas, true)
+    new Sound('title_music', titleMusic.split(/[?#]/)[0], null, null, {
+      autoplay: true,
+      loop: true
+    });
     this._engine.runRenderLoop(() => {
       this._scene.render()
     })
+
   }
 
   private _sceneSetter(state: GAME_STATE) {

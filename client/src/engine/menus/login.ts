@@ -40,7 +40,9 @@ export default class Login extends Menu {
     [REGISTER]: new Button(REGISTER, 'Register'),
   }
   constructor(_goToRegister: () => void, goToCharacterSelect: () => void) {
-    super(menu_id)
+    super(menu_id,
+      { width: '25%', height: '450px' }
+    )
     this.formElements = this._loginFormElements
     this._goToCharacterSelect = goToCharacterSelect
     Object.values(INPUT_ELEMENTS).map(value => {

@@ -17,7 +17,6 @@ export default (router: Router) => {
         { ...result, username: req.body.username, password: req.body.password },
         async err => {
           if (err) {
-            console.log(err)
             next(err)
           } else {
             try {

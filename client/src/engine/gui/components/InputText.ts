@@ -1,20 +1,38 @@
 import { InputText } from '@babylonjs/gui'
 import { colors } from './colors'
 
+type InputTextOptions = {
+  color: string
+  background: string
+  focusedBackground: string
+  focusedColor: string
+  fontSize: string
+  height: string
+  width: string
+  paddingBottom: string
+  fontFamily: string
+}
+
 export default class StyledInputText extends InputText {
-  constructor(name: string) {
+  private _options = {
+    color: colors.white.primary,
+    background: colors.gray.background,
+    focusedBackground: colors.black.primary,
+    focusedColor: colors.white.primary,
+    fontSize: '24px',
+    height: '60px',
+    width: '80%',
+    paddingBottom: '20px',
+    fontFamily: 'Goudy Bookletter',
+  }
+  constructor(name: string, options?: Partial<InputTextOptions>) {
     super(name)
-    this.color = colors.white.primary
-    this.background = colors.black.primary
-    this.focusedBackground = colors.black.primary
-    this.focusedColor = colors.white.primary
-    this.fontSize = 24
-    this.height = '60px'
-    this.width = '500px'
-    this.paddingBottom = '20px'
-    this.fontFamily = 'Goudy Bookletter'
+    const styles = Object.entries(this._options) as Entries<InputTextOptions>
+    styles.forEach(([key, value]) => {
+      this[key] = options && options[key] || value
+    })
     this.onFocusObservable.add(() => {
-      this.background = colors.black.primary
+      this.background = colors.gray.background
       this.color = colors.white.primary
     })
   }

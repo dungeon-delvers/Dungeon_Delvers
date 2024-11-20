@@ -49,10 +49,12 @@ export class Game {
     this._main_menu_state = localStorage.getItem('dd_auth')
       ? MAIN_MENU_STATE.CHARACTER_SELECT
       : MAIN_MENU_STATE.LOGIN
+    console.log(this._canvas)
     this._engine = (await EngineFactory.CreateAsync(
       this._canvas,
       undefined,
     )) as Engine
+    console.log(this._engine)
     this._scene = new Scene(this._engine)
     this._menu = AdvancedDynamicTexture.CreateFullscreenUI('main_menu')
     this._main_menu_states = {

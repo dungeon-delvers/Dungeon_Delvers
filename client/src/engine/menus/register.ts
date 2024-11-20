@@ -54,7 +54,10 @@ export default class Register extends Menu {
     [CANCEL]: new Cancel(CANCEL, 'Cancel'),
   }
   constructor(_goToLogin: () => void) {
-    super(menu_id)
+    super(menu_id, {
+      width: '25%',
+      height: '600px',
+    })
     this.formElements = this._registerFormElements
     Object.values(INPUT_ELEMENTS).map(value => {
       const input = this.formElements[value]

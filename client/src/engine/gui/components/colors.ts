@@ -23,6 +23,7 @@ type Colors = {
   gray: BaseColors['gray'] & {
     primary: string
     secondary: string
+    background: string
   }
   green: BaseColors['green'] & Selectors
   red: BaseColors['red'] & Selectors
@@ -89,6 +90,7 @@ export const colors: Colors = {
     ...baseColors.gray,
     primary: baseColors.gray[4],
     secondary: baseColors.gray[6],
+    background: 'rgba(53, 49, 53, 0.85)',
   },
   green: {
     ...baseColors.green,

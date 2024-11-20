@@ -47,18 +47,20 @@ export default class CharacterSelect extends Menu {
   private _camera: FollowCamera
   private _characters: CharactersCreationSettings
   private _characterSelectFormElements = {
-    [TITLE]: new Title(TITLE, 'Select Your Character'),
+    [TITLE]: new Title(TITLE, 'Select Your Character', {
+      fontSize: '25px',
+    }),
     [CHARACTER_ELEMENTS.CHARACTER_1]: new Button(
       `${menu_id}_character_1`,
-      'Character 1',
+      'Ricard',
     ),
     [CHARACTER_ELEMENTS.CHARACTER_2]: new Button(
       `${menu_id}_character_2`,
-      'Character 2',
+      'Grosh',
     ),
     [CHARACTER_ELEMENTS.CHARACTER_3]: new Button(
       `${menu_id}_character_3`,
-      'Character 3',
+      'Grik',
     ),
     [CHARACTER_ELEMENTS.CHARACTER_4]: new Button(
       `${menu_id}_character_4`,
@@ -80,7 +82,10 @@ export default class CharacterSelect extends Menu {
   private _races = new Races()
 
   constructor(scene: Scene, _goToLogin: () => void) {
-    super(menu_id)
+    super(menu_id, {
+      width: '15% ',
+      height: '100%'
+    })
     this._scene = scene
     this.horizontalAlignment = Menu.HORIZONTAL_ALIGNMENT_LEFT
     this.formElements = this._characterSelectFormElements
@@ -91,8 +96,23 @@ export default class CharacterSelect extends Menu {
       localStorage.removeItem('dd_auth')
       _goToLogin()
     })
+    this._characterSelectFormElements[CHARACTER_ELEMENTS.CHARACTER_1].onPointerUpObservable.add(() => {
+      this._setRace('human')
+      this._setGender('m')
+    })
+    this._characterSelectFormElements[CHARACTER_ELEMENTS.CHARACTER_2].onPointerUpObservable.add(() => {
+      this._setRace('orc')
+      this._setGender('m')
+    })
+    this._characterSelectFormElements[CHARACTER_ELEMENTS.CHARACTER_3].onPointerUpObservable.add(() => {
+      this._setRace('goblin')
+      this._setGender('m')
+    })
   }
   private async _renderCharacterCreationScene() {
+    this._scene.cameras.forEach(camera => {
+      camera.dispose()
+    })
     this._camera = new FollowCamera(
       `${menu_id}_camera`,
       new Vector3(0, 5, -5),
@@ -171,7 +191,6 @@ export default class CharacterSelect extends Menu {
 
   private _setRace(race: RaceName) {
     this._selectedRace = race
-    const attibutes = this._races.attributes(race)
     this._setModelVisibility()
   }
 }

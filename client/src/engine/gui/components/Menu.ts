@@ -2,17 +2,22 @@ import { Nullable } from '@babylonjs/core'
 import { Control, Rectangle, StackPanel, TextBlock } from '@babylonjs/gui'
 import { colors } from './colors'
 import { Cancel } from './Buttons'
+import { StringTools } from '@babylonjs/inspector/stringTools'
 
 export default class Menu extends StackPanel {
-  private _menuId: string
   private _error: StackPanel | null = null
-  private _form: StackPanel
   private _formElements: Record<string, Control> = {}
+  private _menuId: StringTools
   _goToCharacterSelect: () => void
-  constructor(menu_id: string) {
+  constructor(menu_id: string, options: {
+    width: string,
+    height: string
+  }) {
     super(menu_id)
     this._menuId = menu_id
-    this.width = '700px'
+    console.log(options)
+    this.width = options.width
+    this.height = options.height
     this.isVertical = true
     this.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER
     this.verticalAlignment = Control.VERTICAL_ALIGNMENT_CENTER
@@ -68,9 +73,8 @@ export default class Menu extends StackPanel {
 
   private createBackground(panel: StackPanel) {
     const background = new Rectangle(`${this._menuId}_background`)
-    background.background = colors.gray[0]
+    background.background = colors.gray.background
     background.width = '100%'
-    background.height = '100%'
     background.color = colors.gold.primary
     panel.addControl(background)
   }

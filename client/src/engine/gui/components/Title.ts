@@ -1,15 +1,31 @@
 import { TextBlock } from '@babylonjs/gui'
 
+type TitleOptions = {
+  color: string
+  fontFamily: string
+  fontSize: string
+  height: string
+  width: string
+  paddingTop: string
+  paddingBottom: string
+}
+
+
 export default class Title extends TextBlock {
-  constructor(id: string, text: string) {
+  private _options: TitleOptions = {
+    color: '#ffffff',
+    fontFamily: 'Goudy Bookletter',
+    fontSize: '40px',
+    height: '110px',
+    width: '80%',
+    paddingTop: '40px',
+    paddingBottom: '20px',
+  }
+  constructor(id: string, text: string, options?: Partial<TitleOptions>) {
     super(id, text)
-    this.color = '#ffffff'
-    this.fontFamily = 'Goudy Bookletter'
-    this.text = text
-    this.fontSize = '40px'
-    this.height = '110px'
-    this.width = '500px'
-    this.paddingTop = '40px'
-    this.paddingBottom = '20px'
+    const styles = Object.entries(this._options) as Entries<TitleOptions>
+    styles.forEach(([key, value]) => {
+      this[key] = options && options[key] || value
+    })
   }
 }

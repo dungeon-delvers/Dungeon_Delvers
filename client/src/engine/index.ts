@@ -9,6 +9,7 @@ import RegisterMenu from './menus/register';
 import LoginMenu from './menus/login';
 import CharacterMenu from './menus/characterSelect';
 import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
+import throttle from '../utils/throttle';
 
 export enum GAME_STATE {
   MAIN_MENU,
@@ -43,6 +44,7 @@ export class Game {
     this._engine = (await EngineFactory.CreateAsync(this._canvas, undefined)) as Engine;
     this._scene = new Scene(this._engine);
     this._menu = AdvancedDynamicTexture.CreateFullscreenUI('main_menu');
+    this._menu.registerClipboardEvents();
     this._main_menu_states = {
       [MAIN_MENU_STATE.LOGIN]: () =>
         new LoginMenu(
@@ -55,6 +57,9 @@ export class Game {
         new CharacterMenu(this._scene, () => this._changeMenu(MAIN_MENU_STATE.LOGIN)),
     };
     this._menu.addControl(this._main_menu_states[this._main_menu_state]());
+    window.addEventListener('resize', () => {
+      this._engine.resize();
+    });
     window.addEventListener('keydown', ev => {
       // Shift+Ctrl+Alt+I
       if (ev.shiftKey && ev.ctrlKey && ev.key === 'I') {
@@ -82,6 +87,10 @@ export class Game {
     });
     this._main_menu_state = state;
     this._menu.addControl(this._main_menu_states[state]());
+    // this._menu._linkedControls.forEach(control => {
+    //   console.log(control);
+    //   control.isVisible = true;
+    // });
   }
 
   private _changeMenu(state: MAIN_MENU_STATE) {

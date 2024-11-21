@@ -1,4 +1,4 @@
-import { Action } from "./action";
+import { Action } from './action';
 
 export type DefaultActions = {
   walk: Action;
@@ -18,7 +18,7 @@ export type DefaultActions = {
   strafeRight: Action;
   strafeRightFast: Action;
   slideBack: Action;
-}
+};
 
 export class Actions {
   public _actions: DefaultActions;
@@ -36,16 +36,16 @@ export class Actions {
         run: new Action('run', 6, 'na'),
         runJump: new Action('runJump', 6, 'na'),
         fall: new Action('fall', 0, 'na'),
-        turnLeft: new Action("turnLeft", Math.PI / 8, "a"),
-        turnLeftFast: new Action("turnLeftFast", Math.PI / 4, "na"),
-        turnRight: new Action("turnRight", Math.PI / 8, "d"),
-        turnRightFast: new Action("turnRightFast", Math.PI / 4, "na"),
-        strafeLeft: new Action("strafeLeft", 1.5, "q"),
-        strafeLeftFast: new Action("strafeLeftFast", 3, "na"),
-        strafeRight: new Action("strafeRight", 1.5, "e"),
-        strafeRightFast: new Action("strafeRightFast", 3, "na"),
-        slideBack: new Action("slideBack", 0, "na"),
-      }
+        turnLeft: new Action('turnLeft', Math.PI / 8, 'a'),
+        turnLeftFast: new Action('turnLeftFast', Math.PI / 4, 'na'),
+        turnRight: new Action('turnRight', Math.PI / 8, 'd'),
+        turnRightFast: new Action('turnRightFast', Math.PI / 4, 'na'),
+        strafeLeft: new Action('strafeLeft', 1.5, 'q'),
+        strafeLeftFast: new Action('strafeLeftFast', 3, 'na'),
+        strafeRight: new Action('strafeRight', 1.5, 'e'),
+        strafeRightFast: new Action('strafeRightFast', 3, 'na'),
+        slideBack: new Action('slideBack', 0, 'na'),
+      };
     }
   }
 

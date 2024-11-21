@@ -1,7 +1,7 @@
-import { perlin2D } from "./perlin";
-import { createNoise2D } from "simplex-noise";
-import alea from "alea";
-import RandomWrapper from "./random";
+import { perlin2D } from './perlin';
+import { createNoise2D } from 'simplex-noise';
+import alea from 'alea';
+import RandomWrapper from './random';
 
 type NoiseParams = {
   noiseType: string;
@@ -51,8 +51,7 @@ class NoiseGenerator {
     let normalization = 0;
     let total = 0;
     for (let o = 0; o < this.params.octaves; o += 1) {
-      const noiseValue =
-        noiseFunc.noise2D(xs * frequency, ys * frequency) * 0.5 + 0.5;
+      const noiseValue = noiseFunc.noise2D(xs * frequency, ys * frequency) * 0.5 + 0.5;
       total += noiseValue * amplitude;
       normalization += amplitude;
       amplitude *= G;

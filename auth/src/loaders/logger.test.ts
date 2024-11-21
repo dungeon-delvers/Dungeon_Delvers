@@ -1,13 +1,13 @@
-import winston from 'winston'
-import config from '../config'
-import LoggerInstance from './logger'
+import winston from 'winston';
+import config from '../config';
+import LoggerInstance from './logger';
 
 jest.mock('winston', () => {
   const mWinston = {
     createLogger: jest.fn(() => {
       return {
         info: jest.fn(),
-      }
+      };
     }),
     format: {
       combine: jest.fn(),
@@ -25,30 +25,27 @@ jest.mock('winston', () => {
         levels: jest.fn(),
       },
     },
-  }
-  return mWinston
-})
+  };
+  return mWinston;
+});
 
 jest.mock('../config', () => ({
   logs: {
     level: 'info',
   },
-}))
+}));
 
 describe('Logger Loader', () => {
   it('should create a logger with correct configuration', () => {
-    const transports = []
+    const transports = [];
     if (process.env.NODE_ENV !== 'development') {
-      transports.push(new winston.transports.Console())
+      transports.push(new winston.transports.Console());
     } else {
       transports.push(
         new winston.transports.Console({
-          format: winston.format.combine(
-            winston.format.cli(),
-            winston.format.splat(),
-          ),
+          format: winston.format.combine(winston.format.cli(), winston.format.splat()),
         }),
-      )
+      );
     }
 
     const expectedConfig = {
@@ -63,12 +60,12 @@ describe('Logger Loader', () => {
         winston.format.json(),
       ),
       transports,
-    }
+    };
     LoggerInstance.info(`
       ################################################
       🛡️  Server listening on port: ${config.port} 🛡️
       ################################################
-    `)
-    expect(winston.createLogger).toHaveBeenCalledWith(expectedConfig)
-  })
-})
+    `);
+    expect(winston.createLogger).toHaveBeenCalledWith(expectedConfig);
+  });
+});

@@ -1,5 +1,5 @@
-declare module 'delaunay-triangulate'
-declare module '*.mp3'
-declare module '*.glb'
-declare module '*.gltf'
-declare module '*.jpg'
+declare module 'delaunay-triangulate';
+declare module '*.mp3';
+declare module '*.glb';
+declare module '*.gltf';
+declare module '*.jpg';

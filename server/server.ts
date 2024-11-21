@@ -1,13 +1,13 @@
-import { createServer } from "node:http";
-import { Server } from "socket.io";
-import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import { type Request, type Response } from "express";
-import bodyParser from "body-parser";
+import { createServer } from 'node:http';
+import { Server } from 'socket.io';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { type Request, type Response } from 'express';
+import bodyParser from 'body-parser';
 import cors from 'cors';
-import dotenv from "dotenv";
-import express from "express";
-import jwt from "jsonwebtoken";
-import passport from "passport";
+import dotenv from 'dotenv';
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import passport from 'passport';
 
 declare global {
   namespace Express {
@@ -18,34 +18,30 @@ declare global {
   }
 }
 
-dotenv.config({ path: `${__dirname}/../.env` })
+dotenv.config({ path: `${__dirname}/../.env` });
 const port = process.env.GAME_SEVER_PORT ? parseInt(process.env.GAME_SEVER_PORT) : 4000;
-const jwtSecret = process.env.JWT_SECRET || 'Mys3cr3t'
+const jwtSecret = process.env.JWT_SECRET || 'Mys3cr3t';
 
 const app = express();
 const httpServer = createServer(app);
-app.use(cors())
+app.use(cors());
 app.use(bodyParser.json());
 
-app.get(
-  "/self",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    if (req.user) {
-      res.send(req.user);
-    } else {
-      res.status(401).end();
-    }
-  },
-);
+app.get('/self', passport.authenticate('jwt', { session: false }), (req, res) => {
+  if (req.user) {
+    res.send(req.user);
+  } else {
+    res.status(401).end();
+  }
+});
 
-app.post("/login", (req, res) => {
-  if (req.body.username === "john" && req.body.password === "changeit") {
-    console.log("authentication OK");
+app.post('/login', (req, res) => {
+  if (req.body.username === 'john' && req.body.password === 'changeit') {
+    console.log('authentication OK');
 
     const user = {
       id: 1,
-      username: "john",
+      username: 'john',
     };
 
     const token = jwt.sign(
@@ -54,15 +50,15 @@ app.post("/login", (req, res) => {
       },
       jwtSecret,
       {
-        issuer: "accounts.examplesoft.com",
-        audience: "yoursite.net",
-        expiresIn: "1h",
+        issuer: 'accounts.examplesoft.com',
+        audience: 'yoursite.net',
+        expiresIn: '1h',
       },
     );
 
     res.json({ token });
   } else {
-    console.log("wrong credentials");
+    console.log('wrong credentials');
     res.status(401).end();
   }
 });
@@ -70,8 +66,8 @@ app.post("/login", (req, res) => {
 const jwtDecodeOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: jwtSecret,
-  issuer: "accounts.examplesoft.com",
-  audience: "yoursite.net",
+  issuer: 'accounts.examplesoft.com',
+  audience: 'yoursite.net',
 };
 
 passport.use(
@@ -82,23 +78,21 @@ passport.use(
 
 const io = new Server(httpServer);
 
-io.engine.use(
-  (req: { _query: Record<string, string> }, res: Response, next: Function) => {
-    const isHandshake = req._query.sid === undefined;
-    if (isHandshake) {
-      passport.authenticate("jwt", { session: false })(req, res, next);
-    } else {
-      next();
-    }
-  },
-);
+io.engine.use((req: { _query: Record<string, string> }, res: Response, next: Function) => {
+  const isHandshake = req._query.sid === undefined;
+  if (isHandshake) {
+    passport.authenticate('jwt', { session: false })(req, res, next);
+  } else {
+    next();
+  }
+});
 
-io.on("connection", (socket) => {
+io.on('connection', socket => {
   const req = socket.request as Request & { user: Express.User };
 
   socket.join(`user:${req.user.id}`);
 
-  socket.on("whoami", (cb) => {
+  socket.on('whoami', cb => {
     cb(req.user.username);
   });
 });

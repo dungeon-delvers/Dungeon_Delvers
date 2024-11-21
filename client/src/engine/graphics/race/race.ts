@@ -6,33 +6,33 @@ import {
   Scene,
   SceneLoader,
   TransformNode,
-} from '@babylonjs/core'
-import Characters from '../../../../public/assets/models/characters.glb'
+} from '@babylonjs/core';
+import Characters from '../../../../public/assets/models/characters.glb';
 
 export type CharacterProps = {
-  mesh: AbstractMesh
-  animations: Record<string, AnimationGroup>
-  node?: TransformNode
-}
+  mesh: AbstractMesh;
+  animations: Record<string, AnimationGroup>;
+  node?: TransformNode;
+};
 
 export type CharacterModelsProps = {
-  f_dwarf: CharacterProps
-  f_goblin: CharacterProps
-  f_human: CharacterProps
-  f_orc: CharacterProps
-  m_dwarf: CharacterProps
-  m_goblin: CharacterProps
-  m_human: CharacterProps
-  m_orc: CharacterProps
-}
+  f_dwarf: CharacterProps;
+  f_goblin: CharacterProps;
+  f_human: CharacterProps;
+  f_orc: CharacterProps;
+  m_dwarf: CharacterProps;
+  m_goblin: CharacterProps;
+  m_human: CharacterProps;
+  m_orc: CharacterProps;
+};
 
 export class CharacterModels {
-  private _characters: CharacterModelsProps
-  private __root__: AbstractMesh
+  private _characters: CharacterModelsProps;
+  private __root__: AbstractMesh;
   constructor(data: ISceneLoaderAsyncResult) {
-    this.__root__ = data.meshes[0]
-    this.__root__.name = 'characters'
-    this.__root__.id = 'characters'
+    this.__root__ = data.meshes[0];
+    this.__root__.name = 'characters';
+    this.__root__.id = 'characters';
     this._characters = {
       f_dwarf: {
         mesh: data.meshes[8],
@@ -99,29 +99,22 @@ export class CharacterModels {
           walk: data.animationGroups[11],
         },
       },
-    }
+    };
   }
-  public static async loadCharacterMeshes(
-    scene: Scene,
-  ): Promise<CharacterModels> {
-    const characters_result = await SceneLoader.ImportMeshAsync(
-      null,
-      '',
-      Characters,
-      scene,
-    )
-    return new CharacterModels(characters_result)
+  public static async loadCharacterMeshes(scene: Scene): Promise<CharacterModels> {
+    const characters_result = await SceneLoader.ImportMeshAsync(null, '', Characters, scene);
+    return new CharacterModels(characters_result);
   }
   get root() {
-    return this.__root__
+    return this.__root__;
   }
   get characters() {
-    return this._characters
+    return this._characters;
   }
   mesh(key: keyof CharacterModelsProps) {
-    return this._characters[key].mesh
+    return this._characters[key].mesh;
   }
   animations(key: keyof CharacterModelsProps) {
-    return this._characters[key].animations
+    return this._characters[key].animations;
   }
 }

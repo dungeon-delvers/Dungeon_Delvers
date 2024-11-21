@@ -1,11 +1,11 @@
-import Joi from 'joi'
+import Joi from 'joi';
 
 type RegisterUserParams = {
-  email: string
-  username: string
-  password: string
-  passwordRepeat: string
-}
+  email: string;
+  username: string;
+  password: string;
+  passwordRepeat: string;
+};
 
 export const validateUser = (params: RegisterUserParams) =>
   Joi.object()
@@ -18,4 +18,4 @@ export const validateUser = (params: RegisterUserParams) =>
         .required()
         .options({ messages: { any: { allowOnly: 'must match password' } } }),
     })
-    .validate(params)
+    .validate(params);

@@ -1,13 +1,13 @@
-import session from 'express-session'
-import passport from 'passport'
-import { pool } from './database/postgres'
-import express from 'express'
+import session from 'express-session';
+import passport from 'passport';
+import { pool } from './database/postgres';
+import express from 'express';
 
 type User = {
-  id: number
-  email: string
-  password: string
-}
+  id: number;
+  email: string;
+  password: string;
+};
 
 export default (app: express.Application) => {
   app.use(
@@ -22,24 +22,24 @@ export default (app: express.Application) => {
         maxAge: 20 * 60 * 1000,
       },
     }),
-  )
+  );
 
   passport.serializeUser((user, done) => {
-    done(null, (user as User).id)
-  })
+    done(null, (user as User).id);
+  });
 
   passport.deserializeUser(async (userId, done) => {
     const query = {
       text: 'SELECT * FROM users WHERE id = $1',
       value: [userId],
-    }
-    const { rows } = await pool.query(query)
+    };
+    const { rows } = await pool.query(query);
     if (rows.length === 0) {
-      return done(new Error('User not found'))
+      return done(new Error('User not found'));
     }
-    const user = rows[0]
-    done(null, user)
-  })
-  app.use(passport.initialize())
-  app.use(passport.session())
-}
+    const user = rows[0];
+    done(null, user);
+  });
+  app.use(passport.initialize());
+  app.use(passport.session());
+};

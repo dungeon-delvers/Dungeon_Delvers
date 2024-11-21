@@ -1,4 +1,4 @@
-import { STATS } from '../stats'
+import { STATS } from '../stats';
 
 export const BASE_STATS = {
   [STATS.ACCURACY]: 20,
@@ -7,6 +7,6 @@ export const BASE_STATS = {
   [STATS.FORTITUDE]: 20,
   [STATS.REFLEX]: 20,
   [STATS.WILLPOWER]: 20,
-}
+};
 
-export const HEALTH_PER_LEVEL = 12
+export const HEALTH_PER_LEVEL = 12;

@@ -1,8 +1,8 @@
-import { Actor } from './actor'
-import { ATTRIBUTES, Attributes } from './attribute'
-import { Action, ActionResult, SUCCEEDED, FAILED, NOT_DONE } from './action'
-import { MonsterType } from '../../content/monsters'
-import { actions } from '../../content/actions'
+import { Actor } from './actor';
+import { ATTRIBUTES, Attributes } from './attribute';
+import { Action, ActionResult, SUCCEEDED, FAILED, NOT_DONE } from './action';
+import { MonsterType } from '../../content/monsters';
+import { actions } from '../../content/actions';
 const actor = new Actor(
   'hero',
   new Attributes({
@@ -22,7 +22,7 @@ const actor = new Actor(
     willpower: 30,
   },
   MonsterType.Humanoid,
-)
+);
 
 const target = new Actor(
   'bat',
@@ -43,7 +43,7 @@ const target = new Actor(
     willpower: 30,
   },
   MonsterType.Beast,
-)
+);
 
 const idle = new Action({
   actor,
@@ -51,16 +51,16 @@ const idle = new Action({
   name: 'idle',
   description: 'Do nothing',
   onPerform: () => SUCCEEDED,
-})
+});
 
 describe('Action', () => {
   it('should create an instance', () => {
-    expect(actions.firebolt).toBeTruthy()
-  })
+    expect(actions.firebolt).toBeTruthy();
+  });
   it('should allow for the action to be performed', () => {
-    expect(actions.firebolt(actor, target).perform()).toEqual(SUCCEEDED)
-  })
-})
+    expect(actions.firebolt(actor, target).perform()).toEqual(SUCCEEDED);
+  });
+});
 
 describe('ActionResult', () => {
   it('should create an instance', () => {
@@ -70,9 +70,9 @@ describe('ActionResult', () => {
         done: true,
         succeeded: true,
       }),
-    ).toBeTruthy()
-  })
-})
+    ).toBeTruthy();
+  });
+});
 
 describe('SUCCEEDED', () => {
   it('should create a new ActionResult that has succeeded and is done', () => {
@@ -81,9 +81,9 @@ describe('SUCCEEDED', () => {
         done: true,
         succeeded: true,
       }),
-    )
-  })
-})
+    );
+  });
+});
 
 describe('FAILED', () => {
   it('should create a new ActionResult that has not succeeded and is done', () => {
@@ -92,9 +92,9 @@ describe('FAILED', () => {
         done: true,
         succeeded: false,
       }),
-    )
-  })
-})
+    );
+  });
+});
 
 describe('NOT_DONE', () => {
   it('should create a new ActionResult that has not succeeded, is not done, and has an alternative action to perform', () => {
@@ -104,6 +104,6 @@ describe('NOT_DONE', () => {
         done: false,
         succeeded: false,
       }),
-    )
-  })
-})
+    );
+  });
+});

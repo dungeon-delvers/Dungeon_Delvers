@@ -1,5 +1,5 @@
-import { Color3, Scene } from '@babylonjs/core'
-import { Room, RoomProps } from './room'
+import { Color3, Scene } from '@babylonjs/core';
+import { Room, RoomProps } from './room';
 
 export class Exit extends Room {
   constructor(args: RoomProps, scene: Scene) {
@@ -11,6 +11,6 @@ export class Exit extends Room {
         roomCountLimit: 1,
       },
       scene,
-    )
+    );
   }
 }

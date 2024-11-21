@@ -11,5 +11,5 @@ export enum MonsterType {
   Abberration,
   Dragon,
   Ooze,
-  Plant
+  Plant,
 }

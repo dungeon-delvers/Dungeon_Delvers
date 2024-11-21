@@ -5,25 +5,32 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "command": "npm run start",
+      "name": "Launch App",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceRoot}"
+    },
+    {
       "command": "npm run start:dev",
       "name": "Launch Auth",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceRoot}/auth",
+      "cwd": "${workspaceRoot}/auth"
     },
     {
       "command": "npm run start:dev",
       "name": "Launch Server",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceRoot}/server",
+      "cwd": "${workspaceRoot}/server"
     },
     {
       "command": "npm run start",
       "name": "Launch Client",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceRoot}/client",
+      "cwd": "${workspaceRoot}/client"
     }
   ]
 }

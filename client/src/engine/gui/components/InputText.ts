@@ -35,5 +35,9 @@ export default class StyledInputText extends InputText {
       this.background = colors.gray.background;
       this.color = colors.white.primary;
     });
+    this.isFocusInvisible = true;
+    this.onFocusObservable.add(() => {
+      console.log('focus');
+    });
   }
 }

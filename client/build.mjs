@@ -8,7 +8,6 @@ const __dirname = path.dirname(__filename) // get the name of the directory
 
 dotenv.config({ path: `${__dirname}/../.env` })
 const { AUTH_SERVER_URL, AUTH_SERVER_PORT } = process.env
-console.log({ AUTH_SERVER_URL, AUTH_SERVER_PORT })
 let bundler = new Parcel({
   entries: './public/index.html',
   defaultConfig: '@parcel/config-default',

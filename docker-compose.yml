@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: DB
+    environment:
+      POSTGRES_DB: dungeon_delvers
+      POSTGRES_USER: dungeon_master
+      POSTGRES_PASSWORD: Dung30nD3lv3r$
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  db_migrations:
+    build: db_migrations
+    depends_on:
+      - db
+    environment:
+      DB_URL: postgres://dungeon_master:Dung30nD3lv3r$@db:5432/dungeon_delvers
+  auth:
+    build: auth
+    depends_on:
+      - db
+      - db_migrations
+    ports:
+      - "8000:8000"
+    environment:
+      DB_USER: dungeon_master
+      DB_PASSWORD: Dung30nD3lv3r$
+      DB_PORT: 5432
+      DB_NAME: dungeon_delvers
+  server:
+    build: server
+    depends_on:
+      - db
+      - db_migrations
+    ports:
+      - "8080:8080"
+    environment:
+      DB_USER: dungeon_master
+      DB_PASSWORD: Dung30nD3lv3r$
+      DB_PORT: 5432
+      DB_NAME: dungeon_delvers
+  client:
+    build: client
+    depends_on:
+      - auth
+      - server
+    ports:
+      - "3000:3000"
+volumes:
+  db_data:

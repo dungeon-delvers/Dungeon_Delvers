@@ -1,6 +1,6 @@
-import { MonsterType } from '../../content/monsters'
-import { ATTACK_RESULT, Actor, DefenseStats } from './actor'
-import { ATTRIBUTES, Attributes } from './attribute'
+import { MonsterType } from '../../content/monsters';
+import { ATTACK_RESULT, Actor, DefenseStats } from './actor';
+import { ATTRIBUTES, Attributes } from './attribute';
 
 const actor = new Actor(
   'test',
@@ -21,11 +21,11 @@ const actor = new Actor(
     willpower: 30, // 30
   },
   MonsterType.Humanoid,
-)
+);
 
 afterEach(() => {
-  jest.restoreAllMocks()
-})
+  jest.restoreAllMocks();
+});
 test('Actor constructor', () => {
   expect(actor.stats).toEqual({
     accuracy: 47,
@@ -40,55 +40,55 @@ test('Actor constructor', () => {
     maxHealth: 118,
     reflex: 54,
     willpower: 30,
-  })
-})
+  });
+});
 test('Actor.attackResolution should return MISS if the hitChance is below 16', () => {
-  jest.spyOn(Math, 'random').mockReturnValue(0.05)
-  const result = actor.attackResolution(actor, 'deflection')
-  expect(result).toEqual(ATTACK_RESULT.MISS)
-})
+  jest.spyOn(Math, 'random').mockReturnValue(0.05);
+  const result = actor.attackResolution(actor, 'deflection');
+  expect(result).toEqual(ATTACK_RESULT.MISS);
+});
 
 test('Actor.attackResolution should return GRAZE if the hitChance is above 16', () => {
-  jest.spyOn(Math, 'random').mockReturnValue(0.15)
-  const result = actor.attackResolution(actor, 'deflection')
-  expect(result).toEqual(ATTACK_RESULT.GRAZE)
-})
+  jest.spyOn(Math, 'random').mockReturnValue(0.15);
+  const result = actor.attackResolution(actor, 'deflection');
+  expect(result).toEqual(ATTACK_RESULT.GRAZE);
+});
 
 test('Actor.attackResolution should return HIT if the hitChance is above 50', () => {
-  jest.spyOn(Math, 'random').mockReturnValue(0.5)
-  const result = actor.attackResolution(actor, 'deflection')
-  expect(result).toEqual(ATTACK_RESULT.HIT)
-})
+  jest.spyOn(Math, 'random').mockReturnValue(0.5);
+  const result = actor.attackResolution(actor, 'deflection');
+  expect(result).toEqual(ATTACK_RESULT.HIT);
+});
 
 test('Actor.attackResolution should return CRITICAL if the hitChance is above 100', () => {
-  jest.spyOn(Math, 'random').mockReturnValue(0.99)
-  const result = actor.attackResolution(actor, 'deflection')
-  expect(result).toEqual(ATTACK_RESULT.CRITICAL)
-})
+  jest.spyOn(Math, 'random').mockReturnValue(0.99);
+  const result = actor.attackResolution(actor, 'deflection');
+  expect(result).toEqual(ATTACK_RESULT.CRITICAL);
+});
 
 test('Actor.calculateDamage should return no damage if the attack is a miss', () => {
-  jest.spyOn(actor, 'attackResolution').mockReturnValue(ATTACK_RESULT.MISS)
-  const result = actor.calculateDamage(actor, 'deflection', 1, 2)
-  expect(result).toEqual('miss')
-})
+  jest.spyOn(actor, 'attackResolution').mockReturnValue(ATTACK_RESULT.MISS);
+  const result = actor.calculateDamage(actor, 'deflection', 1, 2);
+  expect(result).toEqual('miss');
+});
 
 test('Actor.calculateDamage should return half damage if the attack is a graze', () => {
-  jest.spyOn(actor, 'attackResolution').mockReturnValue(ATTACK_RESULT.GRAZE)
-  jest.spyOn(Math, 'random').mockReturnValue(0.5)
-  const result = actor.calculateDamage(actor, 'deflection', 10, 15)
-  expect(result).toEqual(6)
-})
+  jest.spyOn(actor, 'attackResolution').mockReturnValue(ATTACK_RESULT.GRAZE);
+  jest.spyOn(Math, 'random').mockReturnValue(0.5);
+  const result = actor.calculateDamage(actor, 'deflection', 10, 15);
+  expect(result).toEqual(6);
+});
 
 test('Actor.calculateDamage should return full damage if the attack is a hit', () => {
-  jest.spyOn(actor, 'attackResolution').mockReturnValue(ATTACK_RESULT.HIT)
-  jest.spyOn(Math, 'random').mockReturnValue(0.5)
-  const result = actor.calculateDamage(actor, 'deflection', 10, 15)
-  expect(result).toEqual(13)
-})
+  jest.spyOn(actor, 'attackResolution').mockReturnValue(ATTACK_RESULT.HIT);
+  jest.spyOn(Math, 'random').mockReturnValue(0.5);
+  const result = actor.calculateDamage(actor, 'deflection', 10, 15);
+  expect(result).toEqual(13);
+});
 
 test('Actor.calculateDamage should return 1.5x damage if the attack is a critical', () => {
-  jest.spyOn(actor, 'attackResolution').mockReturnValue(ATTACK_RESULT.CRITICAL)
-  jest.spyOn(Math, 'random').mockReturnValue(0.5)
-  const result = actor.calculateDamage(actor, 'deflection', 10, 15)
-  expect(result).toEqual(19)
-})
+  jest.spyOn(actor, 'attackResolution').mockReturnValue(ATTACK_RESULT.CRITICAL);
+  jest.spyOn(Math, 'random').mockReturnValue(0.5);
+  const result = actor.calculateDamage(actor, 'deflection', 10, 15);
+  expect(result).toEqual(19);
+});

@@ -1,5 +1,5 @@
-import { Color3, Scene } from '@babylonjs/core'
-import { Room, RoomProps } from './room'
+import { Color3, Scene } from '@babylonjs/core';
+import { Room, RoomProps } from './room';
 
 export class Monster extends Room {
   constructor(args: RoomProps, scene: Scene) {
@@ -10,6 +10,6 @@ export class Monster extends Room {
         type: 'monster',
       },
       scene,
-    )
+    );
   }
 }

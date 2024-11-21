@@ -1,8 +1,8 @@
-import { Color3, Scene } from '@babylonjs/core'
-import { Room, RoomProps } from './room'
+import { Color3, Scene } from '@babylonjs/core';
+import { Room, RoomProps } from './room';
 
 export class Entry extends Room {
-  public limit: number = 1
+  public limit: number = 1;
   constructor(args: RoomProps, scene: Scene) {
     super(
       {
@@ -12,6 +12,6 @@ export class Entry extends Room {
         roomCountLimit: 1,
       },
       scene,
-    )
+    );
   }
 }

@@ -5,6 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "command": "npm run start",
+      "name": "Launch App",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceRoot}",
+    },
+    {
       "command": "npm run start:dev",
       "name": "Launch Auth",
       "request": "launch",

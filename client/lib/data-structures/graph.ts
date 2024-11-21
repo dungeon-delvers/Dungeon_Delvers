@@ -1,39 +1,37 @@
-import { Queue } from './queue'
+import { Queue } from './queue';
 
 export class Node<T> {
-  data: T
-  adjacent: Node<T>[]
-  comparator: (a: T, b: T) => number
+  data: T;
+  adjacent: Node<T>[];
+  comparator: (a: T, b: T) => number;
 
   constructor(data: T, comparator: (a: T, b: T) => number) {
-    this.data = data
-    this.adjacent = []
-    this.comparator = comparator
+    this.data = data;
+    this.adjacent = [];
+    this.comparator = comparator;
   }
 
   addAdjacent(node: Node<T>): void {
-    this.adjacent.push(node)
+    this.adjacent.push(node);
   }
 
   removeAdjacent(data: T): Node<T> | null {
-    const index = this.adjacent.findIndex(
-      node => this.comparator(node.data, data) === 0,
-    )
+    const index = this.adjacent.findIndex(node => this.comparator(node.data, data) === 0);
 
     if (index > -1) {
-      return this.adjacent.splice(index, 1)[0]
+      return this.adjacent.splice(index, 1)[0];
     }
 
-    return null
+    return null;
   }
 }
 
 class Graph<T> {
-  nodes: Map<T, Node<T>> = new Map()
-  comparator: (a: T, b: T) => number
+  nodes: Map<T, Node<T>> = new Map();
+  comparator: (a: T, b: T) => number;
 
   constructor(comparator: (a: T, b: T) => number) {
-    this.comparator = comparator
+    this.comparator = comparator;
   }
 
   /**
@@ -43,14 +41,14 @@ class Graph<T> {
    * @returns {Node<T>}
    */
   addNode(data: T): Node<T> {
-    let node = this.nodes.get(data)
+    let node = this.nodes.get(data);
 
-    if (node) return node
+    if (node) return node;
 
-    node = new Node(data, this.comparator)
-    this.nodes.set(data, node)
+    node = new Node(data, this.comparator);
+    this.nodes.set(data, node);
 
-    return node
+    return node;
   }
 
   /**
@@ -60,17 +58,17 @@ class Graph<T> {
    * @returns {Node<T> | null}
    */
   removeNode(data: T): Node<T> | null {
-    const nodeToRemove = this.nodes.get(data)
+    const nodeToRemove = this.nodes.get(data);
 
-    if (!nodeToRemove) return null
+    if (!nodeToRemove) return null;
 
     this.nodes.forEach(node => {
-      node.removeAdjacent(nodeToRemove.data)
-    })
+      node.removeAdjacent(nodeToRemove.data);
+    });
 
-    this.nodes.delete(data)
+    this.nodes.delete(data);
 
-    return nodeToRemove
+    return nodeToRemove;
   }
 
   /**
@@ -80,10 +78,10 @@ class Graph<T> {
    * @param {T} destination
    */
   addEdge(source: T, destination: T): void {
-    const sourceNode = this.addNode(source)
-    const destinationNode = this.addNode(destination)
+    const sourceNode = this.addNode(source);
+    const destinationNode = this.addNode(destination);
 
-    sourceNode.addAdjacent(destinationNode)
+    sourceNode.addAdjacent(destinationNode);
   }
 
   /**
@@ -93,11 +91,11 @@ class Graph<T> {
    * @param {T} destination
    */
   removeEdge(source: T, destination: T): void {
-    const sourceNode = this.nodes.get(source)
-    const destinationNode = this.nodes.get(destination)
+    const sourceNode = this.nodes.get(source);
+    const destinationNode = this.nodes.get(destination);
 
     if (sourceNode && destinationNode) {
-      sourceNode.removeAdjacent(destination)
+      sourceNode.removeAdjacent(destination);
     }
   }
 
@@ -109,24 +107,24 @@ class Graph<T> {
    * @returns
    */
   private depthFirstSearchAux(node: Node<T>, visited: Map<T, boolean>): void {
-    if (!node) return
+    if (!node) return;
 
-    visited.set(node.data, true)
+    visited.set(node.data, true);
 
     node.adjacent.forEach(item => {
       if (!visited.has(item.data)) {
-        this.depthFirstSearchAux(item, visited)
+        this.depthFirstSearchAux(item, visited);
       }
-    })
+    });
   }
 
   depthFirstSearch() {
-    const visited: Map<T, boolean> = new Map()
+    const visited: Map<T, boolean> = new Map();
     this.nodes.forEach(node => {
       if (!visited.has(node.data)) {
-        this.depthFirstSearchAux(node, visited)
+        this.depthFirstSearchAux(node, visited);
       }
-    })
+    });
   }
 
   /**
@@ -136,33 +134,33 @@ class Graph<T> {
    * @returns
    */
   private breadthFirstSearchAux(node: Node<T>, visited: Map<T, boolean>): void {
-    const queue: Queue<Node<T>> = new Queue()
+    const queue: Queue<Node<T>> = new Queue();
 
-    if (!node) return
+    if (!node) return;
 
-    queue.enqueue(node)
-    visited.set(node.data, true)
+    queue.enqueue(node);
+    visited.set(node.data, true);
 
     while (!queue.isEmpty()) {
-      const node = queue.dequeue()
+      const node = queue.dequeue();
 
-      if (!node) continue
+      if (!node) continue;
 
       node.adjacent.forEach(item => {
         if (!visited.has(item.data)) {
-          visited.set(item.data, true)
-          queue.enqueue(item)
+          visited.set(item.data, true);
+          queue.enqueue(item);
         }
-      })
+      });
     }
   }
 
   breadthFirstSearch() {
-    const visited: Map<T, boolean> = new Map()
+    const visited: Map<T, boolean> = new Map();
     this.nodes.forEach(node => {
       if (!visited.has(node.data)) {
-        this.breadthFirstSearchAux(node, visited)
+        this.breadthFirstSearchAux(node, visited);
       }
-    })
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { ATTRIBUTES } from '../attributes'
+import { ATTRIBUTES } from '../attributes';
 
 export const BASE_ATTRIBUTES = {
   [ATTRIBUTES.CON]: 10,
@@ -7,4 +7,4 @@ export const BASE_ATTRIBUTES = {
   [ATTRIBUTES.MIG]: 10,
   [ATTRIBUTES.PER]: 10,
   [ATTRIBUTES.RES]: 10,
-}
+};

@@ -19,4 +19,4 @@ export const classes = [
     description:
       'Priests are the healers of the world. They are able to heal wounds and cure diseases. Priests are also able to cast powerful spells that can protect their allies and harm their enemies.',
   },
-] as const
+] as const;

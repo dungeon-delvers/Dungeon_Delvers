@@ -1,5 +1,5 @@
-import { Action, ActionResult } from '../engine/core/action'
-import { Actor } from '../engine/core/actor'
+import { Action, ActionResult } from '../engine/core/action';
+import { Actor } from '../engine/core/actor';
 
 export const actions = {
   autoAttack: (actor: Actor, target: Actor) => {
@@ -10,11 +10,11 @@ export const actions = {
       description: '%me attacks %t!',
       onPerform: () => {
         if (target.isAlive) {
-          return new ActionResult({ done: false, succeeded: false })
+          return new ActionResult({ done: false, succeeded: false });
         }
-        return new ActionResult({ done: true, succeeded: true })
+        return new ActionResult({ done: true, succeeded: true });
       },
-    })
+    });
   },
   firebolt: (actor: Actor, target: Actor) => {
     return new Action({
@@ -26,8 +26,8 @@ export const actions = {
       cooldown: 2,
       range: 3,
       onPerform: () => {
-        return new ActionResult({ succeeded: true, done: true })
+        return new ActionResult({ succeeded: true, done: true });
       },
-    })
+    });
   },
-}
+};

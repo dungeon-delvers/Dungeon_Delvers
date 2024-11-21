@@ -77,4 +77,4 @@ export const races = [
     description:
       'The product of the union between humans and orcs, half-orcs bear a unique duality. Their human ancestry grants them intelligence and adaptability, while their orcish heritage brings strength and resilience. Often misunderstood, they seek to carve their own destinies and bridge the gap between two worlds, proving that true strength comes from unity.',
   },
-] as const
+] as const;

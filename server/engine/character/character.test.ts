@@ -1,24 +1,20 @@
-import { createServer } from 'node:http'
-import { AddressInfo } from 'net'
-import { io as Client, Socket as ClientSocket } from 'socket.io-client'
-import { Server, Socket as ServerSocket } from 'socket.io'
+import { createServer } from 'node:http';
+import { AddressInfo } from 'net';
+import { io as Client, Socket as ClientSocket } from 'socket.io-client';
+import { Server, Socket as ServerSocket } from 'socket.io';
 
-import eventHandlers, {
-  Character,
-  create,
-  CharacterCreationArgs,
-} from './character'
-import { ARCHTYPES } from './class/class'
-import { ATTRIBUTES } from './attributes'
-import { STATS } from './stats'
-import { client } from '../database'
+import eventHandlers, { Character, create, CharacterCreationArgs } from './character';
+import { ARCHTYPES } from './class/class';
+import { ATTRIBUTES } from './attributes';
+import { STATS } from './stats';
+import { client } from '../database';
 
 jest.mock('../database', () => ({
   client: {
     connect: jest.fn(),
     query: jest.fn(),
   },
-}))
+}));
 
 const characterArgs: CharacterCreationArgs = {
   name: 'Test Character',
@@ -31,7 +27,7 @@ const characterArgs: CharacterCreationArgs = {
     [ATTRIBUTES.PER]: 15,
     [ATTRIBUTES.RES]: 10,
   },
-}
+};
 
 const characterResult = {
   name: 'Test Character',
@@ -58,101 +54,65 @@ const characterResult = {
     [ATTRIBUTES.PER]: 15,
     [ATTRIBUTES.RES]: 10,
   },
-}
+};
 describe('Character', () => {
   beforeAll(() => {
-    client.connect()
-  })
+    client.connect();
+  });
   it('should create a character with the correct stats and attributes', async () => {
-    const character = await create(characterArgs)
-    expect(character.attributes[ATTRIBUTES.CON]).toEqual(
-      characterResult.attributes[ATTRIBUTES.CON],
-    )
-    expect(character.attributes[ATTRIBUTES.DEX]).toEqual(
-      characterResult.attributes[ATTRIBUTES.DEX],
-    )
-    expect(character.attributes[ATTRIBUTES.INT]).toEqual(
-      characterResult.attributes[ATTRIBUTES.INT],
-    )
-    expect(character.attributes[ATTRIBUTES.MIG]).toEqual(
-      characterResult.attributes[ATTRIBUTES.MIG],
-    )
-    expect(character.attributes[ATTRIBUTES.PER]).toEqual(
-      characterResult.attributes[ATTRIBUTES.PER],
-    )
-    expect(character.attributes[ATTRIBUTES.RES]).toEqual(
-      characterResult.attributes[ATTRIBUTES.RES],
-    )
-    expect(character.stats[STATS.ACCURACY]).toEqual(
-      characterResult.stats[STATS.ACCURACY],
-    )
-    expect(character.stats[STATS.ACTION_SPEED]).toEqual(
-      characterResult.stats[STATS.ACTION_SPEED],
-    )
-    expect(character.stats[STATS.AREA_OF_EFFECT]).toEqual(
-      characterResult.stats[STATS.AREA_OF_EFFECT],
-    )
-    expect(character.stats[STATS.CONCENTRATION]).toEqual(
-      characterResult.stats[STATS.CONCENTRATION],
-    )
-    expect(character.stats[STATS.DAMAGE]).toEqual(
-      characterResult.stats[STATS.DAMAGE],
-    )
-    expect(character.stats[STATS.DEFLECTION]).toEqual(
-      characterResult.stats[STATS.DEFLECTION],
-    )
-    expect(character.stats[STATS.DURATION]).toEqual(
-      characterResult.stats[STATS.DURATION],
-    )
-    expect(character.stats[STATS.FORTITUDE]).toEqual(
-      characterResult.stats[STATS.FORTITUDE],
-    )
-    expect(character.stats[STATS.HEALING]).toEqual(
-      characterResult.stats[STATS.HEALING],
-    )
-    expect(character.stats[STATS.HEALTH]).toEqual(
-      characterResult.stats[STATS.HEALTH],
-    )
-    expect(character.stats[STATS.REFLEX]).toEqual(
-      characterResult.stats[STATS.REFLEX],
-    )
-    expect(character.stats[STATS.WILLPOWER]).toEqual(
-      characterResult.stats[STATS.WILLPOWER],
-    )
-    expect(character.currentHealth).toEqual(characterResult.currentHealth)
-    expect(client.query).toHaveBeenCalled()
-  })
-})
+    const character = await create(characterArgs);
+    expect(character.attributes[ATTRIBUTES.CON]).toEqual(characterResult.attributes[ATTRIBUTES.CON]);
+    expect(character.attributes[ATTRIBUTES.DEX]).toEqual(characterResult.attributes[ATTRIBUTES.DEX]);
+    expect(character.attributes[ATTRIBUTES.INT]).toEqual(characterResult.attributes[ATTRIBUTES.INT]);
+    expect(character.attributes[ATTRIBUTES.MIG]).toEqual(characterResult.attributes[ATTRIBUTES.MIG]);
+    expect(character.attributes[ATTRIBUTES.PER]).toEqual(characterResult.attributes[ATTRIBUTES.PER]);
+    expect(character.attributes[ATTRIBUTES.RES]).toEqual(characterResult.attributes[ATTRIBUTES.RES]);
+    expect(character.stats[STATS.ACCURACY]).toEqual(characterResult.stats[STATS.ACCURACY]);
+    expect(character.stats[STATS.ACTION_SPEED]).toEqual(characterResult.stats[STATS.ACTION_SPEED]);
+    expect(character.stats[STATS.AREA_OF_EFFECT]).toEqual(characterResult.stats[STATS.AREA_OF_EFFECT]);
+    expect(character.stats[STATS.CONCENTRATION]).toEqual(characterResult.stats[STATS.CONCENTRATION]);
+    expect(character.stats[STATS.DAMAGE]).toEqual(characterResult.stats[STATS.DAMAGE]);
+    expect(character.stats[STATS.DEFLECTION]).toEqual(characterResult.stats[STATS.DEFLECTION]);
+    expect(character.stats[STATS.DURATION]).toEqual(characterResult.stats[STATS.DURATION]);
+    expect(character.stats[STATS.FORTITUDE]).toEqual(characterResult.stats[STATS.FORTITUDE]);
+    expect(character.stats[STATS.HEALING]).toEqual(characterResult.stats[STATS.HEALING]);
+    expect(character.stats[STATS.HEALTH]).toEqual(characterResult.stats[STATS.HEALTH]);
+    expect(character.stats[STATS.REFLEX]).toEqual(characterResult.stats[STATS.REFLEX]);
+    expect(character.stats[STATS.WILLPOWER]).toEqual(characterResult.stats[STATS.WILLPOWER]);
+    expect(character.currentHealth).toEqual(characterResult.currentHealth);
+    expect(client.query).toHaveBeenCalled();
+  });
+});
 
 describe('Character eventHandler', () => {
-  let io: Server
-  let serverSocket: ServerSocket
-  let clientSocket: ClientSocket
+  let io: Server;
+  let serverSocket: ServerSocket;
+  let clientSocket: ClientSocket;
 
   beforeAll(done => {
-    const httpServer = createServer()
-    io = new Server(httpServer)
+    const httpServer = createServer();
+    io = new Server(httpServer);
     httpServer.listen(() => {
-      const { port } = httpServer.address() as AddressInfo
-      clientSocket = Client(`http://localhost:${port}`)
+      const { port } = httpServer.address() as AddressInfo;
+      clientSocket = Client(`http://localhost:${port}`);
       io.on('connection', socket => {
-        serverSocket = socket
-        eventHandlers(io, socket)
-      })
-      clientSocket.on('connect', done)
-    })
-  })
+        serverSocket = socket;
+        eventHandlers(io, socket);
+      });
+      clientSocket.on('connect', done);
+    });
+  });
 
   afterAll(() => {
-    io.close()
-    clientSocket.disconnect()
-  })
+    io.close();
+    clientSocket.disconnect();
+  });
 
   test('create should be called', done => {
     clientSocket.emit('character:create', characterArgs, (args: Character) => {
-      expect(args).toEqual(characterResult)
-      expect(client.query).toHaveBeenCalled()
-      done()
-    })
-  })
-})
+      expect(args).toEqual(characterResult);
+      expect(client.query).toHaveBeenCalled();
+      done();
+    });
+  });
+});

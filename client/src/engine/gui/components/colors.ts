@@ -1,35 +1,35 @@
 type BaseColors = {
-  gray: Record<number, string>
-  green: Record<number, string>
-  red: Record<number, string>
-  blue: Record<number, string>
-  gold: Record<number, string>
-}
+  gray: Record<number, string>;
+  green: Record<number, string>;
+  red: Record<number, string>;
+  blue: Record<number, string>;
+  gold: Record<number, string>;
+};
 
 type Selectors = {
-  primary: string
-  secondary: string
-  disabled: string
-}
+  primary: string;
+  secondary: string;
+  disabled: string;
+};
 type Colors = {
   black: {
-    primary: string
-    secondary: string
-  }
+    primary: string;
+    secondary: string;
+  };
   white: {
-    primary: string
-    secondary: string
-  }
+    primary: string;
+    secondary: string;
+  };
   gray: BaseColors['gray'] & {
-    primary: string
-    secondary: string
-    background: string
-  }
-  green: BaseColors['green'] & Selectors
-  red: BaseColors['red'] & Selectors
-  blue: BaseColors['blue'] & Selectors
-  gold: BaseColors['gold'] & Selectors
-}
+    primary: string;
+    secondary: string;
+    background: string;
+  };
+  green: BaseColors['green'] & Selectors;
+  red: BaseColors['red'] & Selectors;
+  blue: BaseColors['blue'] & Selectors;
+  gold: BaseColors['gold'] & Selectors;
+};
 export const baseColors = {
   gray: {
     0: '#353135',
@@ -75,7 +75,7 @@ export const baseColors = {
     4: '#B4935A',
     5: '#B4935A',
   },
-}
+};
 
 export const colors: Colors = {
   black: {
@@ -116,4 +116,4 @@ export const colors: Colors = {
     secondary: baseColors.gold[2],
     disabled: '#8E8981',
   },
-}
+};

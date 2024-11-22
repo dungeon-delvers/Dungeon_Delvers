@@ -1,13 +1,13 @@
-import { Parcel } from '@parcel/core'
-import path from 'path'
-import { fileURLToPath } from 'url'
-import dotenv from 'dotenv'
+import { Parcel } from '@parcel/core';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url) // get the resolved path to the file
-const __dirname = path.dirname(__filename) // get the name of the directory
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
 
-dotenv.config({ path: `${__dirname}/../.env` })
-const { AUTH_SERVER_URL, AUTH_SERVER_PORT } = process.env
+console.log(process.env);
+
+const { AUTH_URL, AUTH_PORT } = process.env;
 let bundler = new Parcel({
   entries: './public/index.html',
   defaultConfig: '@parcel/config-default',
@@ -23,18 +23,17 @@ let bundler = new Parcel({
     port: 3000,
   },
   env: {
-    AUTH_SERVER_URL,
-    AUTH_SERVER_PORT,
-    NODE_ENV: 'production',
+    AUTH_URL,
+    AUTH_PORT,
   },
-})
+});
 
 try {
-  let { bundleGraph, buildTime } = await bundler.run()
-  let bundles = bundleGraph.getBundles()
-  console.log(`✨ Built ${bundles.length} bundles in ${buildTime}ms!`)
+  let { bundleGraph, buildTime } = await bundler.run();
+  let bundles = bundleGraph.getBundles();
+  console.log(`✨ Built ${bundles.length} bundles in ${buildTime}ms!`);
 } catch (err) {
-  console.log(err.diagnostics)
+  console.log(err.diagnostics);
 }
 
-process.argv.includes('--watch') && (await bundler.watch())
+process.argv.includes('--watch') && (await bundler.watch());

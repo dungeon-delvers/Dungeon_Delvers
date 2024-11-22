@@ -4,13 +4,11 @@ WORKDIR /app
 
 COPY package*.json ./
 
-COPY tsconfig.json ./
-
-COPY ./.env ./ 
-
-COPY src ./src
-
 RUN npm install
+
+COPY . .
+
+RUN npm run build
 
 EXPOSE 4000
 

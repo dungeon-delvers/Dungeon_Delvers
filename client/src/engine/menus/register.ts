@@ -83,7 +83,7 @@ export default class Register extends Menu {
       return;
     }
     const response = await fetch(
-      `${process.env.AUTH_SERVER_URL}${process.env.AUTH_SERVER_PORT ? `:${process.env.AUTH_SERVER_PORT}` : ''}/api/signup`,
+      `${process.env.AUTH_URL}${process.env.AUTH_PORT ? `:${process.env.AUTH_PORT}` : ''}/api/signup`,
       {
         method: 'POST',
         mode: 'cors',

@@ -9,7 +9,7 @@ import RegisterMenu from './menus/register';
 import LoginMenu from './menus/login';
 import CharacterMenu from './menus/characterSelect';
 import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
-import throttle from '../utils/throttle';
+console.log(process.env);
 
 export enum GAME_STATE {
   MAIN_MENU,

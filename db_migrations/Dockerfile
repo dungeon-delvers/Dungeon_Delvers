@@ -1,5 +1,5 @@
 # Use the official Node.js image with LTS Alpine version
-FROM node:18-alpine
+FROM node:22-alpine
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 4001
 
 # Command to run the application
-CMD ["npm", "start"]
+CMD ["npm", "run", "migrate:up"]

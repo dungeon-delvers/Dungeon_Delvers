@@ -1,10 +1,19 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import { createUser, generatePasswordHash, loginUser, userFromEmail, userFromUsername } from '../../models/user';
 import { validateUser } from '../../models/validation';
 
+interface RequestCustom extends Request {
+  body: {
+    username: string;
+    password: string;
+    email: string;
+    repeatPassword: string;
+  };
+}
+
 export default (router: Router) => {
-  router.post('/login', async (req, res, next) => {
+  router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     const result = await loginUser(req.body.username, req.body.password);
     if (result) {
       req.login({ ...result, username: req.body.username, password: req.body.password }, async err => {
@@ -27,20 +36,20 @@ export default (router: Router) => {
       res.status(400).json({ message: 'Incorrect username or password.' });
     }
   });
-  router.post('/signup', async (req, res) => {
+  router.post('/signup', async (req: Request, res: Response) => {
     const { error } = validateUser(req.body);
 
     if (error) {
-      return res.status(400).json({ message: error.message });
+      res.status(400).json({ message: error.message });
     } else {
       const { email, username, password } = req.body;
       const emailExists = await userFromEmail(email);
       if (emailExists) {
-        return res.status(409).json({ message: 'Email already exists' });
+        res.status(409).json({ message: 'Email already exists' });
       }
       const usernameExists = await userFromUsername(username);
       if (usernameExists) {
-        return res.status(409).json({ message: 'Username already exists' });
+        res.status(409).json({ message: 'Username already exists' });
       }
       const passwordHash = await generatePasswordHash(password);
       const result = await createUser(email, passwordHash, username);

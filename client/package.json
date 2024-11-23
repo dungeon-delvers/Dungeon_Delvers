@@ -12,7 +12,8 @@
     "build": "node ./build.mjs",
     "clean": "rm -rf .parcel-cache dist",
     "deploy-demo": "git push origin :gh-pages && git subtree push --prefix dist origin gh-pages",
-    "start": "node ./build.mjs --watch",
+    "start:dev": "node ./build.mjs --watch",
+    "start": "serve dist",
     "test": "jest"
   },
   "keywords": [
@@ -35,6 +36,7 @@
     "delaunay-triangulate": "^1.1.6",
     "dotenv": "^16.4.5",
     "earcut": "^2.2.4",
+    "serve": "^14.2.4",
     "simplex-noise": "^4.0.1",
     "socket.io-client": "^4.7.5"
   },

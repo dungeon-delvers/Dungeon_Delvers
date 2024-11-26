@@ -66,20 +66,18 @@ export default class Login extends Menu {
       this.renderError(error);
       return;
     }
-    const response = await fetch(
-      `${process.env.AUTH_URL}${process.env.AUTH_PORT ? `:${process.env.AUTH_PORT}` : ''}/api/login`,
-      {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: this._loginFormElements[INPUT_ELEMENTS.USERNAME].text,
-          password: this._loginFormElements[INPUT_ELEMENTS.PASSWORD].text,
-        }),
+    const { AUTH_URL, AUTH_PORT } = process.env;
+    const response = await fetch(`${AUTH_URL}${AUTH_PORT ? `:${AUTH_PORT}` : ''}/api/login`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify({
+        username: this._loginFormElements[INPUT_ELEMENTS.USERNAME].text,
+        password: this._loginFormElements[INPUT_ELEMENTS.PASSWORD].text,
+      }),
+    });
 
     if (response.ok) {
       localStorage.setItem('dd_auth', await response.json());

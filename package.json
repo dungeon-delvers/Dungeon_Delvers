@@ -7,14 +7,14 @@
     "db_migrations"
   ],
   "version": "0.0.1",
-  "description": "Online 3D Dungeon Crawler made with BabylonJS",
+  "description": "Online 3D Fantasy RPG MMO made with BabylonJS",
   "main": "index.js",
   "scripts": {
     "build:client": "npm run build --workspace=client",
-    "clean": "npm run clean --workspace=client",
+    "clean": "concurrently \"npm run clean --ws\" \"rm -rf ./node_modules package-lock.json .parcel-cache\"",
     "deploy-demo": "npm run deploy-demo --workspace=client",
-    "start": "concurrently \"npm run start --workspace=client\" \"npm run start:dev --workspace=auth\"",
-    "test": "npm run test --workspace=client"
+    "start": "concurrently \"npm run start:dev --workspace=client\" \"npm run start:dev --workspace=auth\"",
+    "test": "concurrently \"npm run test --workspace=client\" \"npm run test --workspace=auth\""
   },
   "keywords": [
     "BabylonJS",
@@ -45,5 +45,8 @@
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
   }
 }

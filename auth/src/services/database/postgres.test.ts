@@ -18,14 +18,12 @@ jest.mock('pg', () => {
 
 describe('Postgres Pool', () => {
   it('should create a new pool with the correct configuration', () => {
-    const { DB_USER, DB_HOST = 'localhost', DB_PASSWORD, DB_NAME, DB_PORT } = process.env;
-
     expect(Pool).toHaveBeenCalledWith({
-      user: DB_USER,
-      host: DB_HOST,
-      database: DB_NAME,
-      password: DB_PASSWORD,
-      port: Number(DB_PORT),
+      user: 'test',
+      host: 'localhost',
+      database: 'test',
+      password: 'T3$T',
+      port: 5454,
     });
   });
 

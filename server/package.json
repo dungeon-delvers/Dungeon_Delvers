@@ -1,9 +1,11 @@
 {
   "name": "@dungeon_delvers/server",
+  "repository": "https://github.com/HarlemLineHustle/Dungeon_Delvers",
   "version": "0.0.1",
   "description": "The Node backend server for Dungeon Delvers",
   "main": "server.js",
   "scripts": {
+    "clean": "rm -rf node_modules",
     "start": "nodemon server.ts",
     "test": "jest --config ./jest.config.js"
   },
@@ -33,7 +35,6 @@
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
-    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.21",
     "@types/minimist": "^1.2.5",
     "jest": "^29.7.0",

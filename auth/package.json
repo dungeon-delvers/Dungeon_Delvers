@@ -1,5 +1,6 @@
 {
-  "name": "auth",
+  "name": "@dungeon_delvers/auth",
+  "repository": "https://github.com/HarlemLineHustle/Dungeon_Delvers",
   "version": "0.0.1",
   "description": "This is the authentication server for the Dungeon Delver's project",
   "main": "index.ts",
@@ -9,6 +10,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "clean": "rm -rf node_modules",
     "test": "NODE_ENV=test && jest",
     "test:coverage": "NODE_ENV=tescleart && jest --coverage",
     "start:dev": "nodemon ./src/app.ts",

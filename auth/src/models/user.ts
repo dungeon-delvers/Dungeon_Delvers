@@ -17,6 +17,7 @@ export const loginUser = async (username: string, password: string) => {
   };
   const { rows } = await pool.query(query);
   if (rows.length !== 0) {
+    console.log(password, rows[0].password_hash);
     const verified = await verifyPassword(password, rows[0].password_hash);
     if (verified) {
       return rows[0];

@@ -12,5 +12,6 @@ export const validateUser = (params: RegisterUserParams) =>
       email: Joi.string().email().max(50).required(),
       username: Joi.string().alphanum().min(3).max(20).required(),
       password: Joi.string().min(8).required(),
+      passwordRepeat: Joi.string().min(8).required(),
     })
     .validate(params);

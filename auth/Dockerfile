@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 
@@ -14,4 +14,4 @@ EXPOSE 4000
 
 USER node
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start:dev"]

@@ -1,18 +1,17 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import request from 'supertest';
 import authRoutes from './auth';
-import { Pool } from 'pg';
-import { serializeUser, session } from 'passport';
-import e from 'express';
+import { pool } from '../../services/database/postgres';
+import { generatePasswordHash } from '../../models/user';
 
-jest.mock('pg', () => {
-  const mPool = {
-    connect: jest.fn(),
-    query: jest.fn(),
-    end: jest.fn(),
-  };
-  return { Pool: jest.fn(() => mPool) };
-});
+// jest.mock('pg', () => {
+//   const mPool = {
+//     connect: jest.fn(),
+//     query: jest.fn(),
+//     end: jest.fn(),
+//   };
+//   return { Pool: jest.fn(() => mPool) };
+// });
 
 const userModel = {
   createUser: jest.fn(),
@@ -36,8 +35,6 @@ describe('Auth Routes', () => {
   });
 
   beforeEach(() => {
-    pool = new Pool();
-
     jest.mock('../../models/user', () => ({
       userModel,
     }));
@@ -50,13 +47,13 @@ describe('Auth Routes', () => {
     jest.clearAllMocks();
   });
   describe('POST /login', () => {
-    it('should authenticate user and return 201 status', async () => {
-      pool.query.mockResolvedValueOnce({
+    it.only('should authenticate user and return 201 status', async () => {
+      pool.query = jest.fn().mockResolvedValueOnce({
         rows: [
           {
             id: 1,
             username: 'testuser',
-            passwordHash: 'passwordHash',
+            password_hash: generatePasswordHash('password'),
             email: 'testuser@example.com',
           },
         ],

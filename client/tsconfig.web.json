@@ -1,4 +1,0 @@
-{
-  "extends": "../tsconfig.json",
-  "lib": ["ES2017", "dom"]
-}

@@ -1,5 +1,6 @@
 {
   "name": "dungeon_delvers",
+  "repository": "https://github.com/dungeon_delvers/Dungeon_Delvers",
   "workspaces": [
     "client",
     "server",

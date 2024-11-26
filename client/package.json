@@ -1,7 +1,7 @@
 {
-  "name": "@dungeon_delvers/client",
+  "name": "@dungeon-delvers/client",
   "version": "0.0.1",
-  "repository": "https://github.com/HarlemLineHustle/Dungeon_Delvers",
+  "repository": "https://github.com/dungeon_delvers/Dungeon_Delvers",
   "description": "The Front End 3D Client for Dungeon Delvers powered by BabylonJS",
   "homepage": "./",
   "assetsPath": "public/assets",
@@ -33,6 +33,7 @@
     "@babylonjs/inspector": "^7.34.2",
     "@babylonjs/loaders": "^7.34.2",
     "@babylonjs/materials": "^7.34.2",
+    "@dungeon-delvers/config": "^0.0.1",
     "@parcel/config-default": "^2.9.2",
     "alea": "^1.0.1",
     "delaunay-triangulate": "^1.1.6",
@@ -57,5 +58,8 @@
     "stream-browserify": "^3.0.0",
     "ts-jest": "^29.2.4",
     "vm-browserify": "^1.1.2"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

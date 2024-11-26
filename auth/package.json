@@ -1,6 +1,6 @@
 {
-  "name": "@dungeon_delvers/auth",
-  "repository": "https://github.com/HarlemLineHustle/Dungeon_Delvers",
+  "name": "@dungeon-delvers/auth",
+  "repository": "https://github.com/dungeon_delvers/Dungeon_Delvers",
   "version": "0.0.1",
   "description": "This is the authentication server for the Dungeon Delver's project",
   "main": "index.ts",
@@ -26,6 +26,7 @@
   "author": "Shawn Mealey",
   "license": "ISC",
   "dependencies": {
+    "@dungeon-delvers/config": "^0.0.1",
     "bcrypt": "5.1.1",
     "cors": "2.8.5",
     "express": "4.19.2",

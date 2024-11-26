@@ -1,0 +1,5 @@
+{
+  "extends": "@dungeon-delvers/config/tsconfig.json",
+  "include": ["migrations/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

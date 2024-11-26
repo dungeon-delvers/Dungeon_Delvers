@@ -1,0 +1,6 @@
+{
+  "extends": "@dungeon-delvers/config/tsconfig.json",
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"],
+  "lib": ["ES2017", "dom"]
+}

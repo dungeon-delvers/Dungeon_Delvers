@@ -1,6 +1,6 @@
 {
-  "name": "db_migrations",
-  "repository": "https://github.com/HarlemLineHustle/Dungeon_Delvers",
+  "name": "@dungeon-delvers/db_migrations",
+  "repository": "https://github.com/dungeon_delvers/Dungeon_Delvers",
   "version": "0.0.1",
   "description": "Simple workspace to perform database migrations",
   "main": "index.ts",
@@ -17,6 +17,7 @@
   "author": "Shawn Mealey",
   "license": "ISC",
   "dependencies": {
+    "@dungeon-delvers/config": "^0.0.1",
     "dotenv": "^16.4.5",
     "eslint": "^9.10.0",
     "node-pg-migrate": "^7.6.1",

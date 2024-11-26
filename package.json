@@ -7,7 +7,7 @@
     "auth",
     "db_migrations"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Online 3D Fantasy RPG MMO made with BabylonJS",
   "main": "index.js",
   "scripts": {

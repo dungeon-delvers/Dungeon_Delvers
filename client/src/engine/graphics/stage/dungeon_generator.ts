@@ -1,5 +1,4 @@
 import {
-  CSG,
   Color3,
   InspectableType,
   Mesh,
@@ -12,10 +11,6 @@ import {
 import { Container } from './container';
 import { Room } from '../../content/stage/room';
 import { random } from '../core/random';
-import { BinarySpacePartition } from '../core/binarySpacePartition';
-import triangulate from 'delaunay-triangulate';
-import { Prim } from './prim';
-import { TreeNode } from './tree_node';
 
 type DungeonArgs = {
   gutter?: number;

@@ -1,9 +1,7 @@
-import { Nullable } from '@babylonjs/core';
 import { Button, Control, InputPassword, InputText, Rectangle, StackPanel, TextBlock } from '@babylonjs/gui';
 import { colors } from './colors';
 import { Cancel } from './Buttons';
 import { StringTools } from '@babylonjs/inspector/stringTools';
-import StyledButton from './Buttons/Button';
 
 export default class Menu extends StackPanel {
   private _error: StackPanel | null = null;

@@ -1,14 +1,4 @@
-import {
-  Mesh,
-  Scene,
-  Vector3,
-  VertexBuffer,
-  StandardMaterial,
-  VertexData,
-  GroundMesh,
-  MeshBuilder,
-  CreateGround,
-} from '@babylonjs/core';
+import { Scene, Vector3, VertexBuffer, StandardMaterial, VertexData, GroundMesh, MeshBuilder } from '@babylonjs/core';
 import HeightGenerator from './heightGenerator';
 
 interface TerrainChunkInterface {
@@ -55,7 +45,7 @@ class TerrainChunk {
       const numberOfVertices = pos.length / 3;
       for (let verticesIndex = 0; verticesIndex < numberOfVertices; verticesIndex += 1) {
         let normalization = 0;
-        const heightPairs = [];
+        const heightPairs: number[][] = [];
         // Verticies
         const x = pos[verticesIndex * 3];
         const y = pos[verticesIndex * 3 + 2];

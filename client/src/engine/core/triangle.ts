@@ -17,7 +17,7 @@ export class Triangle extends TransformNode {
     super(`triangle_${args.id}`, scene);
     this.scene = scene;
     args.vectors.forEach((currentVector, index) => {
-      let lineVectors = [];
+      const lineVectors = [];
       if (index < args.vectors.length - 1) {
         lineVectors.push(currentVector, args.vectors[index + 1]);
       } else {

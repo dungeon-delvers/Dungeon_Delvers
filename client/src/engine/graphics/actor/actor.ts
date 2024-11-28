@@ -1,24 +1,18 @@
 import {
-  Animation,
   AbstractMesh,
   ArcRotateCamera,
   Color3,
-  Color4,
-  FollowCamera,
-  GroundMesh,
   Mesh,
   MeshBuilder,
   Ray,
   RayHelper,
   Scene,
-  SceneLoader,
   StandardMaterial,
   TransformNode,
   Vector3,
 } from '@babylonjs/core';
 import { InputManager } from '../../core/inputManager';
 import { AdvancedDynamicTexture, TextBlock } from '@babylonjs/gui';
-import { clamp } from '../../../../lib/math';
 
 export class Actor extends TransformNode {
   private _mesh: AbstractMesh;
@@ -80,7 +74,7 @@ export class Actor extends TransformNode {
     this._mesh.rotate(Vector3.Up(), Math.PI);
     this._mesh.material = new StandardMaterial('playerMaterial', this._scene);
     this._mesh.material.diffuseColor = this._npc ? new Color3(0, 0, 1) : new Color3(1, 0, 0);
-    var plane = MeshBuilder.CreatePlane('name_tag', { size: 2 });
+    const plane = MeshBuilder.CreatePlane('name_tag', { size: 2 });
     plane.parent = this._mesh;
     plane.position.y = 1;
     plane.billboardMode = Mesh.BILLBOARDMODE_ALL;
@@ -140,7 +134,7 @@ export class Actor extends TransformNode {
   private _doJump(deltaTime: number) {
     this._grounded = false;
     this._jumpTime = this._jumpTime + deltaTime / 10;
-    let jumpDist = this._calcJumpDist(this._forwardSpeed, deltaTime);
+    const jumpDist = this._calcJumpDist(this._forwardSpeed, deltaTime);
     this._mesh.moveWithCollisions(new Vector3(0, jumpDist, 0));
     setTimeout(() => {
       this._endJump();
@@ -149,9 +143,9 @@ export class Actor extends TransformNode {
 
   private _calcJumpDist(speed: number, dt: number): number {
     //up velocity at the begining of the last frame (v=u+at)
-    let js: number = speed + this._gravity.y * this._jumpTime;
+    const js: number = speed + this._gravity.y * this._jumpTime;
     //distance travelled up since last frame to this frame (s=ut+1/2*at^2)
-    let jumpDist: number = (js * (dt / 10) - this._gravity.y * (dt / 10)) ^ 2;
+    const jumpDist: number = (js * (dt / 10) - this._gravity.y * (dt / 10)) ^ 2;
     return jumpDist;
   }
 

@@ -2,7 +2,6 @@ import {
   AbstractMesh,
   AnimationGroup,
   ISceneLoaderAsyncResult,
-  Mesh,
   Scene,
   SceneLoader,
   TransformNode,

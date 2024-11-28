@@ -5,7 +5,6 @@ import { Accept, Button } from '../gui/components/Buttons';
 import Menu from '../gui/components/Menu';
 import { InputElements } from '../gui/components/types';
 import Title from '../gui/components/Title';
-import { AdvancedDynamicTexture } from '@babylonjs/gui';
 
 const menu_id = 'login_menu';
 
@@ -34,20 +33,18 @@ export default class Login extends Menu {
     [LOGIN]: new Accept(LOGIN, 'Login'),
     [REGISTER]: new Button(REGISTER, 'Register'),
   };
-  constructor(texture: AdvancedDynamicTexture, _goToRegister: () => void, goToCharacterSelect: () => void) {
+  constructor(_goToRegister: () => void, goToCharacterSelect: () => void) {
     super(menu_id, { width: '25%', height: '450px' });
     this.formElements = this._loginFormElements;
     this._goToCharacterSelect = goToCharacterSelect;
     Object.values(INPUT_ELEMENTS).map(value => {
       const input = this.formElements[value];
-      input &&
-        input.onBlurObservable.add(() => {
-          this.validateInputs();
-        });
+      input.onBlurObservable.add(() => {
+        this.validateInputs();
+      });
     });
     (this.formElements[LOGIN] as Button).onClick = () => this.login();
     (this.formElements[REGISTER] as Button).onClick = () => _goToRegister();
-    // texture.focusedControl = this._loginFormElements[INPUT_ELEMENTS.USERNAME]
   }
   private validateInputs() {
     this._shouldLogin = Object.values(INPUT_ELEMENTS).reduce((accumulator, value) => {

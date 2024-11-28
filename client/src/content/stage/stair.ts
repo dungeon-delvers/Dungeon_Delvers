@@ -1,4 +1,4 @@
-import { Mesh, Vector3, VertexData } from '@babylonjs/core';
+import { Mesh, Scene, Vector3, VertexData } from '@babylonjs/core';
 
 type StairOptions = {
   height: number;
@@ -13,7 +13,7 @@ type StairOptions = {
 };
 
 export class Stair extends Mesh {
-  constructor(name: string, options: StairOptions, scene: any) {
+  constructor(name: string, options: StairOptions, scene: Scene) {
     super(name, scene);
     const positions = [
       new Vector3(options.x, options.y, options.z).asArray(),
@@ -27,7 +27,7 @@ export class Stair extends Mesh {
       new Vector3(options.x, options.height, options.depth).asArray(),
     ];
 
-    var vertexData = new VertexData();
+    const vertexData = new VertexData();
 
     vertexData.positions = positions.flat();
     vertexData.indices = Array.from(positions.keys());

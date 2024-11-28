@@ -10,7 +10,7 @@ interface Chunk {
 }
 
 export class TerrainChunkManager extends TransformNode {
-  chunks: Record<string, Chunk> | {};
+  chunks: Record<string, Chunk> | object;
 
   chunkSize: number;
 

@@ -51,12 +51,12 @@ export class AttributeSelect {
       attributeValueGrid.addControl(this._attributeValues[attribute as ATTRIBUTES], 1, 1);
       const attributeMinusButton = Button.CreateSimpleButton(`${this._menuId}__${attribute}_minus`, '-');
       const attributePlusButton = Button.CreateSimpleButton(`${this._menuId}__${attribute}_plus`, '+');
-      attributeMinusButton.onPointerDownObservable.add(clickEvent => {
+      attributeMinusButton.onPointerDownObservable.add(() => {
         if (this._availablePoints < 15) {
           this.updateAtribute(this._availablePoints + 1, attribute, this._attributes.getAttribute(attribute).value - 1);
         }
       });
-      attributePlusButton.onPointerDownObservable.add(clickEvent => {
+      attributePlusButton.onPointerDownObservable.add(() => {
         if (this._availablePoints > 0) {
           this.updateAtribute(this._availablePoints - 1, attribute, this._attributes.getAttribute(attribute).value + 1);
         }

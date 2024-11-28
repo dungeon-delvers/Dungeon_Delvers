@@ -100,7 +100,7 @@ export default class Register extends Menu {
     );
 
     if (response.ok) {
-      const result = await response.json();
+      await response.json();
     }
     if (response.status === 409) {
       const data = await response.json();
@@ -111,7 +111,7 @@ export default class Register extends Menu {
         this._registerFormElements[LABEL_ELEMENTS.USERNAME_LABEL].color = colors.red.primary;
         this._registerFormElements[INPUT_ELEMENTS.USERNAME].color = colors.red.primary;
       }
-    } else if (!response.ok) {
     }
+    /** TODO: Implement successful registration */
   }
 }

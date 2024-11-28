@@ -1,6 +1,5 @@
-import { AbstractMesh, Color3, MeshBuilder, Scene, SceneLoader, StandardMaterial, Vector3 } from '@babylonjs/core';
-import dungeonAssets from '../../../public/assets/models/dungeon_assets.glb';
-import { BinarySpacePartition } from '../core/binarySpacePartition';
+import { AbstractMesh, Scene, SceneLoader } from '@babylonjs/core';
+import dungeonAssets from '../../../../public/assets/models/dungeon_assets.glb';
 import { DungeonGenerator } from './dungeon_generator';
 
 type StageAssets = {

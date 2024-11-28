@@ -1,4 +1,4 @@
-import { Color3, FollowCamera, HemisphericLight, Scene, SceneLoader, Vector3 } from '@babylonjs/core';
+import { FollowCamera, Scene, SceneLoader, Vector3 } from '@babylonjs/core';
 import { Button, Cancel } from '../gui/components/Buttons';
 import Menu from '../gui/components/Menu';
 import Title from '../gui/components/Title';

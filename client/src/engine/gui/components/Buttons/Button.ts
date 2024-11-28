@@ -1,6 +1,5 @@
 import { Button, TextBlock } from '@babylonjs/gui';
 import { colors } from '../colors';
-import { Observable } from '@babylonjs/core';
 
 type ButtonOptions = {
   background: string;

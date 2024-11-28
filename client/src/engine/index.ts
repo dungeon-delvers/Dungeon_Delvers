@@ -48,7 +48,6 @@ export class Game {
     this._main_menu_states = {
       [MAIN_MENU_STATE.LOGIN]: () =>
         new LoginMenu(
-          this._menu,
           () => this._changeMenu(MAIN_MENU_STATE.REGISTER),
           () => this._changeMenu(MAIN_MENU_STATE.CHARACTER_SELECT),
         ),

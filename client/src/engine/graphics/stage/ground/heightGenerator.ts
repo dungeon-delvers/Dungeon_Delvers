@@ -4,14 +4,11 @@ import NoiseGenerator from '../../../../../lib/noise';
 import { sat } from '../../../../../lib/math';
 
 class HeightGenerator {
-  private position: Vector2;
-
   private radius: Array<number>;
 
   private generator: NoiseGenerator;
 
-  constructor(generator: NoiseGenerator, position: any, minRadius: number, maxRadius: number) {
-    this.position = position.clone();
+  constructor(generator: NoiseGenerator, minRadius: number, maxRadius: number) {
     this.radius = [minRadius, maxRadius];
     this.generator = generator;
   }

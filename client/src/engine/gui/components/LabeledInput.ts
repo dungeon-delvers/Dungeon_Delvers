@@ -1,4 +1,4 @@
-import { InputText, StackPanel } from '@babylonjs/gui';
+import { InputText } from '@babylonjs/gui';
 import Label from './Label';
 
 export default class LabeledInput {

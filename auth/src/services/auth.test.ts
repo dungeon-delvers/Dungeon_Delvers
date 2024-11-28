@@ -30,7 +30,7 @@ describe('Auth Service', () => {
   });
 
   it('should serialize user', () => {
-    const user = { id: 1, email: 'test@example.com', password: 'password' };
+    const user = { id: 1, username: 'testuser', email: 'test@example.com', password: 'password' };
     passport.serializeUser((user, done) => {
       done(null, (user as any).id);
     });

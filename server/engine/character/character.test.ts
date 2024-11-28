@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
 import { AddressInfo } from 'net';
 import { io as Client, Socket as ClientSocket } from 'socket.io-client';
-import { Server, Socket as ServerSocket } from 'socket.io';
+import { Server } from 'socket.io';
 
 import eventHandlers, { Character, create, CharacterCreationArgs } from './character';
 import { ARCHTYPES } from './class/class';
@@ -86,7 +86,6 @@ describe('Character', () => {
 
 describe('Character eventHandler', () => {
   let io: Server;
-  let serverSocket: ServerSocket;
   let clientSocket: ClientSocket;
 
   beforeAll(done => {
@@ -96,7 +95,6 @@ describe('Character eventHandler', () => {
       const { port } = httpServer.address() as AddressInfo;
       clientSocket = Client(`http://localhost:${port}`);
       io.on('connection', socket => {
-        serverSocket = socket;
         eventHandlers(io, socket);
       });
       clientSocket.on('connect', done);

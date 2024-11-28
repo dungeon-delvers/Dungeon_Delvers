@@ -25,7 +25,7 @@ export default (app: express.Application) => {
   );
 
   passport.serializeUser((user, done) => {
-    done(null, (user as User).id);
+    done(null, (user as unknown as User).id);
   });
 
   passport.deserializeUser(async (userId, done) => {

@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist node_modules",
-    "start": "nodemon server.ts",
+    "start:dev": "nodemon server.ts",
     "test": "jest --config ./jest.config.js"
   },
   "keywords": [

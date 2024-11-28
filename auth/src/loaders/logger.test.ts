@@ -37,7 +37,7 @@ jest.mock('../config', () => ({
 
 describe('Logger Loader', () => {
   it('should create a logger with correct configuration', () => {
-    const transports = [];
+    const transports: any[] = [];
     if (process.env.NODE_ENV !== 'development') {
       transports.push(new winston.transports.Console());
     } else {

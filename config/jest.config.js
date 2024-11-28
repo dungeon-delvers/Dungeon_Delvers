@@ -1,5 +1,4 @@
 import type { Config } from 'jest';
-console.log('loading config');
 
 const config: Config = {
   verbose: true,

@@ -21,7 +21,9 @@ describe('Auth Service', () => {
     auth(app);
     pool = new Pool();
   });
-
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   it('should initialize session and passport', async () => {
     const response = await request(app).get('/');
     expect(response.status).toBe(404); // Assuming no route is defined, it should return 404

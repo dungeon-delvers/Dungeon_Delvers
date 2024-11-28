@@ -1,5 +1,5 @@
 import { MonsterType } from '../../content/monsters';
-import { ATTACK_RESULT, Actor, DefenseStats } from './actor';
+import { ATTACK_RESULT, Actor } from './actor';
 import { ATTRIBUTES, Attributes } from './attribute';
 
 const actor = new Actor(

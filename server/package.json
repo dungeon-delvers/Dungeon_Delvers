@@ -5,7 +5,8 @@
   "description": "The Node backend server for Dungeon Delvers",
   "main": "server.js",
   "scripts": {
-    "clean": "rm -rf node_modules",
+    "build": "tsc",
+    "clean": "rm -rf dist node_modules",
     "start": "nodemon server.ts",
     "test": "jest --config ./jest.config.js"
   },
@@ -19,7 +20,7 @@
   "author": "Shawn Mealey",
   "license": "ISC",
   "dependencies": {
-    "@dungeon-delvers/config": "^0.0.1",
+    "@dungeon-delvers/config": "^0.0.3",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/passport": "^1.0.16",
     "@types/passport-jwt": "^4.0.1",

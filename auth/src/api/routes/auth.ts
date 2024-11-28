@@ -3,15 +3,6 @@ import passport from 'passport';
 import { createUser, generatePasswordHash, loginUser, userFromEmail, userFromUsername } from '../../models/user';
 import { validateUser } from '../../models/validation';
 
-interface RequestCustom extends Request {
-  body: {
-    username: string;
-    password: string;
-    email: string;
-    repeatPassword: string;
-  };
-}
-
 export default (router: Router) => {
   router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     const result = await loginUser(req.body.username, req.body.password);
@@ -37,8 +28,8 @@ export default (router: Router) => {
     }
   });
   router.post('/signup', async (req: Request, res: Response) => {
-    const { error } = validateUser(req.body);
-
+    const validateUserResponse = validateUser(req.body);
+    const { error } = validateUserResponse;
     if (error) {
       res.status(400).json({ message: error.message });
     } else {
@@ -52,8 +43,8 @@ export default (router: Router) => {
         res.status(409).json({ message: 'Username already exists' });
       }
       const passwordHash = await generatePasswordHash(password);
-      const result = await createUser(email, passwordHash, username);
-      if (result) {
+      const createUserResult = await createUser(email, passwordHash, username);
+      if (createUserResult) {
         res.status(201).json({ message: 'User created' });
       } else {
         res.status(400).json({ message: 'User not created' });

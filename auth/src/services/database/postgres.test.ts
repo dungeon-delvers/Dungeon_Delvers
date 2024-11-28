@@ -17,6 +17,9 @@ jest.mock('pg', () => {
 });
 
 describe('Postgres Pool', () => {
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
   it('should create a new pool with the correct configuration', () => {
     expect(Pool).toHaveBeenCalledWith({
       user: 'test',

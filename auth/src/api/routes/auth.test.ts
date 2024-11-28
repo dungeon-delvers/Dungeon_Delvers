@@ -1,30 +1,29 @@
 import express from 'express';
 import request from 'supertest';
-import authRoutes from './auth';
+import bcrypt from 'bcrypt';
 import { pool } from '../../services/database/postgres';
-import { generatePasswordHash } from '../../models/user';
+import authRoutes from './auth';
 
-// jest.mock('pg', () => {
-//   const mPool = {
-//     connect: jest.fn(),
-//     query: jest.fn(),
-//     end: jest.fn(),
-//   };
-//   return { Pool: jest.fn(() => mPool) };
-// });
+jest.mock('../../services/database/postgres', () => ({
+  pool: {
+    query: jest.fn(),
+  },
+}));
 
 const userModel = {
   createUser: jest.fn(),
   generatePasswordHash: jest.fn(),
   userFromUsername: jest.fn(),
+  userFromEmail: jest.fn(),
+  loginUser: jest.fn(),
+  verifyPassword: jest.fn(),
 };
 const validateUser = jest.fn();
 
 describe('Auth Routes', () => {
-  let pool: any;
   let app: express.Application;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     app = express();
     app.use(express.json());
     const { default: loaders } = await import('../../loaders');
@@ -32,9 +31,6 @@ describe('Auth Routes', () => {
     const router = express.Router();
     authRoutes(router);
     app.use(router);
-  });
-
-  beforeEach(() => {
     jest.mock('../../models/user', () => ({
       userModel,
     }));
@@ -47,51 +43,42 @@ describe('Auth Routes', () => {
     jest.clearAllMocks();
   });
   describe('POST /login', () => {
-    it.only('should authenticate user and return 201 status', async () => {
-      pool.query = jest.fn().mockResolvedValueOnce({
+    it('should authenticate user and return 201 status', async () => {
+      (pool.query as jest.Mock).mockResolvedValue({
         rows: [
           {
             id: 1,
-            username: 'testuser',
-            password_hash: generatePasswordHash('password'),
-            email: 'testuser@example.com',
+            username: 'loginuser',
+            password_hash: await bcrypt.hash('password', 10),
+            email: 'loginuser@example.com',
           },
         ],
       });
-      userModel.userFromUsername.mockResolvedValue({
-        id: 1,
-        username: 'testuser',
-      });
       const response = await request(app).post('/login').send({ username: 'testuser', password: 'password' });
       expect(response.status).toBe(200);
-      expect(response.body).toStrictEqual({
-        id: 1,
-        username: 'testuser',
-        email: 'testuser@example.com',
-      });
+      expect(response.body.id).toStrictEqual(1);
+      expect(response.body.username).toStrictEqual('loginuser');
+      expect(response.body.email).toStrictEqual('loginuser@example.com');
     });
   });
 
   describe('POST /signup', () => {
     it('should create a new user and return 201 status', async () => {
-      pool.query.mockResolvedValueOnce({
+      (pool.query as jest.Mock).mockResolvedValueOnce({
         command: 'INSERT',
         rowCount: 1,
         oid: 0,
         rows: [],
         fields: [],
       });
-      validateUser.mockReturnValue({ error: null });
-      userModel.generatePasswordHash.mockResolvedValue('hashedpassword');
-      userModel.createUser.mockResolvedValue(true);
-
+      (pool.query as jest.Mock).mockResolvedValue({ rows: [] });
+      (pool.query as jest.Mock).mockResolvedValue({ rows: [] });
       const response = await request(app).post('/signup').send({
-        email: 'test@example.com',
-        username: 'testuser',
+        email: 'registeruserpasses@example.com',
+        username: 'registeruserpasses',
         password: 'password',
         passwordRepeat: 'password',
       });
-
       expect(response.status).toBe(201);
       expect(response.body.message).toBe('User created');
     });
@@ -101,7 +88,7 @@ describe('Auth Routes', () => {
 
       const response = await request(app)
         .post('/signup')
-        .send({ email: 'invalidemail', username: '', password: 'password' });
+        .send({ email: 'registeruserfails', username: '', password: 'password' });
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe('"email" must be a valid email');
@@ -113,8 +100,8 @@ describe('Auth Routes', () => {
       userModel.createUser.mockResolvedValue(false);
 
       const response = await request(app).post('/signup').send({
-        email: 'test@example.com',
-        username: 'testuser',
+        email: 'resigeruserfails@example.com',
+        username: 'registeruserfails',
         password: 'password',
       });
 

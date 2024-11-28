@@ -1,4 +1,3 @@
-import { query } from 'express';
 import { pool } from '../services/database/postgres';
 import bcrypt from 'bcrypt';
 
@@ -7,7 +6,8 @@ export const createUser = async (email: string, passwordHash: string, username: 
     text: 'INSERT INTO app_user (email, password_hash, username) VALUES ($1, $2, $3)',
     values: [email, passwordHash, username],
   };
-  return await pool.query(query);
+  const result = await pool.query(query);
+  return result;
 };
 
 export const loginUser = async (username: string, password: string) => {
@@ -15,9 +15,9 @@ export const loginUser = async (username: string, password: string) => {
     text: 'SELECT * FROM app_user WHERE username = $1',
     values: [username],
   };
-  const { rows } = await pool.query(query);
+  const result = await pool.query(query);
+  const { rows } = result;
   if (rows.length !== 0) {
-    console.log(password, rows[0].password_hash);
     const verified = await verifyPassword(password, rows[0].password_hash);
     if (verified) {
       return rows[0];

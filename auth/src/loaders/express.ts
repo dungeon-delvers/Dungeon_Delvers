@@ -4,10 +4,10 @@ import config from '../config';
 import routes from '../api';
 import auth from '../services/auth';
 export default (app: Application) => {
-  app.get('/status', (req, res) => {
+  app.get('/status', (_req, res) => {
     res.status(200).end();
   });
-  app.head('/status', (req, res) => {
+  app.head('/status', (_req, res) => {
     res.status(200).end();
   });
 

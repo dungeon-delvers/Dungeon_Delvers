@@ -1,4 +1,4 @@
-import { Actor, DefenseStats } from './actor';
+import { Actor } from './actor';
 
 export type ActionResultArgs = {
   succeeded: boolean;
@@ -79,6 +79,14 @@ export class Action {
 
   perform(): ActionResult {
     return this._onPerform();
+  }
+
+  get target() {
+    return this._target;
+  }
+
+  set target(inTarget: Actor | null) {
+    this._target = inTarget;
   }
 
   get actor() {

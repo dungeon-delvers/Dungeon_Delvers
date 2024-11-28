@@ -1,6 +1,3 @@
-import { config } from 'winston';
-import api from '../api';
-
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const testConfig = {

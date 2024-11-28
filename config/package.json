@@ -1,7 +1,7 @@
 {
   "name": "@dungeon-delvers/config",
   "repository": "https://github.com/HarlemLineHustle/Dungeon_Delvers",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "This contains shared configurations for the multiple services of Dungeon Delvers.",
   "main": "index.js",
   "scripts": {

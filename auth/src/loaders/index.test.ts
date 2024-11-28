@@ -19,7 +19,9 @@ describe('Loader', () => {
   });
 
   it('should log that Express is loaded', async () => {
+    process.env.NODE_ENV = 'development';
     await loader(app);
     expect(Logger.info).toHaveBeenCalledWith('✌️ Express loaded');
+    process.env.NODE_ENV = 'test';
   });
 });

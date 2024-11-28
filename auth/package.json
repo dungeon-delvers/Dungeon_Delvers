@@ -4,13 +4,12 @@
   "version": "0.0.1",
   "description": "This is the authentication server for the Dungeon Delver's project",
   "main": "index.ts",
-  "tyoes": "module",
   "directories": {
     "test": "tests"
   },
   "scripts": {
     "build": "tsc",
-    "clean": "rm -rf node_modules",
+    "clean": "rm -rf dist node_modules",
     "test": "NODE_ENV=test && jest",
     "test:coverage": "NODE_ENV=tescleart && jest --coverage",
     "start:dev": "nodemon ./src/app.ts",
@@ -26,7 +25,7 @@
   "author": "Shawn Mealey",
   "license": "ISC",
   "dependencies": {
-    "@dungeon-delvers/config": "^0.0.1",
+    "@dungeon-delvers/config": "^0.0.3",
     "bcrypt": "5.1.1",
     "cors": "2.8.5",
     "express": "4.19.2",

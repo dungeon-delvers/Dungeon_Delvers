@@ -3,7 +3,6 @@ import config from '../config';
 import routes from '../api';
 import auth from '../services/auth';
 import loader from './express';
-import { Application } from 'express';
 
 const express = jest.fn(() => ({
   get: jest.fn(),

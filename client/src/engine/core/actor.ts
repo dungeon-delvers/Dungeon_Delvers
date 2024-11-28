@@ -61,7 +61,7 @@ export class Actor {
     maxHealth: number;
   };
 
-  constructor(id: string, attributes: Attributes, baseStats: BaseStats, type: MonsterType) {
+  constructor(id: string, attributes: Attributes, baseStats: BaseStats, _type: MonsterType) {
     this._id = id;
     this._attributes = attributes;
     this._actionStats = {
@@ -109,6 +109,15 @@ export class Actor {
   calculateStat(base: number, modifiers: number) {
     return Math.ceil(base * 1 + modifiers);
   }
+
+  get id() {
+    return this._id;
+  }
+
+  set id(inId: string) {
+    this._id = inId;
+  }
+
   get stats() {
     return {
       ...this._actionStats,

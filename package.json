@@ -1,17 +1,16 @@
 {
-  "name": "dungeon_delvers",
+  "name": "dungeon-delvers",
   "repository": "https://github.com/dungeon_delvers/Dungeon_Delvers",
   "workspaces": [
     "client",
     "server",
-    "auth",
-    "db_migrations"
+    "auth"
   ],
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "Online 3D Fantasy RPG MMO made with BabylonJS",
   "main": "index.js",
   "scripts": {
-    "build:client": "npm run build --workspace=client",
+    "build": "npm run build --ws",
     "clean": "concurrently \"npm run clean --ws\" \"rm -rf ./node_modules package-lock.json .parcel-cache\"",
     "deploy-demo": "npm run deploy-demo --workspace=client",
     "start": "concurrently \"npm run start:dev --workspace=client\" \"npm run start:dev --workspace=auth\"",

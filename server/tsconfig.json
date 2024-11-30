@@ -1,6 +1,6 @@
 {
   "extends": "@dungeon-delvers/config/tsconfig.json",
-  "include": ["engine/**/*.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"],
   "compilerOptions": {
     "outDir": "./dist"

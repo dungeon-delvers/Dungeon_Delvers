@@ -1,7 +1,6 @@
-# <p align="center"><img alt="dungeon" src="title_card.png" /></p>
+# <p align="center"><img alt="dungeon" src="title_card.jpeg" /></p>
 
-A 3D "Roguelike" dungeon crawling game. Dungeons are generated with Binary-Space
-Partitioning.
+A 3D "Roguelike" dungeon crawling game. Dungeons are generated with Binary-Space Partitioning.
 
 ## 🕹️ Testing
 
@@ -16,13 +15,11 @@ To run the game locally run the following commands:
 3. 'npm install`
 4. 'npm start`
 
-This should load up a local development server that you can hit at
-http://localhost:1234/
+This should load up a local development server that you can hit at http://localhost:1234/
 
 ## 📕 Features
 
-- Full 3D world brought to you by the wonderful team over at
-  [BabylonJS](https://www.babylonjs.com/)
+- Full 3D world brought to you by the wonderful team over at [BabylonJS](https://www.babylonjs.com/)
 - A full fleged browser based MMO
   - The following races planned as a proof of concept:
     - Human
@@ -37,7 +34,6 @@ http://localhost:1234/
 
 ## Licenses
 
-This project is under the
-[ISC](https://github.com/mealeyst/dungeon_delvers/blob/main/LICENSE) license.
+This project is under the [ISC](https://github.com/mealeyst/dungeon_delvers/blob/main/LICENSE) license.
 
 Adding this

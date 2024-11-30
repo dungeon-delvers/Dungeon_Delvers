@@ -1,6 +1,4 @@
 import config from './config';
-// import express from 'express';
-// import * as Logger from './loaders/logger';
 
 describe('startServer', () => {
   let app: any;
@@ -16,7 +14,6 @@ describe('startServer', () => {
     }));
     app = {
       listen: jest.fn((port, callback) => {
-        console.log(`Farting on port ${port}`);
         callback();
       }),
       use: jest.fn(),

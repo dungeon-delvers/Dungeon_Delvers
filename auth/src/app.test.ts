@@ -13,7 +13,7 @@ describe('startServer', () => {
       port: 4001,
     }));
     app = {
-      listen: jest.fn((port, callback) => {
+      listen: jest.fn((_port, callback) => {
         callback();
       }),
       use: jest.fn(),

@@ -1,3 +1,3 @@
 import { Server } from 'socket.io';
 
-export default (app: Server) => {};
+export default async (_app: Server) => {};

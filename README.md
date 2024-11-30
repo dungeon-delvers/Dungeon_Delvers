@@ -1,10 +1,10 @@
 # <p align="center"><img alt="dungeon" src="title_card.jpeg" /></p>
 
-A 3D "Roguelike" dungeon crawling game. Dungeons are generated with Binary-Space Partitioning.
+A 3D MMO RPG game built with BabylonJS, SocketIO!
 
 ## 🕹️ Testing
 
-A demo is available here https://mealeyst.github.io/dungeon_delvers/.
+A demo will be available soon!
 
 ## 💻 Running
 
@@ -35,5 +35,3 @@ This should load up a local development server that you can hit at http://localh
 ## Licenses
 
 This project is under the [ISC](https://github.com/mealeyst/dungeon_delvers/blob/main/LICENSE) license.
-
-Adding this

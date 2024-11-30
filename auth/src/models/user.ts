@@ -11,19 +11,33 @@ export const createUser = async (email: string, passwordHash: string, username: 
 };
 
 export const loginUser = async (username: string, password: string) => {
-  const query = {
+  const selectUser = {
     text: 'SELECT * FROM app_user WHERE username = $1',
     values: [username],
   };
-  const result = await pool.query(query);
-  const { rows } = result;
-  if (rows.length !== 0) {
-    const verified = await verifyPassword(password, rows[0].password_hash);
+  const selectedUserResult = await pool.query(selectUser);
+  const { rows: selectedUserRows } = selectedUserResult;
+  if (selectedUserRows.length !== 0) {
+    const verified = await verifyPassword(password, selectedUserRows[0].password_hash);
     if (verified) {
-      return rows[0];
+      const loginUser = {
+        text: 'UPDATE app_user SET loggedin = true WHERE id = $1',
+        values: [selectedUserRows[0].id],
+      };
+      await pool.query(loginUser);
+      return selectedUserRows[0];
     }
   }
   return null;
+};
+
+export const logoutUser = async (id: number) => {
+  const loginUser = {
+    text: 'UPDATE app_user SET loggedin = false WHERE id = $1',
+    values: [id],
+  };
+  const loggedInResult = await pool.query(loginUser);
+  return loggedInResult;
 };
 
 export const userFromUsername = async (username: string) => {

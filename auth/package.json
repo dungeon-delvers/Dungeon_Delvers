@@ -10,10 +10,10 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist node_modules",
-    "test": "NODE_ENV=test && jest",
-    "test:coverage": "NODE_ENV=tescleart && jest --coverage",
     "start:dev": "nodemon ./src/app.ts",
-    "start": "node ./dist/app.js"
+    "start": "node ./dist/app.js",
+    "test:coverage": "NODE_ENV=tescleart && jest --coverage",
+    "test": "NODE_ENV=test && jest"
   },
   "keywords": [
     "node",
@@ -25,12 +25,13 @@
   "author": "Shawn Mealey",
   "license": "ISC",
   "dependencies": {
-    "@dungeon-delvers/config": "^0.0.3",
+    "@dungeon-delvers/config": "^0.0.6",
     "bcrypt": "5.1.1",
     "cors": "2.8.5",
     "express": "4.19.2",
     "express-session": "1.18.0",
     "joi": "17.13.3",
+    "jsonwebtoken": "^9.0.2",
     "nodemon": "3.1.7",
     "passport": "0.7.0",
     "passport-local": "1.0.0",
@@ -38,7 +39,7 @@
     "reflect-metadata": "0.2.2",
     "ts-node": "10.9.2",
     "typescript": "5.6.2",
-    "winston": "3.14.2"
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/bcrypt": "5.0.2",

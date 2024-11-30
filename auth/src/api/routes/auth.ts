@@ -1,31 +1,69 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import passport from 'passport';
-import { createUser, generatePasswordHash, loginUser, userFromEmail, userFromUsername } from '../../models/user';
+import jwt from 'jsonwebtoken';
+import {
+  createUser,
+  generatePasswordHash,
+  loginUser,
+  logoutUser,
+  userFromEmail,
+  userFromUsername,
+} from '../../models/user';
 import { validateUser } from '../../models/validation';
+import config from '../../config';
 
 export default (router: Router) => {
   router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     const result = await loginUser(req.body.username, req.body.password);
     if (result) {
-      req.login({ ...result, username: req.body.username, password: req.body.password }, async err => {
+      delete result.password_hash;
+      req.login(result, { session: false }, async err => {
         if (err) {
           next(err);
         } else {
           try {
             passport.authenticate('LocalStrategy')(req, res, function () {
-              delete result.passwordHash;
-              res.status(200).json(result);
+              const token = config.jwt && jwt.sign(result, config.jwt);
+              res.status(200).json({ token, result });
             });
-          } catch (error) {
-            res.status(400).json({
-              message: err.message,
-            });
+          } catch (error: unknown) {
+            if (error instanceof Error) {
+              res.status(400).json({
+                message: error.message,
+              });
+            } else {
+              throw new Error(
+                'Encountered unexpected error when trying to return error, might not have been an Error thrown.',
+              );
+            }
           }
         }
       });
     } else {
       res.status(400).json({ message: 'Incorrect username or password.' });
     }
+  });
+  router.post('/logout', async (req: Request, res: Response, next: NextFunction) => {
+    const result = await logoutUser(req.body.id);
+    req.logOut({ keepSessionInfo: false }, async err => {
+      if (err) {
+        next(err);
+      } else {
+        try {
+          res.status(200).json(result);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            res.status(400).json({
+              message: error.message,
+            });
+          } else {
+            throw new Error(
+              'Encountered unexpected error when trying to return error, might not have been an Error thrown.',
+            );
+          }
+        }
+      }
+    });
   });
   router.post('/signup', async (req: Request, res: Response) => {
     const validateUserResponse = validateUser(req.body);

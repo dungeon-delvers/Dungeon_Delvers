@@ -22,10 +22,10 @@ describe('Postgres Pool', () => {
   });
   it('should create a new pool with the correct configuration', () => {
     expect(Pool).toHaveBeenCalledWith({
-      user: 'test',
-      host: 'localhost',
-      database: 'test',
-      password: 'T3$T',
+      user: 'test_user',
+      host: 'test-host',
+      database: 'test-db',
+      password: 'test-password',
       port: 5454,
     });
   });

@@ -39,7 +39,7 @@ export default class Login extends Menu {
     this._goToCharacterSelect = goToCharacterSelect;
     Object.values(INPUT_ELEMENTS).map(value => {
       const input = this.formElements[value];
-      input.onBlurObservable.add(() => {
+      input?.onBlurObservable.add(() => {
         this.validateInputs();
       });
     });
@@ -63,21 +63,24 @@ export default class Login extends Menu {
       this.renderError(error);
       return;
     }
-    const { AUTH_URL, AUTH_PORT } = process.env;
-    const response = await fetch(`${AUTH_URL}${AUTH_PORT ? `:${AUTH_PORT}` : ''}/api/login`, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${process.env.AUTH_URL}${process.env.AUTH_PORT ? `:${process.env.AUTH_PORT}` : ''}/api/login`,
+      {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: this._loginFormElements[INPUT_ELEMENTS.USERNAME].text,
+          password: this._loginFormElements[INPUT_ELEMENTS.PASSWORD].text,
+        }),
       },
-      body: JSON.stringify({
-        username: this._loginFormElements[INPUT_ELEMENTS.USERNAME].text,
-        password: this._loginFormElements[INPUT_ELEMENTS.PASSWORD].text,
-      }),
-    });
+    );
 
     if (response.ok) {
-      localStorage.setItem('dd_auth', await response.json());
+      const result = await response.json();
+      localStorage.setItem('dd_auth', JSON.stringify(result));
       this._goToCharacterSelect();
       Object.values(INPUT_ELEMENTS).map(value => {
         const input = this._loginFormElements[value];

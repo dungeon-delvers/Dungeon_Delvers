@@ -56,9 +56,10 @@ describe('Auth Routes', () => {
       });
       const response = await request(app).post('/login').send({ username: 'testuser', password: 'password' });
       expect(response.status).toBe(200);
-      expect(response.body.id).toStrictEqual(1);
-      expect(response.body.username).toStrictEqual('loginuser');
-      expect(response.body.email).toStrictEqual('loginuser@example.com');
+      expect(response.body.token).toBeTruthy();
+      expect(response.body.result.id).toStrictEqual(1);
+      expect(response.body.result.username).toStrictEqual('loginuser');
+      expect(response.body.result.email).toStrictEqual('loginuser@example.com');
     });
   });
 

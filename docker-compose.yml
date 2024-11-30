@@ -17,6 +17,15 @@ services:
     env_file:
       - .env
   auth:
+    develop:
+      watch:
+        - action: sync
+          path: ./auth
+          target: /app
+          ignore:
+            - coverage/
+            - node_modules/
+            - dist/
     build: auth
     depends_on:
       - db
@@ -26,6 +35,15 @@ services:
     env_file:
       - .env
   server:
+    develop:
+      watch:
+        - action: sync
+          path: ./auth
+          target: /app
+          ignore:
+            - coverage/
+            - node_modules/
+            - dist/
     build: server
     depends_on:
       - db
@@ -35,6 +53,15 @@ services:
     env_file:
       - .env
   client:
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./client
+          target: /app
+          ignore:
+            - coverage/
+            - node_modules/
+            - dist/
     build: client
     depends_on:
       - auth

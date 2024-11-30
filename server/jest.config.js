@@ -1,15 +1,8 @@
-const path = require('path')
-const dotenv = require('dotenv')
-
-dotenv.config()
-
+/** @type {import('ts-jest').JestConfigWithTsJest} **/
 module.exports = {
-  rootDir: path.join(__dirname, '..'),
-  verbose: true,
-  moduleFileExtensions: ['js', 'ts', 'tsx', 'json', 'node'],
-  testPathIgnorePatterns: ['/node_modules/'],
-  collectCoverage: true,
+  setupFiles: ['<rootDir>/.jest/setEnvVars.js'],
+  testEnvironment: 'node',
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.(ts|tsx)?$': 'ts-jest',
   },
-}
+};

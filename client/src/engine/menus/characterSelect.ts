@@ -67,8 +67,8 @@ export default class CharacterSelect extends Menu {
     this.formElements[CHARACTER_ELEMENTS.CHARACTER_1].height = '80px';
     this.formElements[CHARACTER_ELEMENTS.CHARACTER_1].paddingTop = '20px';
     this._renderCharacterCreationScene();
-    this.formElements[LOGOUT].onPointerUpObservable.add(() => {
-      localStorage.removeItem('dd_auth');
+    this.formElements[LOGOUT].onPointerUpObservable.add(async () => {
+      await this._logout();
       _goToLogin();
     });
     this._characterSelectFormElements[CHARACTER_ELEMENTS.CHARACTER_1].onPointerUpObservable.add(() => {
@@ -153,5 +153,21 @@ export default class CharacterSelect extends Menu {
   private _setRace(race: RaceName) {
     this._selectedRace = race;
     this._setModelVisibility();
+  }
+
+  private async _logout() {
+    const ddAuthString = localStorage.getItem('dd_auth');
+    const user = ddAuthString && JSON.parse(ddAuthString);
+    await fetch(`${process.env.AUTH_URL}${process.env.AUTH_PORT ? `:${process.env.AUTH_PORT}` : ''}/api/logout`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: user.id,
+      }),
+    });
+    localStorage.removeItem('dd_auth');
   }
 }

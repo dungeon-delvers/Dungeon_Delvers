@@ -13,7 +13,7 @@
     "build": "npm run build --ws",
     "clean": "concurrently \"npm run clean --ws\" \"rm -rf ./node_modules package-lock.json .parcel-cache\"",
     "deploy-demo": "npm run deploy-demo --workspace=client",
-    "start": "npm run start:dev -ws",
+    "start": "docker compose up --build --watch",
     "test": "npm run test -ws"
   },
   "keywords": [

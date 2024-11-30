@@ -39,11 +39,13 @@ export default class Register extends Menu {
     [REGISTER]: new Accept(REGISTER, 'Register'),
     [CANCEL]: new Cancel(CANCEL, 'Cancel'),
   };
-  constructor(_goToLogin: () => void) {
+  private _goToLogin: () => void;
+  constructor(goToLogin: () => void) {
     super(menu_id, {
       width: '25%',
       height: '650px',
     });
+    this._goToLogin = goToLogin;
     this.formElements = this._registerFormElements;
     Object.values(INPUT_ELEMENTS).map(value => {
       const input = this.formElements[value];
@@ -100,7 +102,7 @@ export default class Register extends Menu {
     );
 
     if (response.ok) {
-      await response.json();
+      this._goToLogin();
     }
     if (response.status === 409) {
       const data = await response.json();

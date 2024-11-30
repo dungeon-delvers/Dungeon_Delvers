@@ -9,11 +9,12 @@ import Logger from './loaders/logger';
 async function startServer() {
   const app = express();
   const { default: loaders } = await import('./loaders');
+  console.log(loaders);
   loaders(app);
   app.listen(config.port, () => {
     Logger.info(`
       ################################################
-      🛡️  Server listening on port: ${config.port} 🛡️
+      🛡️  Auth Server listening on port: ${config.port} 🛡️
       ################################################
     `);
   });

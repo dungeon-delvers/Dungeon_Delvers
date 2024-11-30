@@ -9,7 +9,6 @@ import RegisterMenu from './menus/register';
 import LoginMenu from './menus/login';
 import CharacterMenu from './menus/characterSelect';
 import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
-console.log(process.env);
 
 export enum GAME_STATE {
   MAIN_MENU,
@@ -86,10 +85,6 @@ export class Game {
     });
     this._main_menu_state = state;
     this._menu.addControl(this._main_menu_states[state]());
-    // this._menu._linkedControls.forEach(control => {
-    //   console.log(control);
-    //   control.isVisible = true;
-    // });
   }
 
   private _changeMenu(state: MAIN_MENU_STATE) {

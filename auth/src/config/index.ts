@@ -1,16 +1,7 @@
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-const testConfig = {
-  port: 8000,
-  database: {
-    user: 'test',
-    host: 'localhost',
-    database: 'test',
-    password: 'T3$T',
-    port: 5454,
-  },
-};
-const deaultConfig = {
+
+export default {
   api: {
     prefix: '/api',
   },
@@ -26,10 +17,8 @@ const deaultConfig = {
     password: process.env.POSTGRES_PASSWORD,
     port: parseInt(process.env.POSTGRES_PORT as string, 10),
   },
-
+  jwt: process.env.JWT_SECRET,
   logs: {
     level: process.env.LOG_LEVEL || 'silly',
   },
 };
-
-export default process.env.NODE_ENV === 'test' ? { ...deaultConfig, ...testConfig } : deaultConfig;

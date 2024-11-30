@@ -1,12 +1,15 @@
 {
   "name": "@dungeon-delvers/config",
   "repository": "https://github.com/HarlemLineHustle/Dungeon_Delvers",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "This contains shared configurations for the multiple services of Dungeon Delvers.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Shawn Mealey",
-  "license": "ISC"
+  "license": "ISC",
+  "peerDependencies": {
+    "eslint": ">= 9"
+  }
 }

@@ -11,6 +11,7 @@ const testConfig = {
   },
 };
 const deaultConfig = {
+  env: process.env.NODE_ENV,
   api: {
     prefix: '/api',
   },
@@ -18,7 +19,10 @@ const deaultConfig = {
    * Your favorite port
    */
   port: parseInt(process.env.SERVER_PORT as string, 10),
-
+  client: {
+    url: process.env.CLIENT_URL,
+    port: parseInt(process.env.CLIENT_PORT as string, 10),
+  },
   database: {
     user: process.env.POSTGRES_USER,
     host: process.env.POSTGRES_HOST,

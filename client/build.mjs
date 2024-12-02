@@ -1,6 +1,6 @@
 import { Parcel } from '@parcel/core';
 
-const { AUTH_URL, AUTH_PORT } = process.env;
+const { AUTH_URL, AUTH_PORT, SERVER_URL, SERVER_PORT } = process.env;
 let bundler = new Parcel({
   entries: './public/index.html',
   defaultConfig: '@parcel/config-default',
@@ -18,6 +18,8 @@ let bundler = new Parcel({
   env: {
     AUTH_URL,
     AUTH_PORT,
+    SERVER_URL,
+    SERVER_PORT,
   },
 });
 

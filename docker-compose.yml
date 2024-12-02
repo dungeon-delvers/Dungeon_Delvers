@@ -19,7 +19,7 @@ services:
   auth:
     develop:
       watch:
-        - action: sync
+        - action: sync+restart
           path: ./auth
           target: /app
           ignore:
@@ -37,8 +37,8 @@ services:
   server:
     develop:
       watch:
-        - action: sync
-          path: ./auth
+        - action: sync+restart
+          path: ./server
           target: /app
           ignore:
             - coverage/

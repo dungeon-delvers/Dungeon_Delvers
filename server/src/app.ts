@@ -1,17 +1,21 @@
 import { Server } from 'socket.io';
 import { createServer } from 'http';
 
-import config from './config';
+import config from '@/config';
 
-import Logger from './loaders/logger';
+import Logger from '@/loaders/logger';
 
 async function startServer() {
   const httpServer = createServer();
-  const app = new Server(httpServer, {
-    // options
+  const io = new Server(httpServer, {
+    cors: {
+      origin: `${config.client.url}:${config.client.port}`,
+      methods: ['GET', 'POST'],
+      credentials: true,
+    },
   });
   const { default: loaders } = await import('./loaders');
-  loaders(app);
+  loaders(io);
   httpServer.listen(config.port, () => {
     Logger.info(`
       ################################################

@@ -1,3 +1,5 @@
 import { Server } from 'socket.io';
-
-export default (_app: Server) => {};
+import login from './events/login';
+export default (io: Server) => {
+  login(io);
+};

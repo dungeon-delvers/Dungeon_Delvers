@@ -5,6 +5,7 @@ import { Accept, Button } from '../gui/components/Buttons';
 import Menu from '../gui/components/Menu';
 import { InputElements } from '../gui/components/types';
 import Title from '../gui/components/Title';
+import { io } from 'socket.io-client';
 
 const menu_id = 'login_menu';
 
@@ -80,6 +81,11 @@ export default class Login extends Menu {
 
     if (response.ok) {
       const result = await response.json();
+      const socket = io(`${process.env.SERVER_URL}:${process.env.SERVER_PORT}`, {
+        query: {
+          token: result.token,
+        },
+      });
       localStorage.setItem('dd_auth', JSON.stringify(result));
       this._goToCharacterSelect();
       Object.values(INPUT_ELEMENTS).map(value => {

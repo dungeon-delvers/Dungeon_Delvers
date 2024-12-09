@@ -23,7 +23,7 @@ export default (router: Router) => {
         } else {
           try {
             passport.authenticate('LocalStrategy')(req, res, function () {
-              const token = config.jwt && jwt.sign(result, config.jwt);
+              const token = jwt.sign(result, config.jwt.secret, { algorithm: config.jwt.algorithm });
               res.status(200).json({ token, result });
             });
           } catch (error: unknown) {

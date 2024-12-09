@@ -1,3 +1,5 @@
+import { Algorithm } from 'jsonwebtoken';
+
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -17,7 +19,10 @@ export default {
     password: process.env.POSTGRES_PASSWORD,
     port: parseInt(process.env.POSTGRES_PORT as string, 10),
   },
-  jwt: process.env.JWT_SECRET,
+  jwt: {
+    secret: process.env.JWT_SECRET as string,
+    algorithm: process.env.JWT_ALGORITHM as Algorithm,
+  },
   logs: {
     level: process.env.LOG_LEVEL || 'silly',
   },

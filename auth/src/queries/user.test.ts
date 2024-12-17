@@ -1,5 +1,5 @@
 import { pool } from '../services/database/postgres';
-import { userFromUsername } from './user';
+import { userFromUsernameQuery } from './user';
 
 // auth/src/models/user.test.ts
 
@@ -19,7 +19,7 @@ describe('userFromEmail', () => {
     };
     (pool.query as jest.Mock).mockResolvedValue({ rows: [mockUser] });
 
-    const result = await userFromUsername('testuser');
+    const result = await userFromUsernameQuery('testuser');
     expect(result).toEqual(mockUser);
     expect(pool.query).toHaveBeenCalledWith({
       text: 'SELECT * FROM app_user WHERE username = $1',
@@ -30,7 +30,7 @@ describe('userFromEmail', () => {
   it('should return undefined when no user is found', async () => {
     (pool.query as jest.Mock).mockResolvedValue({ rows: [] });
 
-    const result = await userFromUsername('nonexistentuser');
+    const result = await userFromUsernameQuery('nonexistentuser');
     expect(result).toBeUndefined();
     expect(pool.query).toHaveBeenCalledWith({
       text: 'SELECT * FROM app_user WHERE username = $1',

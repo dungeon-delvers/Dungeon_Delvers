@@ -26,4 +26,7 @@ export default {
   logs: {
     level: process.env.LOG_LEVEL || 'silly',
   },
+  errorMsg: {
+    internalError: 'Internal server error',
+  },
 };

@@ -1,5 +1,6 @@
-import { Socket } from 'socket.io';
 import jwt from 'jsonwebtoken';
+import { Socket } from 'socket.io';
+
 import isAuth from './isAuth';
 
 jest.mock('jsonwebtoken');

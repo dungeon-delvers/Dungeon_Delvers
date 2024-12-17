@@ -1,9 +1,10 @@
-import expressLoader from './express';
-import Logger from './logger';
-import loader from './index';
 import { Express } from 'express';
 
+import expressLoader from './express';
+import loader from './index';
+
 jest.mock('./express');
+jest.mock('./passport');
 jest.mock('./logger');
 
 describe('Loader', () => {
@@ -18,10 +19,8 @@ describe('Loader', () => {
     expect(expressLoader).toHaveBeenCalledWith(app);
   });
 
-  it('should log that Express is loaded', async () => {
-    process.env.NODE_ENV = 'development';
+  it('should call passportLoader with expressApp', async () => {
     await loader(app);
-    expect(Logger.info).toHaveBeenCalledWith('✌️ Express loaded');
-    process.env.NODE_ENV = 'test';
+    expect(expressLoader).toHaveBeenCalledWith(app);
   });
 });

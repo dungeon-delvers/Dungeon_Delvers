@@ -1,14 +1,13 @@
 import { ArcRotateCamera, Engine, EngineFactory, Scene, Sound, Vector3 } from '@babylonjs/core';
 import '@babylonjs/core/Debug/debugLayer';
+import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
 import '@babylonjs/inspector';
 import '@babylonjs/loaders/glTF';
 
 import titleMusic from '../../public/assets/audio/title.mp3';
-
-import RegisterMenu from './menus/register';
+import CharacterMenu, { fetchPlayerCharacters } from './menus/characterSelect';
 import LoginMenu from './menus/login';
-import CharacterMenu from './menus/characterSelect';
-import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
+import RegisterMenu from './menus/register';
 
 export enum GAME_STATE {
   MAIN_MENU,
@@ -28,7 +27,7 @@ export class Game {
   private _state: GAME_STATE;
   private _menu: AdvancedDynamicTexture;
   private _main_menu_state: MAIN_MENU_STATE;
-  private _main_menu_states: Record<MAIN_MENU_STATE, () => Control>;
+  private _main_menu_states: Record<MAIN_MENU_STATE, () => Control | Promise<Control>>;
   private _scene: Scene;
   private _scenes: Record<GAME_STATE, () => Scene>;
 
@@ -50,11 +49,14 @@ export class Game {
           () => this._changeMenu(MAIN_MENU_STATE.REGISTER),
           () => this._changeMenu(MAIN_MENU_STATE.CHARACTER_SELECT),
         ),
-      [MAIN_MENU_STATE.REGISTER]: () => new RegisterMenu(() => this._changeMenu(MAIN_MENU_STATE.LOGIN)),
-      [MAIN_MENU_STATE.CHARACTER_SELECT]: () =>
-        new CharacterMenu(this._scene, () => this._changeMenu(MAIN_MENU_STATE.LOGIN)),
+      [MAIN_MENU_STATE.REGISTER]: () => new RegisterMenu(() => this._changeMenu(MAIN_MENU_STATE.CHARACTER_SELECT)),
+      [MAIN_MENU_STATE.CHARACTER_SELECT]: async () => {
+        const characters = await fetchPlayerCharacters();
+        return new CharacterMenu(this._scene, () => this._changeMenu(MAIN_MENU_STATE.LOGIN), characters);
+      },
     };
-    this._menu.addControl(this._main_menu_states[this._main_menu_state]());
+    const menuControl = await this._main_menu_states[this._main_menu_state]();
+    this._menu.addControl(menuControl);
     window.addEventListener('resize', () => {
       this._engine.resize();
     });
@@ -79,12 +81,16 @@ export class Game {
     });
   }
 
-  private _menuSetter(state: MAIN_MENU_STATE) {
+  private async _menuSetter(state: MAIN_MENU_STATE) {
     this._menu.getChildren().forEach(child => {
       child.dispose();
     });
-    this._main_menu_state = state;
-    this._menu.addControl(this._main_menu_states[state]());
+    if (this._main_menu_states[state]() instanceof Promise) {
+      const menuControl = await this._main_menu_states[state]();
+      this._menu.addControl(menuControl);
+    } else {
+      this._menu.addControl(this._main_menu_states[state]() as Control);
+    }
   }
 
   private _changeMenu(state: MAIN_MENU_STATE) {

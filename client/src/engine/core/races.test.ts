@@ -1,6 +1,6 @@
-import { Race, Races } from './races';
 import { races } from '../../content/race';
 import { ATTRIBUTES, Attributes } from './attribute';
+import { Race, Races } from './races';
 
 describe('Race class', () => {
   test.each(races)('$race class has expected data', ({ race, attributes, description }) => {

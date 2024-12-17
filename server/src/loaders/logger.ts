@@ -1,6 +1,7 @@
 import winston from 'winston';
-import config from '../config';
 import { ConsoleTransportInstance } from 'winston/lib/winston/transports';
+
+import config from '../config';
 
 const transports: ConsoleTransportInstance[] = [];
 if (process.env.NODE_ENV !== 'development') {

@@ -1,4 +1,5 @@
-import { Scene, Vector3, VertexBuffer, StandardMaterial, VertexData, GroundMesh, MeshBuilder } from '@babylonjs/core';
+import { GroundMesh, MeshBuilder, Scene, StandardMaterial, Vector3, VertexBuffer, VertexData } from '@babylonjs/core';
+
 import HeightGenerator from './heightGenerator';
 
 interface TerrainChunkInterface {

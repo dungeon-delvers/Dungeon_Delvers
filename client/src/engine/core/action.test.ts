@@ -1,8 +1,9 @@
+import { actions } from '../../content/actions';
+import { MonsterType } from '../../content/monsters';
+import { Action, ActionResult, FAILED, NOT_DONE, SUCCEEDED } from './action';
 import { Actor } from './actor';
 import { ATTRIBUTES, Attributes } from './attribute';
-import { Action, ActionResult, SUCCEEDED, FAILED, NOT_DONE } from './action';
-import { MonsterType } from '../../content/monsters';
-import { actions } from '../../content/actions';
+
 const actor = new Actor(
   'hero',
   new Attributes({

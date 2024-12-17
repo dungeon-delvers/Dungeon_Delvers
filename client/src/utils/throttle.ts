@@ -1,16 +1,13 @@
-export default <T extends unknown[]>(
-  callback: (...args: T) => void,
-  delay: number,
-) => {
+export default <T extends unknown[]>(callback: (...args: T) => void, delay: number) => {
   let isWaiting = false;
-  console.log(callback)
+  console.log(callback);
   return (...args: T) => {
     if (isWaiting) {
       return;
     }
     callback(...args);
     isWaiting = true;
- 
+
     setTimeout(() => {
       isWaiting = false;
     }, delay);

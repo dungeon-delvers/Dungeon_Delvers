@@ -5,3 +5,4 @@ process.env.POSTGRES_DB = 'test-db';
 process.env.POSTGRES_PASSWORD = 'test-password';
 process.env.POSTGRES_PORT = 5454;
 process.env.JWT_SECRET = 'TEST_JWT_SECRET';
+process.env.JWT_ALGORITHM = 'HS256';

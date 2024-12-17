@@ -4,6 +4,7 @@
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "lib": ["ES2017", "dom"],
+    "types": ["node", "./types"],
     "outDir": "./dist"
   }
 }

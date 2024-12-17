@@ -1,4 +1,5 @@
 import { Mesh, Scene, StandardMaterial, Vector3, VertexData } from '@babylonjs/core';
+
 import { rooms } from './dungeon_modules.json';
 
 export type RoomKeys = keyof typeof rooms;

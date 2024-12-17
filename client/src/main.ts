@@ -1,4 +1,5 @@
 import { Game } from './engine';
+
 const fontName = 'Goudy Bookletter';
 new FontFace(
   fontName,

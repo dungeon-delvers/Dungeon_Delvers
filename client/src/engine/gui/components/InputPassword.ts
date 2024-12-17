@@ -1,4 +1,5 @@
 import { InputPassword } from '@babylonjs/gui';
+
 import { colors } from './colors';
 
 type InputPasswordOptions = {

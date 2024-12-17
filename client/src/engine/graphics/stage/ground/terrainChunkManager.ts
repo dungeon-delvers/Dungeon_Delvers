@@ -1,8 +1,9 @@
 import { Color3, Scene, StandardMaterial, Texture, TransformNode, Vector2, Vector3 } from '@babylonjs/core';
+
 import NoiseGenerator from '../../../../../lib/noise';
+import ground from '../../../../../public/assets/textures/ground.jpg';
 import HeightGenerator from './heightGenerator';
 import TerrainChunk from './terrainChunk';
-import ground from '../../../../../public/assets/textures/ground.jpg';
 
 interface Chunk {
   chunk: TerrainChunk;

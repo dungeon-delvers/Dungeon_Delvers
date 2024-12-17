@@ -1,11 +1,10 @@
-import InputText from '../gui/components/InputText';
-import InputPassword from '../gui/components/InputPassword';
-import Label from '../gui/components/Label';
 import { Accept, Button } from '../gui/components/Buttons';
+import InputPassword from '../gui/components/InputPassword';
+import InputText from '../gui/components/InputText';
+import Label from '../gui/components/Label';
 import Menu from '../gui/components/Menu';
-import { InputElements } from '../gui/components/types';
 import Title from '../gui/components/Title';
-import { io } from 'socket.io-client';
+import { InputElements } from '../gui/components/types';
 
 const menu_id = 'login_menu';
 
@@ -23,7 +22,7 @@ const LOGIN = `${menu_id}_login_button`;
 const REGISTER = `${menu_id}_cancel_button`;
 
 export default class Login extends Menu {
-  _goToCharacterSelect: () => void;
+  private _goToCharacterSelect: () => void;
   _shouldLogin: boolean = false;
   private _loginFormElements = {
     [TITLE]: new Title(TITLE, 'Dungeon Delvers'),
@@ -81,11 +80,11 @@ export default class Login extends Menu {
 
     if (response.ok) {
       const result = await response.json();
-      const socket = io(`${process.env.SERVER_URL}:${process.env.SERVER_PORT}`, {
-        query: {
-          token: result.token,
-        },
-      });
+      // const socket = io(`${process.env.SERVER_URL}:${process.env.SERVER_PORT}`, {
+      //   query: {
+      //     token: result.token,
+      //   },
+      // });
       localStorage.setItem('dd_auth', JSON.stringify(result));
       this._goToCharacterSelect();
       Object.values(INPUT_ELEMENTS).map(value => {
@@ -96,7 +95,6 @@ export default class Login extends Menu {
       });
     } else {
       const { message } = await response.json();
-      console.log(message);
       const error = new Error(message);
       error.name = 'LOGIN_ERROR';
       this.renderError(error);

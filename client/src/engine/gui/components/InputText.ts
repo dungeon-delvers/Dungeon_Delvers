@@ -1,4 +1,5 @@
 import { InputText } from '@babylonjs/gui';
+
 import { colors } from './colors';
 
 type InputTextOptions = {
@@ -35,6 +36,5 @@ export default class StyledInputText extends InputText {
       this.background = colors.gray.background;
       this.color = colors.white.primary;
     });
-    this.isFocusInvisible = true;
   }
 }

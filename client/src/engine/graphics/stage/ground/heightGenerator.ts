@@ -1,7 +1,7 @@
 import { Vector2 } from '@babylonjs/core';
 
-import NoiseGenerator from '../../../../../lib/noise';
 import { sat } from '../../../../../lib/math';
+import NoiseGenerator from '../../../../../lib/noise';
 
 class HeightGenerator {
   private radius: Array<number>;

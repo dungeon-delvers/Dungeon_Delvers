@@ -11,8 +11,9 @@ import {
   TransformNode,
   Vector3,
 } from '@babylonjs/core';
-import { InputManager } from '../../core/inputManager';
 import { AdvancedDynamicTexture, TextBlock } from '@babylonjs/gui';
+
+import { InputManager } from '../../core/inputManager';
 
 export class Actor extends TransformNode {
   private _mesh: AbstractMesh;

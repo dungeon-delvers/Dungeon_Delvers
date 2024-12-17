@@ -1,7 +1,8 @@
 import { Button, Control, InputPassword, InputText, Rectangle, StackPanel, TextBlock } from '@babylonjs/gui';
-import { colors } from './colors';
-import { Cancel } from './Buttons';
 import { StringTools } from '@babylonjs/inspector/stringTools';
+
+import { Cancel } from './Buttons';
+import { colors } from './colors';
 
 export default class Menu extends StackPanel {
   private _error: StackPanel | null = null;
@@ -9,7 +10,6 @@ export default class Menu extends StackPanel {
   private _menuId: StringTools;
   private _tabIndexes: string[] = [];
   private _tabIndex: number = 1;
-  _goToCharacterSelect: () => void;
   constructor(
     menu_id: string,
     options: {

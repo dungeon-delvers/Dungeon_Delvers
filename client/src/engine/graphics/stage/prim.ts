@@ -1,4 +1,5 @@
 import { Vector3 } from '@babylonjs/core';
+
 import { Room } from '../../content/stage';
 
 export class Prim {

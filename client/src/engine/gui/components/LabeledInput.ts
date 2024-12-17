@@ -1,4 +1,5 @@
 import { InputText } from '@babylonjs/gui';
+
 import Label from './Label';
 
 export default class LabeledInput {

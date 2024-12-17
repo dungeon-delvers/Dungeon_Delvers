@@ -1,4 +1,5 @@
 import { Button, TextBlock } from '@babylonjs/gui';
+
 import { colors } from '../colors';
 
 type ButtonOptions = {
@@ -54,5 +55,8 @@ export default class StyledButton extends Button {
         this._onClick();
       }
     });
+  }
+  set text(text: string) {
+    this._text.text = text;
   }
 }

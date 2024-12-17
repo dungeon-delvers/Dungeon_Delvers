@@ -1,10 +1,10 @@
-import InputText from '../gui/components/InputText';
-import InputPassword from '../gui/components/InputPassword';
-import Label from '../gui/components/Label';
 import { Accept, Button, Cancel } from '../gui/components/Buttons';
-import { colors } from '../gui/components/colors';
+import InputPassword from '../gui/components/InputPassword';
+import InputText from '../gui/components/InputText';
+import Label from '../gui/components/Label';
 import Menu from '../gui/components/Menu';
 import Title from '../gui/components/Title';
+import { colors } from '../gui/components/colors';
 
 const menu_id = 'register_menu';
 
@@ -39,13 +39,13 @@ export default class Register extends Menu {
     [REGISTER]: new Accept(REGISTER, 'Register'),
     [CANCEL]: new Cancel(CANCEL, 'Cancel'),
   };
-  private _goToLogin: () => void;
-  constructor(goToLogin: () => void) {
+  private _goToCharacterSelect: () => void;
+  constructor(goToCharacterSelect: () => void) {
     super(menu_id, {
       width: '25%',
       height: '650px',
     });
-    this._goToLogin = goToLogin;
+    this._goToCharacterSelect = goToCharacterSelect;
     this.formElements = this._registerFormElements;
     Object.values(INPUT_ELEMENTS).map(value => {
       const input = this.formElements[value];
@@ -64,7 +64,7 @@ export default class Register extends Menu {
       this.register();
     };
     (this.formElements[CANCEL] as Button).onClick = () => {
-      _goToLogin();
+      this._goToCharacterSelect();
     };
   }
   private validateInputs() {
@@ -96,13 +96,14 @@ export default class Register extends Menu {
           email: this._registerFormElements[INPUT_ELEMENTS.EMAIL].text,
           username: this._registerFormElements[INPUT_ELEMENTS.USERNAME].text,
           password: this._registerFormElements[INPUT_ELEMENTS.PASSWORD].text,
-          passwordRepeat: this._registerFormElements[INPUT_ELEMENTS.CONFIRMATION].text,
         }),
       },
     );
 
     if (response.ok) {
-      this._goToLogin();
+      const result = await response.json();
+      localStorage.setItem('dd_auth', JSON.stringify(result));
+      this._goToCharacterSelect();
     }
     if (response.status === 409) {
       const data = await response.json();

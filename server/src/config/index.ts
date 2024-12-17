@@ -1,3 +1,5 @@
+import { Algorithm } from 'jsonwebtoken';
+
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const testConfig = {
@@ -30,7 +32,10 @@ const deaultConfig = {
     password: process.env.POSTGRES_PASSWORD,
     port: parseInt(process.env.POSTGRES_PORT as string, 10),
   },
-  jwt: process.env.JWT_SECRET as string,
+  jwt: {
+    algorithm: process.env.JWT_ALGORITHM as Algorithm,
+    secret: process.env.JWT_SECRET as string,
+  },
   logs: {
     level: process.env.LOG_LEVEL || 'silly',
   },

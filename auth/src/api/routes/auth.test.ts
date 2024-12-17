@@ -1,113 +1,145 @@
 import express from 'express';
 import request from 'supertest';
-import bcrypt from 'bcrypt';
-import { pool } from '../../services/database/postgres';
-import authRoutes from './auth';
 
-jest.mock('../../services/database/postgres', () => ({
+import loaders from '@/loaders';
+import * as userQueries from '@/queries/user';
+import { generatePasswordHash, generateToken, signup } from '@/services/auth';
+
+jest.mock('@/services/database/postgres', () => ({
   pool: {
     query: jest.fn(),
   },
 }));
 
-const userModel = {
-  createUser: jest.fn(),
-  generatePasswordHash: jest.fn(),
-  userFromUsername: jest.fn(),
-  userFromEmail: jest.fn(),
-  loginUser: jest.fn(),
-  verifyPassword: jest.fn(),
-};
-const validateUser = jest.fn();
+jest.mock('@/services/auth', () => ({
+  ...jest.requireActual('@/services/auth'),
+  generateToken: jest.fn(),
+  signup: jest.fn(),
+}));
+
+jest.mock('@/queries/user', () => ({
+  createUserQuery: jest.fn(),
+  userFromUsernameQuery: jest.fn(),
+  loginUserQuery: jest.fn(),
+  logoutUserQuery: jest.fn(),
+}));
 
 describe('Auth Routes', () => {
   let app: express.Application;
-
-  beforeEach(async () => {
+  beforeEach(() => {
     app = express();
-    app.use(express.json());
-    const { default: loaders } = await import('../../loaders');
     loaders(app);
-    const router = express.Router();
-    authRoutes(router);
-    app.use(router);
-    jest.mock('../../models/user', () => ({
-      userModel,
-    }));
-    jest.mock('../../models/validation', () => ({
-      validateUser: jest.fn(),
-    }));
   });
-
   afterEach(() => {
     jest.clearAllMocks();
   });
   describe('POST /login', () => {
-    it('should authenticate user and return 201 status', async () => {
-      (pool.query as jest.Mock).mockResolvedValue({
-        rows: [
-          {
-            id: 1,
-            username: 'loginuser',
-            password_hash: await bcrypt.hash('password', 10),
-            email: 'loginuser@example.com',
-          },
-        ],
+    it('should authenticate user', async () => {
+      (userQueries.userFromUsernameQuery as jest.Mock).mockResolvedValueOnce({
+        id: 1,
+        email: 'testuser@example.com',
+        password_hash: await generatePasswordHash('password'),
+        username: 'testuser',
+        role: 'USER',
+        loggedin: true,
+        currentCharacterId: null,
+        createdAt: '2022-01-01',
+        updatedAt: '2022-01-01',
       });
-      const response = await request(app).post('/login').send({ username: 'testuser', password: 'password' });
+      (generateToken as jest.Mock).mockResolvedValueOnce('token');
+      const response = await request(app).post('/api/login').send({ username: 'testuser', password: 'password' });
       expect(response.status).toBe(200);
-      expect(response.body.token).toBeTruthy();
-      expect(response.body.result.id).toStrictEqual(1);
-      expect(response.body.result.username).toStrictEqual('loginuser');
-      expect(response.body.result.email).toStrictEqual('loginuser@example.com');
+      expect(response.body).toEqual({ token: 'token' });
+    });
+
+    it('should return validation error for invalid input', async () => {
+      (userQueries.userFromUsernameQuery as jest.Mock).mockResolvedValueOnce(null);
+      const response = await request(app).post('/api/login').send({ username: 'invalid-user', password: 'password' });
+
+      expect(response.status).toBe(401);
+      expect(response.body).toEqual({ error: 'Invalid username or password' });
+    });
+
+    it('should handle errors during login', async () => {
+      (userQueries.userFromUsernameQuery as jest.Mock).mockRejectedValueOnce(new Error('Database error'));
+      const response = await request(app).post('/api/login').send({ username: 'testuser', password: 'password' });
+
+      expect(response.status).toBe(500);
+    });
+  });
+
+  describe('POST /logout', () => {
+    it('should logout user', async () => {
+      (userQueries.logoutUserQuery as jest.Mock).mockResolvedValueOnce({
+        id: 1,
+        email: 'testuser@example.com',
+        password_hash: await generatePasswordHash('password'),
+        username: 'testuser',
+        role: 'USER',
+        loggedin: false,
+        currentCharacterId: null,
+        createdAt: '2022-01-01',
+        updatedAt: '2022-01-01',
+      });
+      const response = await request(app).post('/api/logout').send({ id: 1 });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({ message: 'User logged out' });
+    });
+
+    it('should return validation error for invalid input', async () => {
+      const response = await request(app).post('/api/logout').send({ id: 'invalid-id' });
+
+      expect(response.status).toBe(500);
+    });
+
+    it('should handle errors during logout', async () => {
+      (userQueries.logoutUserQuery as jest.Mock).mockRejectedValueOnce(new Error('Database error'));
+      const response = await request(app).post('/api/logout').send({ id: 1 });
+
+      expect(response.status).toBe(500);
     });
   });
 
   describe('POST /signup', () => {
-    it('should create a new user and return 201 status', async () => {
-      (pool.query as jest.Mock).mockResolvedValueOnce({
-        command: 'INSERT',
-        rowCount: 1,
-        oid: 0,
-        rows: [],
-        fields: [],
-      });
-      (pool.query as jest.Mock).mockResolvedValue({ rows: [] });
-      (pool.query as jest.Mock).mockResolvedValue({ rows: [] });
-      const response = await request(app).post('/signup').send({
-        email: 'registeruserpasses@example.com',
-        username: 'registeruserpasses',
-        password: 'password',
-        passwordRepeat: 'password',
-      });
-      expect(response.status).toBe(201);
-      expect(response.body.message).toBe('User created');
-    });
+    it('should signup user', async () => {
+      const user = {
+        id: 1,
+        email: 'testuser@example.com',
+        password_hash: await generatePasswordHash('password'),
+        username: 'testuser',
+        role: 'USER',
+        loggedin: false,
+        currentCharacterId: null,
+        createdAt: '2022-01-01',
+        updatedAt: '2022-01-01',
+      };
 
-    it('should return 400 status for invalid user data', async () => {
-      validateUser.mockReturnValue({ error: { message: 'Invalid data' } });
+      (userQueries.createUserQuery as jest.Mock).mockResolvedValueOnce(user);
+      (signup as jest.Mock).mockResolvedValueOnce({ user, token: 'token' });
 
       const response = await request(app)
-        .post('/signup')
-        .send({ email: 'registeruserfails', username: '', password: 'password' });
-
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe('"email" must be a valid email');
+        .post('/api/signup')
+        .send({ email: 'testuser@example.com', username: 'testuser', password: 'password' });
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({ token: 'token' });
     });
 
-    it('should return 400 status if user creation fails', async () => {
-      validateUser.mockReturnValue({ error: null });
-      userModel.generatePasswordHash.mockResolvedValue('hashedpassword');
-      userModel.createUser.mockResolvedValue(false);
+    it('should return validation error for invalid input', async () => {
+      const response = await request(app).post('/api/signup').send({ username: 'testuser', password: 'password' });
 
-      const response = await request(app).post('/signup').send({
-        email: 'resigeruserfails@example.com',
-        username: 'registeruserfails',
+      expect(response.status).toBe(500);
+    });
+
+    it('should handle errors during signup', async () => {
+      (userQueries.createUserQuery as jest.Mock).mockRejectedValueOnce(new Error('Database error'));
+      const response = await request(app).post('/api/signup').send({
+        email: 'testuser@example.com',
         password: 'password',
+        username: 'testuser',
       });
 
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe('"passwordRepeat" is required');
+      expect(response.status).toBe(500);
     });
   });
 });

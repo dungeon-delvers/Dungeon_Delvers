@@ -1,92 +1,78 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Joi, celebrate } from 'celebrate';
+import { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
-import jwt from 'jsonwebtoken';
-import {
-  createUser,
-  generatePasswordHash,
-  loginUser,
-  logoutUser,
-  userFromEmail,
-  userFromUsername,
-} from '../../models/user';
-import { validateUser } from '../../models/validation';
-import config from '../../config';
+
+import { IUser } from '@/interfaces/IUser';
+import Logger from '@/loaders/logger';
+import { generateToken, logout, signup } from '@/services/auth';
 
 export default (router: Router) => {
-  router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
-    const result = await loginUser(req.body.username, req.body.password);
-    if (result) {
-      delete result.password_hash;
-      req.login(result, { session: false }, async err => {
-        if (err) {
-          next(err);
+  router.post(
+    '/login',
+    celebrate({ body: { username: Joi.string(), password: Joi.string() } }),
+    async (req: Request, res: Response, next) => {
+      passport.authenticate('local', { session: false }, (error: Error | null, user: IUser) => {
+        if (error) {
+          Logger.error(error);
+          next(error);
+          return;
+        }
+        if (!user) {
+          res.status(401).json({ error: 'Invalid username or password' });
+          return;
+        }
+        req.login(user, { session: false }, async loginError => {
+          if (loginError) {
+            Logger.error(loginError);
+            next(loginError);
+            return;
+          }
+          const token = await generateToken(user);
+          res.status(200).json({ token });
+        });
+      })(req, res);
+    },
+  );
+  router.post(
+    '/logout',
+    celebrate({ body: { id: Joi.number().required() } }),
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        await logout(req.body.id);
+        res.status(200).json({ message: 'User logged out' });
+      } catch (error: unknown) {
+        Logger.error(error);
+        next(error);
+      }
+    },
+  );
+
+  router.post(
+    '/signup',
+    celebrate({
+      body: {
+        email: Joi.string().email().required(),
+        username: Joi.string().required(),
+        password: Joi.string().required(),
+      },
+    }),
+    async (req: Request, res: Response, next) => {
+      try {
+        const { token } = await signup(req.body.email, req.body.username, req.body.password);
+        if (!token) {
+          res.status(500).json({ error: 'User not created' });
+          return;
+        }
+        res.status(200).json({ token });
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          next(error);
         } else {
-          try {
-            passport.authenticate('LocalStrategy')(req, res, function () {
-              const token = jwt.sign(result, config.jwt.secret, { algorithm: config.jwt.algorithm });
-              res.status(200).json({ token, result });
-            });
-          } catch (error: unknown) {
-            if (error instanceof Error) {
-              res.status(400).json({
-                message: error.message,
-              });
-            } else {
-              throw new Error(
-                'Encountered unexpected error when trying to return error, might not have been an Error thrown.',
-              );
-            }
-          }
-        }
-      });
-    } else {
-      res.status(400).json({ message: 'Incorrect username or password.' });
-    }
-  });
-  router.post('/logout', async (req: Request, res: Response, next: NextFunction) => {
-    const result = await logoutUser(req.body.id);
-    req.logOut({ keepSessionInfo: false }, async err => {
-      if (err) {
-        next(err);
-      } else {
-        try {
-          res.status(200).json(result);
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            res.status(400).json({
-              message: error.message,
-            });
-          } else {
-            throw new Error(
-              'Encountered unexpected error when trying to return error, might not have been an Error thrown.',
-            );
-          }
+          throw new Error(
+            'Encountered unexpected error when trying to return error, might not have been an Error thrown.',
+          );
         }
       }
-    });
-  });
-  router.post('/signup', async (req: Request, res: Response) => {
-    const validateUserResponse = validateUser(req.body);
-    const { error } = validateUserResponse;
-    if (error) {
-      res.status(400).json({ message: error.message });
-    } else {
-      const { email, username, password } = req.body;
-      const emailExists = await userFromEmail(email);
-      if (emailExists) {
-        res.status(409).json({ message: 'Email already exists' });
-      }
-      const usernameExists = await userFromUsername(username);
-      if (usernameExists) {
-        res.status(409).json({ message: 'Username already exists' });
-      }
-      const passwordHash = await generatePasswordHash(password);
-      const createUserResult = await createUser(email, passwordHash, username);
-      if (createUserResult) {
-        res.status(201).json({ message: 'User created' });
-      } else {
-        res.status(400).json({ message: 'User not created' });
-      }
-    }
-  });
+    },
+  );
 };

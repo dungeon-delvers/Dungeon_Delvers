@@ -1,7 +1,8 @@
 import { Server } from 'socket.io';
-import socketLoader from './socket';
+
 import loaders from './index';
 import Logger from './logger';
+import socketLoader from './socket';
 
 jest.mock('socket.io');
 jest.mock('./socket');

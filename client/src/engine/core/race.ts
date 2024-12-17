@@ -1,5 +1,5 @@
-import { ATTRIBUTES, Attributes } from './attribute';
 import { races } from '../../content/race';
+import { ATTRIBUTES, Attributes } from './attribute';
 
 export type RaceType = (typeof races)[number]['race'];
 

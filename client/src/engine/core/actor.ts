@@ -1,5 +1,5 @@
-import { ATTRIBUTES, Attributes } from './attribute';
 import { MonsterType } from '../../content/monsters';
+import { ATTRIBUTES, Attributes } from './attribute';
 
 const MOD_ACCURACY = 0.01;
 const MOD_ACTION_SPEED = 0.03;

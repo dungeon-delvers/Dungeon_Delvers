@@ -1,7 +1,12 @@
-import { ATTRIBUTES, Attributes } from './attribute';
 import { races } from '../../content/race';
+import { ATTRIBUTES, Attributes } from './attribute';
 
 export type RaceName = (typeof races)[number]['race'];
+
+export const raceArray = races.reduce<RaceName[]>((accumulator, raceData) => {
+  const raceName = raceData.race as RaceName;
+  return [...accumulator, raceName];
+}, []);
 
 export class Race {
   private _name: RaceName;

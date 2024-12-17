@@ -1,4 +1,5 @@
 import { Server } from 'socket.io';
+
 import isAuth from '../api/middlewares/isAuth';
 import socketLoader from './socket';
 

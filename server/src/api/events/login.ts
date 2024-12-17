@@ -1,4 +1,5 @@
 import { Server } from 'socket.io';
+
 import LoggerInstance from '../../loaders/logger';
 
 export default (io: Server) => {

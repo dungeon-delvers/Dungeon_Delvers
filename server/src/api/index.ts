@@ -1,5 +1,7 @@
 import { Server } from 'socket.io';
+
 import login from './events/login';
-export default (io: Server) => {
+
+export const events = (io: Server) => {
   login(io);
 };

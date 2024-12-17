@@ -1,4 +1,5 @@
 import { AbstractMesh, Scene, SceneLoader } from '@babylonjs/core';
+
 import dungeonAssets from '../../../../public/assets/models/dungeon_assets.glb';
 import { DungeonGenerator } from './dungeon_generator';
 

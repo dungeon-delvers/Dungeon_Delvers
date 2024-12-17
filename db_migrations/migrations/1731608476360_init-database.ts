@@ -2,6 +2,7 @@ import { MigrationBuilder } from 'node-pg-migrate'
 
 export async function up(pgm: MigrationBuilder): Promise<void> {
   pgm.createType('user_role', ['ADMIN', 'BANNED', 'USER'])
+  pgm.createType('gender', ['MALE', 'FEMALE'])
   pgm.createType('class', ['FIGHTER', 'MAGE', 'SCOUT', 'HEALER'])
   pgm.createType('race', ['HUMAN', 'GOBLIN', 'DWARF', 'ORC'])
   pgm.createType('npc_type', [
@@ -92,9 +93,9 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
   })
   pgm.createTable('app_user', {
     id: 'id',
-    email: { type: 'varchar(300)', notNull: true },
+    email: { type: 'varchar(300)', notNull: true, unique: true },
     password_hash: { type: 'varchar(300)', notNull: true },
-    username: { type: 'varchar(300)', notNull: true },
+    username: { type: 'varchar(300)', notNull: true, unique: true },
     role: { type: 'user_role', notNull: true, default: 'USER' },
     loggedin: { type: 'boolean', notNull: true, default: false },
     currentCharacterId: { type: 'integer' },
@@ -180,8 +181,11 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
   pgm.createTable('player_character', {
     id: 'id',
     user_id: { type: 'integer', notNull: true },
+    logged_in: { type: 'boolean', notNull: true, default: false },
     name: { type: 'varchar(300)', notNull: true },
     surname: { type: 'varchar(300)' },
+    race: { type: 'race', notNull: true },
+    gender: { type: 'gender', notNull: true },
     class: { type: 'class', notNull: true },
     con: { type: 'integer', notNull: true },
     dex: { type: 'integer', notNull: true },

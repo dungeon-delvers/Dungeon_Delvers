@@ -11,6 +11,7 @@ import {
 } from '@babylonjs/core';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { SkyMaterial } from '@babylonjs/materials';
+
 import StarboxBack from '../../../../public/assets/textures/skybox/Starbox_back6.jpg';
 import StarboxBottom from '../../../../public/assets/textures/skybox/Starbox_bottom4.jpg';
 import StarboxFront from '../../../../public/assets/textures/skybox/Starbox_front5.jpg';

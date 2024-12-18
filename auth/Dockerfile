@@ -14,4 +14,4 @@ EXPOSE 4000
 
 USER node
 
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start"]

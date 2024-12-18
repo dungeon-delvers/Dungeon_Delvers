@@ -12,6 +12,8 @@ services:
       - db_data:/var/lib/postgresql/data
   db_migrations:
     build: db_migrations
+    links:
+      - db
     depends_on:
       - db
     env_file:

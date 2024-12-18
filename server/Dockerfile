@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 4002
 
 # Start the Node.js server
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start"]

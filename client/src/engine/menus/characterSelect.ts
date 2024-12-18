@@ -56,7 +56,7 @@ type CharactersCreationSettings = {
 export default class CharacterSelect extends Menu {
   private _camera: FollowCamera;
   private _characterSettings: CharactersCreationSettings;
-  private _clickHandlers: Record<CHARACTER_ELEMENTS, () => void | null> = {
+  private _clickHandlers: Record<CHARACTER_ELEMENTS, null | (() => void)> = {
     [CHARACTER_ELEMENTS.CHARACTER_1]: null,
     [CHARACTER_ELEMENTS.CHARACTER_2]: null,
     [CHARACTER_ELEMENTS.CHARACTER_3]: null,

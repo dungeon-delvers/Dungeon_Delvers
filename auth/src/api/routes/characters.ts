@@ -1,4 +1,4 @@
-import { createCharacter, getCharacters } from '@/services/player_character';
+import { createCharacter, getCharacters } from '@/services/playerCharacter';
 import { Request, Response, Router } from 'express';
 import passport from 'passport';
 
@@ -16,7 +16,6 @@ export default (app: Router) => {
     passport.authenticate('jwt', { session: false }),
     async (req: Request, res: Response) => {
       if (req.user) {
-        const user = req.user;
         res.status(200).json({ character: await createCharacter(req.user.id, req.body) });
       } else {
         res.status(401).json({ error: 'Unauthorized' });

@@ -1,5 +1,5 @@
-import isAuth from './isAuth';
+import { isAuthSocket } from './isAuth';
 
 export default {
-  isAuth,
+  isAuthSocket,
 };

@@ -13,6 +13,8 @@ describe('createRouter', () => {
   it('should create a router and configure auth routes', () => {
     const mockRouter = {
       use: jest.fn(),
+      get: jest.fn(),
+      post: jest.fn(),
     };
     (Router as jest.Mock).mockReturnValue(mockRouter);
 

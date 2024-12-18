@@ -10,11 +10,15 @@
   "description": "Online 3D Fantasy RPG MMO made with BabylonJS",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build --ws",
+    "build:auth": "npm run build --workspace=auth",
+    "build:client": "npm run build --workspace=client",
+    "build:server": "npm run build --workspace=server",
     "clean": "concurrently \"npm run clean --ws\" \"rm -rf ./node_modules package-lock.json .parcel-cache\"",
     "deploy-demo": "npm run deploy-demo --workspace=client",
     "start": "docker compose up --build --watch",
-    "test": "npm run test -ws"
+    "test:auth": "npm run test  --workspace=auth",
+    "test:client": "npm run test  --workspace=client",
+    "test:server": "npm run test  --workspace=server"
   },
   "keywords": [
     "BabylonJS",
@@ -32,6 +36,7 @@
     "@trivago/prettier-plugin-sort-imports": "^5.2.0",
     "@types/jest": "^29.5.14",
     "@typescript-eslint/parser": "^8.18.0",
+    "@zerollup/ts-transform-paths": "^1.7.18",
     "buffer": "^6.0.3",
     "concurrently": "^9.0.1",
     "eslint": "^9.15.0",

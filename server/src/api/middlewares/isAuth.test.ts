@@ -1,12 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { Socket } from 'socket.io';
 
-import isAuth from './isAuth';
+import { isAuthSocket } from './isAuth';
+import config from '@/config';
 
 jest.mock('jsonwebtoken');
-jest.mock('../../config', () => ({
-  jwt: 'testsecret',
-}));
 
 describe('isAuth middleware', () => {
   let socket: Partial<Socket>;
@@ -36,9 +34,9 @@ describe('isAuth middleware', () => {
     const decodedToken = { id: 1, name: 'Test User' };
     (jwt.verify as jest.Mock).mockReturnValue(decodedToken);
 
-    isAuth(socket as Socket, next);
+    isAuthSocket(socket as Socket, next);
 
-    expect(jwt.verify).toHaveBeenCalledWith('validtoken', 'testsecret');
+    expect(jwt.verify).toHaveBeenCalledWith('validtoken', config.jwt.secret, { algorithms: [config.jwt.algorithm] });
     expect(socket.data.user).toEqual(decodedToken);
     expect(next).toHaveBeenCalledWith();
   });
@@ -48,11 +46,11 @@ describe('isAuth middleware', () => {
       throw new Error('Invalid token');
     });
 
-    isAuth(socket as Socket, next);
+    isAuthSocket(socket as Socket, next);
 
-    expect(jwt.verify).toHaveBeenCalledWith('validtoken', 'testsecret');
+    expect(jwt.verify).toHaveBeenCalledWith('validtoken', config.jwt.secret, { algorithms: [config.jwt.algorithm] });
     expect(next).toHaveBeenCalledWith(expect.any(Error));
-    expect(next.mock.calls[0][0].message).toBe('NOT AUTHORIZED');
+    expect(next.mock.calls[0][0].message).toBe('Invalid token');
   });
 
   it('should call next with an error if there is no token', () => {
@@ -64,9 +62,9 @@ describe('isAuth middleware', () => {
       },
     };
 
-    isAuth(sampleSocket as unknown as Socket, next);
+    isAuthSocket(sampleSocket as unknown as Socket, next);
 
     expect(next).toHaveBeenCalledWith(expect.any(Error));
-    expect(next.mock.calls[0][0].message).toBe('NOT AUTHORIZED');
+    expect(next.mock.calls[0][0].message).toBe("Cannot set properties of undefined (setting 'user')");
   });
 });

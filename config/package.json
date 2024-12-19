@@ -14,5 +14,8 @@
   "license": "ISC",
   "peerDependencies": {
     "eslint": ">= 9"
+  },
+  "devDependencies": {
+    "typescript-eslint": "^8.18.1"
   }
 }

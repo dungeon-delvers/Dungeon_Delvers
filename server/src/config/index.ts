@@ -2,17 +2,8 @@ import { Algorithm } from 'jsonwebtoken';
 
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-const testConfig = {
-  port: 8000,
-  database: {
-    user: 'test',
-    host: 'localhost',
-    database: 'test',
-    password: 'T3$T',
-    port: 5454,
-  },
-};
-const deaultConfig = {
+
+export default {
   env: process.env.NODE_ENV,
   api: {
     prefix: '/api',
@@ -22,7 +13,7 @@ const deaultConfig = {
    */
   port: parseInt(process.env.SERVER_PORT as string, 10),
   client: {
-    url: process.env.CLIENT_URL,
+    url: process.env.CLIENT_HOST,
     port: parseInt(process.env.CLIENT_PORT as string, 10),
   },
   database: {
@@ -40,5 +31,3 @@ const deaultConfig = {
     level: process.env.LOG_LEVEL || 'silly',
   },
 };
-
-export default process.env.NODE_ENV === 'test' ? { ...deaultConfig, ...testConfig } : deaultConfig;

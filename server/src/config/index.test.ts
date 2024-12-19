@@ -7,15 +7,22 @@ describe('Config', () => {
       api: {
         prefix: '/api',
       },
-      port: 8000,
+      client: {
+        url: 'http://localhost',
+        port: 3000,
+      },
+      port: 8080,
       database: {
-        user: 'test',
-        host: 'localhost',
-        database: 'test',
-        password: 'T3$T',
+        user: 'test_user',
+        host: 'test-host',
+        database: 'test-db',
+        password: 'test-password',
         port: 5454,
       },
-      jwt: 'TEST_JWT_SECRET',
+      jwt: {
+        algorithm: 'HS256',
+        secret: 'TEST_JWT_SECRET',
+      },
       logs: {
         level: 'silly',
       },

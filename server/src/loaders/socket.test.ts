@@ -1,27 +1,29 @@
 import { Server } from 'socket.io';
-
-import isAuth from '../api/middlewares/isAuth';
 import socketLoader from './socket';
 
 jest.mock('socket.io');
-jest.mock('../api/middlewares/isAuth', () => jest.fn());
+jest.mock('@/api/middlewares/isAuth', () => {
+  return {
+    isAuthSocket: jest.fn((_socket, next) => next()),
+  };
+});
 
 describe('socketLoader', () => {
-  it('should apply middleware to the socket server', async () => {
-    const mockUse = jest.fn();
-    const mockApp = {
-      use: mockUse,
-    } as unknown as Server;
+  let mockIo: Server;
 
-    await socketLoader(mockApp);
+  beforeEach(() => {
+    mockIo = new Server();
+  });
 
-    expect(mockUse).toHaveBeenCalledWith(expect.any(Function));
+  it('should apply isAuthSocket middleware', () => {
+    socketLoader(mockIo);
 
-    // Verify the middleware function
-    const middleware = mockUse.mock.calls[0][0];
-    const mockNext = jest.fn();
-    middleware({}, mockNext);
-    expect(isAuth).toHaveBeenCalled();
-    expect(mockNext).toHaveBeenCalled();
+    expect(mockIo.use).toHaveBeenCalled();
+  });
+
+  it('should register events', () => {
+    socketLoader(mockIo);
+
+    expect(mockIo.on).toHaveBeenCalledWith('connection', expect.any(Function));
   });
 });

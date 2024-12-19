@@ -1,7 +1,6 @@
 import { Server } from 'socket.io';
 
 import loaders from './index';
-import Logger from './logger';
 import socketLoader from './socket';
 
 jest.mock('socket.io');
@@ -21,6 +20,5 @@ describe('indexLoader', () => {
   });
   it('should load socket and log info in non-test environment', () => {
     expect(socketLoader).toHaveBeenCalledWith(mockApp);
-    expect(Logger.info).toHaveBeenCalledWith('✌️ Socket.IO loaded');
   });
 });

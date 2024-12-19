@@ -1,7 +1,7 @@
 {
   "extends": "@dungeon-delvers/config/tsconfig.json",
-  "include": ["src/**/*.ts", "../auth/src/api/routes/characters.ts", "../auth/src/queries/playerCharacter.ts"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"],
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "outDir": "./dist",
     "paths": {

@@ -19,7 +19,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::127214155671:role/dungeon-delvers-github-actions-role
-          aws-region: aws-region-1
+          aws-region: us-east-1
 
       - name: Log in to Amazon ECR
         id: login-ecr

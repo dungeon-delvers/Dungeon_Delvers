@@ -18,3 +18,5 @@ server/.env
 server/coverage
 server/dist
 server/node_modules
+private.key
+csr.pemcat csr.pem

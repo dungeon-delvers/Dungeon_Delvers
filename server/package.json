@@ -20,7 +20,7 @@
   "author": "Shawn Mealey",
   "license": "ISC",
   "dependencies": {
-    "@dungeon-delvers/config": "0.0.12",
+    "@dungeon-delvers/config": "0.0.14",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/pg": "^8.11.8",
     "jsonwebtoken": "^9.0.2",

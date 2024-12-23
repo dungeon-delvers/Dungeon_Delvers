@@ -24,7 +24,7 @@
   "author": "Shawn Mealey",
   "license": "ISC",
   "dependencies": {
-    "@dungeon-delvers/config": "0.0.12",
+    "@dungeon-delvers/config": "0.0.14",
     "bcrypt": "5.1.1",
     "celebrate": "^15.0.3",
     "cors": "2.8.5",

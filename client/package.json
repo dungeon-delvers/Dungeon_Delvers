@@ -37,7 +37,7 @@
     "@babylonjs/inspector": "^7.34.2",
     "@babylonjs/loaders": "^7.34.2",
     "@babylonjs/materials": "^7.34.2",
-    "@dungeon-delvers/config": "0.0.12",
+    "@dungeon-delvers/config": "0.0.14",
     "@parcel/config-default": "^2.9.2",
     "alea": "^1.0.1",
     "delaunay-triangulate": "^1.1.6",

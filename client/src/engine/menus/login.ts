@@ -2,7 +2,7 @@ import { Accept, Button } from '../gui/components/Buttons';
 import InputPassword from '../gui/components/InputPassword';
 import InputText from '../gui/components/InputText';
 import Label from '../gui/components/Label';
-import Menu from '../gui/components/Menu';
+import StyledStack from '../gui/components/StyledStack';
 import Title from '../gui/components/Title';
 import { InputElements } from '../gui/components/types';
 
@@ -21,7 +21,7 @@ const TITLE = `${menu_id}_title`;
 const LOGIN = `${menu_id}_login_button`;
 const REGISTER = `${menu_id}_cancel_button`;
 
-export default class Login extends Menu {
+export default class Login extends StyledStack {
   private _goToCharacterSelect: () => void;
   _shouldLogin: boolean = false;
   private _loginFormElements = {

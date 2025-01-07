@@ -4,7 +4,7 @@ import { StringTools } from '@babylonjs/inspector/stringTools';
 import { Cancel } from './Buttons';
 import { colors } from './colors';
 
-export default class Menu extends StackPanel {
+export default class StyledStack extends StackPanel {
   private _error: StackPanel | null = null;
   private _formElements: Record<string, Control> = {};
   private _menuId: StringTools;

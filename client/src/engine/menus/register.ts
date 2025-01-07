@@ -2,7 +2,7 @@ import { Accept, Button, Cancel } from '../gui/components/Buttons';
 import InputPassword from '../gui/components/InputPassword';
 import InputText from '../gui/components/InputText';
 import Label from '../gui/components/Label';
-import Menu from '../gui/components/Menu';
+import StyledStack from '../gui/components/StyledStack';
 import Title from '../gui/components/Title';
 import { colors } from '../gui/components/colors';
 
@@ -24,7 +24,7 @@ const TITLE = `${menu_id}_title`;
 const REGISTER = `${menu_id}_register_button`;
 const CANCEL = `${menu_id}_cancel_button`;
 
-export default class Register extends Menu {
+export default class Register extends StyledStack {
   private _shouldRegister: boolean = false;
   private _registerFormElements = {
     [TITLE]: new Title(TITLE, 'Register'),

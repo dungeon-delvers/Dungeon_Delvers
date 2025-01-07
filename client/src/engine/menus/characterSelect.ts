@@ -4,7 +4,7 @@ import CharacterCreateScene from '../../../public/assets/models/character_create
 import { RaceName } from '../core/races';
 import { CharacterModels, CharacterProps } from '../graphics/race/race';
 import { Accept, Button, Cancel } from '../gui/components/Buttons';
-import Menu from '../gui/components/Menu';
+import StyledStack from '../gui/components/StyledStack';
 import Title from '../gui/components/Title';
 import { IPlayerCharacter } from '../../interfaces/IPlayerCharacter';
 
@@ -53,7 +53,7 @@ type CharactersCreationSettings = {
   ORC: CharacterCreationSettings;
 };
 
-export default class CharacterSelect extends Menu {
+export default class CharacterSelect extends StyledStack {
   private _camera: FollowCamera;
   private _characterSettings: CharactersCreationSettings;
   private _clickHandlers: Record<CHARACTER_ELEMENTS, null | (() => void)> = {
@@ -76,10 +76,10 @@ export default class CharacterSelect extends Menu {
     });
     this._characters = characters;
     this._scene = scene;
-    this.horizontalAlignment = Menu.HORIZONTAL_ALIGNMENT_LEFT;
+    this.horizontalAlignment = StyledStack.HORIZONTAL_ALIGNMENT_LEFT;
     this.formElements = {
       [TITLE]: new Title(TITLE, 'Select Your Character', {
-        fontSize: '4%',
+        fontSize: '3%',
       }),
       [CHARACTER_ELEMENTS.CHARACTER_1]: new Button(
         `${menu_id}_character_1`,
@@ -141,6 +141,7 @@ export default class CharacterSelect extends Menu {
     this._scene.cameras.forEach(camera => {
       camera.dispose();
     });
+
     this._camera = new FollowCamera(`${menu_id}_camera`, new Vector3(0, 5, -5), this._scene);
     const characterSelectScene = await SceneLoader.ImportMeshAsync(null, '', CharacterCreateScene, this._scene);
     characterSelectScene.lights.forEach(light => {

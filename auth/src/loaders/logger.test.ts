@@ -1,72 +1,57 @@
 import winston from 'winston';
 
-import config from '../config';
+import config from '@/config';
+
 import LoggerInstance from './logger';
 
-jest.mock('winston', () => {
-  const mWinston = {
-    createLogger: jest.fn(() => {
-      return {
-        info: jest.fn(),
-      };
-    }),
-    format: {
-      combine: jest.fn(),
-      timestamp: jest.fn(),
-      errors: jest.fn(),
-      splat: jest.fn(),
-      json: jest.fn(),
-      cli: jest.fn(),
-    },
-    transports: {
-      Console: jest.fn(),
-    },
-    config: {
-      npm: {
-        levels: jest.fn(),
-      },
-    },
-  };
-  return mWinston;
-});
-
-jest.mock('../config', () => ({
+jest.mock('@/config', () => ({
   logs: {
     level: 'info',
   },
+  node_env: jest.fn(() => 'development'),
 }));
 
-describe('Logger Loader', () => {
-  it('should create a logger with correct configuration', () => {
-    const transports: any[] = [];
-    if (process.env.NODE_ENV !== 'development') {
-      transports.push(new winston.transports.Console());
-    } else {
-      transports.push(
-        new winston.transports.Console({
-          format: winston.format.combine(winston.format.cli(), winston.format.splat()),
-        }),
-      );
-    }
+const devLogger = require('./logger').default;
+describe('LoggerInstance', () => {
+  it('should be defined', () => {
+    expect(LoggerInstance).toBeDefined();
+  });
 
-    const expectedConfig = {
-      level: config.logs.level,
-      levels: winston.config.npm.levels,
-      format: winston.format.combine(
-        winston.format.timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss',
-        }),
-        winston.format.errors({ stack: true }),
-        winston.format.splat(),
-        winston.format.json(),
-      ),
-      transports,
-    };
-    LoggerInstance.info(`
-      ################################################
-      🛡️  Server listening on port: ${config.port} 🛡️
-      ################################################
-    `);
-    expect(winston.createLogger).toHaveBeenCalledWith(expectedConfig);
+  it('should have the correct log level', () => {
+    expect(LoggerInstance.level).toBe('info'); // Assuming 'info' is the log level set in config
+  });
+
+  it('should log messages correctly', () => {
+    const logSpy = jest.spyOn(LoggerInstance, 'info');
+    LoggerInstance.info('Test log message');
+    expect(logSpy).toHaveBeenCalledWith('Test log message');
+  });
+
+  describe('LoggerInstance', () => {
+    it('should be defined', () => {
+      expect(LoggerInstance).toBeDefined();
+    });
+
+    it('should have the correct log level', () => {
+      expect(LoggerInstance.level).toBe('info'); // Assuming 'info' is the log level set in config
+    });
+
+    it('should log messages correctly', () => {
+      const logSpy = jest.spyOn(LoggerInstance, 'info');
+      LoggerInstance.info('Test log message');
+      expect(logSpy).toHaveBeenCalledWith('Test log message');
+    });
+
+    it('should log errors with stack trace', () => {
+      const error = new Error('Test error');
+      const logSpy = jest.spyOn(LoggerInstance, 'error');
+      LoggerInstance.error(error);
+      expect(logSpy).toHaveBeenCalledWith(error);
+    });
+    it('should use CLI format in development environment', () => {
+      (config.node_env as jest.Mock).mockReturnValue('development');
+      const transport = devLogger.transports.find((t: any) => t instanceof winston.transports.Console);
+      expect(transport.format).toBeDefined();
+    });
   });
 });

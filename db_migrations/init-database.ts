@@ -164,7 +164,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
   pgm.createTable('item', {
     id: 'id',
     name: { type: 'varchar(1000)', notNull: true },
-    type: { type: 'varchar(1000)', notNull: true },
+    type: { type: 'item_type', notNull: true },
     value: { type: 'integer', notNull: true },
     weight: { type: 'integer', notNull: true },
     slot: { type: 'item_slot', notNull: true },

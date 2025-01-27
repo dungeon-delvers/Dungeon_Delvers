@@ -1,25 +1,29 @@
-import { IPlayerCharacter } from '@/interfaces/IPlayerCharacter';
+import { ATTRIBUTE, PlayerCharacter, PlayerCharacterCreation } from '@dungeon-delvers/types';
+
 import { pool } from '@/services/database/postgres';
 
-export const createPlayerCharacter = async (id, playerCharacter: IPlayerCharacter) => {
+export const createPlayerCharacter = async (id, playerCharacter: PlayerCharacterCreation) => {
   const query = {
-    text: 'INSERT INTO player_character (user_id, name, race, gender, class, con, dex, int, mig, per, res, current_health) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *',
+    text: `
+    INSERT INTO player_character (
+    user_id,
+    name, level, race, gender, class, "${ATTRIBUTE.CON}", "${ATTRIBUTE.DEX}", "${ATTRIBUTE.INT}", "${ATTRIBUTE.MIG}", "${ATTRIBUTE.PER}", "${ATTRIBUTE.RES}", current_health)
+    VALUES ($1, 1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`,
     values: [
       id,
       playerCharacter.name,
       playerCharacter.race,
       playerCharacter.gender,
       playerCharacter.class,
-      playerCharacter.con,
-      playerCharacter.dex,
-      playerCharacter.int,
-      playerCharacter.mig,
-      playerCharacter.per,
-      playerCharacter.res,
-      playerCharacter.current_health,
+      playerCharacter[ATTRIBUTE.CON],
+      playerCharacter[ATTRIBUTE.DEX],
+      playerCharacter[ATTRIBUTE.INT],
+      playerCharacter[ATTRIBUTE.MIG],
+      playerCharacter[ATTRIBUTE.PER],
+      playerCharacter[ATTRIBUTE.RES],
     ],
   };
-  return (await pool.query<IPlayerCharacter>(query)).rows[0];
+  return (await pool.query<PlayerCharacterCreation>(query)).rows[0];
 };
 
 export const getPlayerCharactersByUserID = async (userID: number) => {
@@ -27,7 +31,7 @@ export const getPlayerCharactersByUserID = async (userID: number) => {
     text: 'SELECT * FROM player_character WHERE user_id = $1',
     values: [userID],
   };
-  return (await pool.query<IPlayerCharacter>(query)).rows;
+  return (await pool.query<PlayerCharacterCreation | PlayerCharacter>(query)).rows;
 };
 
 export const getCharacterByID = async (id: number) => {
@@ -35,5 +39,5 @@ export const getCharacterByID = async (id: number) => {
     text: 'SELECT * FROM character WHERE id = $1',
     values: [id],
   };
-  return (await pool.query<IPlayerCharacter>(query)).rows[0];
+  return (await pool.query<PlayerCharacterCreation | PlayerCharacter>(query)).rows[0];
 };

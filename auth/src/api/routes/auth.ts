@@ -1,8 +1,8 @@
+import { User } from '@dungeon-delvers/types';
 import { Joi, celebrate } from 'celebrate';
 import { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
 
-import { IUser } from '@/interfaces/IUser';
 import Logger from '@/loaders/logger';
 import { generateToken, logout, signup } from '@/services/auth';
 
@@ -11,7 +11,7 @@ export default (router: Router) => {
     '/login',
     celebrate({ body: { username: Joi.string(), password: Joi.string() } }),
     async (req: Request, res: Response, next) => {
-      passport.authenticate('local', { session: false }, (error: Error | null, user: IUser) => {
+      passport.authenticate('local', { session: false }, (error: Error | null, user: User) => {
         if (error) {
           Logger.error(error);
           next(error);
@@ -23,6 +23,7 @@ export default (router: Router) => {
         }
         req.login(user, { session: false }, async loginError => {
           if (loginError) {
+            console.log({ loginError });
             Logger.error(loginError);
             next(loginError);
             return;
@@ -54,6 +55,7 @@ export default (router: Router) => {
         email: Joi.string().email().required(),
         username: Joi.string().required(),
         password: Joi.string().required(),
+        passwordRepeat: Joi.string().required().valid(Joi.ref('password')),
       },
     }),
     async (req: Request, res: Response, next) => {
@@ -68,8 +70,8 @@ export default (router: Router) => {
         if (error instanceof Error) {
           next(error);
         } else {
-          throw new Error(
-            'Encountered unexpected error when trying to return error, might not have been an Error thrown.',
+          next(
+            new Error('Encountered unexpected error when trying to return error, might not have been an Error thrown.'),
           );
         }
       }

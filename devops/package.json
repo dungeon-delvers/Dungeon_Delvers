@@ -1,0 +1,22 @@
+{
+  "name": "@dungeon-delvers/devops",
+  "version": "0.0.1",
+  "description": "This package contains code that is used to upload server and client code to a service provider (in this case AWS)",
+  "main": "index.ts",
+  "scripts": {
+    "deploy": "tsx index.ts"
+  },
+  "keywords": [
+    "AWS",
+    "Devops",
+    "Javascript",
+    "Typescript"
+  ],
+  "author": "Shawn Mealey",
+  "license": "ISC",
+  "devDependencies": {
+    "@aws-sdk/client-ec2": "^3.716.0",
+    "@aws-sdk/client-s3": "^3.716.0",
+    "tsx": "^4.19.2"
+  }
+}

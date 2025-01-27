@@ -1,0 +1,26 @@
+{
+  "name": "@dungeon-delvers/types",
+  "version": "0.0.24",
+  "description": "Types for the various workspaces for dungeon_delvers",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HarlemLineHustle/Dungeon_Delvers.git"
+  },
+  "scripts": {
+    "prepublish": "tsc index.ts"
+  },
+  "keywords": [
+    "typescript",
+    "types",
+    "mmo",
+    "javascript",
+    "game"
+  ],
+  "author": "Shawn Mealey",
+  "license": "ISC",
+  "devDependencies": {
+    "@dungeon-delvers/config": "^0.0.27",
+    "typescript": "^5.7.3"
+  }
+}

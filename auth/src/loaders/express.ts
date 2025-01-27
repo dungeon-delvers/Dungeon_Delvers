@@ -9,9 +9,6 @@ export default (app: Application) => {
   app.get('/status', (_req, res) => {
     res.status(200).end();
   });
-  app.head('/status', (_req, res) => {
-    res.status(200).end();
-  });
 
   // Useful if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
   // It shows the real origin IP in the heroku or Cloudwatch logs

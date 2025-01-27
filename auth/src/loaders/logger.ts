@@ -1,12 +1,13 @@
 import winston from 'winston';
 import { ConsoleTransportInstance } from 'winston/lib/winston/transports';
 
-import config from '../config';
+import config from '@/config';
 
 const transports: ConsoleTransportInstance[] = [];
-if (process.env.NODE_ENV !== 'development') {
+if (config.node_env() !== 'development') {
   transports.push(new winston.transports.Console());
 } else {
+  console.log('In development');
   transports.push(
     new winston.transports.Console({
       format: winston.format.combine(winston.format.cli(), winston.format.splat()),

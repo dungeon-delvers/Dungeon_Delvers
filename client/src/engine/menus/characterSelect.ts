@@ -1,12 +1,12 @@
 import { FollowCamera, Scene, SceneLoader, Vector3 } from '@babylonjs/core';
+import { RaceName } from '@dungeon-delvers/config';
 
 import CharacterCreateScene from '../../../public/assets/models/character_create_scene.glb';
-import { RaceName } from '../core/races';
+import { IPlayerCharacter } from '../../interfaces/IPlayerCharacter';
 import { CharacterModels, CharacterProps } from '../graphics/race/race';
 import { Accept, Button, Cancel } from '../gui/components/Buttons';
 import StyledStack from '../gui/components/StyledStack';
 import Title from '../gui/components/Title';
-import { IPlayerCharacter } from '../../interfaces/IPlayerCharacter';
 
 const menu_id = 'character_select_menu';
 
@@ -68,14 +68,16 @@ export default class CharacterSelect extends StyledStack {
   private _scene: Scene;
   private _selectedRace: RaceName | null = null;
   private _selectedGender: 'MALE' | 'FEMALE' | null = null;
+  private _goToCharacterCreate: () => void;
 
-  constructor(scene: Scene, _goToLogin: () => void, characters: IPlayerCharacter[]) {
+  constructor(scene: Scene, _goToLogin: () => void, _goToCharacterCreate: () => void, characters: IPlayerCharacter[]) {
     super(menu_id, {
       width: '20% ',
       height: '100%',
     });
     this._characters = characters;
     this._scene = scene;
+    this._goToCharacterCreate = _goToCharacterCreate;
     this.horizontalAlignment = StyledStack.HORIZONTAL_ALIGNMENT_LEFT;
     this.formElements = {
       [TITLE]: new Title(TITLE, 'Select Your Character', {
@@ -130,7 +132,7 @@ export default class CharacterSelect extends StyledStack {
         this._setModelVisibility();
         this.formElements[LOGIN].isEnabled = true;
       } else {
-        console.log('create character');
+        this._goToCharacterCreate();
       }
     };
 

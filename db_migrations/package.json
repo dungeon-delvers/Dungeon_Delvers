@@ -6,7 +6,9 @@
   "main": "index.ts",
   "scripts": {
     "clean": "rm -rf node_modules",
+    "migrate": "node-pg-migrate --tsconfig=\"./tsconfig.json\"",
     "migrate:up": "node-pg-migrate up --tsconfig=\"./tsconfig.json\" --no-check-order",
+    "migrate:up-debug": "node-pg-migrate up --tsconfig=\"./tsconfig.json\" --no-check-order --dry-run",
     "migrate:down": "node-pg-migrate down --tsconfig=\"./tsconfig.json\" --no-check-order"
   },
   "keywords": [
@@ -18,6 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@dungeon-delvers/config": "0.0.12",
+    "@dungeon-delvers/types": "0.0.19",
     "dotenv": "^16.4.5",
     "eslint": "^9.10.0",
     "node-pg-migrate": "^7.6.1",

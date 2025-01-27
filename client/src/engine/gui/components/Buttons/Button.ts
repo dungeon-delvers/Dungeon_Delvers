@@ -5,6 +5,7 @@ import { colors } from '../colors';
 type ButtonOptions = {
   background: string;
   color: string;
+  cornerRadius: number;
   disabledColor: string;
   disabledColorItem: string;
   fontFamily: string;
@@ -14,11 +15,12 @@ type ButtonOptions = {
   width: string;
 };
 export default class StyledButton extends Button {
-  private _text: TextBlock;
   private _onClick: () => void;
+  private _hoverColor: string = colors.gray[3];
   private _options: ButtonOptions = {
     background: colors.gray[2],
-    color: colors.white.primary,
+    color: colors.gold.primary,
+    cornerRadius: 5,
     disabledColor: colors.gray[5],
     disabledColorItem: colors.gray[7],
     fontFamily: 'Goudy Bookletter',
@@ -27,24 +29,39 @@ export default class StyledButton extends Button {
     paddingBottom: '20px',
     width: '80%',
   };
-  constructor(name: string, text: string, options?: Partial<ButtonOptions>) {
+  constructor(name: string, text: string, options?: Partial<ButtonOptions>, hoverColor?: string) {
     super(name);
     this._options = { ...this._options, ...options };
+    this._hoverColor = hoverColor || this._hoverColor;
     const textBlock = new TextBlock(`${name}_text_block`, text);
+    textBlock.color = colors.white.primary;
     this.addControl(textBlock);
     const styles = Object.entries(this._options) as Entries<ButtonOptions>;
     styles.forEach(([key, value]) => {
-      this[key] = (options && options[key]) || value;
+      (this as unknown as string)[key] = value;
     });
     this.onFocusObservable.add(() => {
-      this.background = colors.gray[5];
-      this.color = colors.black.primary;
+      this.pointerEnterObservable();
     });
     this.onBlurObservable.add(() => {
-      this.background = colors.gray[2];
-      this.color = colors.white.primary;
+      this.pointerOutObservable();
+    });
+    this.onPointerEnterObservable.add(() => {
+      this.pointerEnterObservable();
+    });
+    this.onPointerOutObservable.add(() => {
+      this.pointerOutObservable();
     });
   }
+
+  pointerOutObservable() {
+    this.background = this._options.background;
+  }
+
+  pointerEnterObservable() {
+    this.background = this._hoverColor;
+  }
+
   set onClick(callback: () => void) {
     this._onClick = callback;
     this.onPointerClickObservable.add(() => {
@@ -56,7 +73,14 @@ export default class StyledButton extends Button {
       }
     });
   }
+
   set text(text: string) {
-    this._text.text = text;
+    const textBlock = this.getChildByName(`${this.name}_text_block`);
+    if (textBlock instanceof TextBlock) {
+      textBlock.text = text;
+    }
+  }
+  get text() {
+    return (this.getChildByName(`${this.name}_text_block`) as TextBlock).text || '';
   }
 }

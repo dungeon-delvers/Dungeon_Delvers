@@ -7,5 +7,5 @@ import passportLoader from './passport';
 export default async (app: Application) => {
   await expressLoader(app);
   await passportLoader(app);
-  process.env.NODE_ENV !== 'test' && Logger.info('✌️ Express loaded');
+  Logger.info('✌️ Express loaded');
 };

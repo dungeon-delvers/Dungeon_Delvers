@@ -4,9 +4,9 @@
     "type": "git",
     "url": "git+https://github.com/HarlemLineHustle/Dungeon_Delvers.git"
   },
-  "version": "0.0.14",
+  "version": "0.0.27",
   "description": "This contains shared configurations for the multiple services of Dungeon Delvers.",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

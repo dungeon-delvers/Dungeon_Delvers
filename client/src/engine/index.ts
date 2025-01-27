@@ -5,6 +5,7 @@ import '@babylonjs/inspector';
 import '@babylonjs/loaders/glTF';
 
 import titleMusic from '../../public/assets/audio/title.mp3';
+import CharacterCreate from './menus/characterCreation';
 import CharacterMenu, { fetchPlayerCharacters } from './menus/characterSelect';
 import LoginMenu from './menus/login';
 import RegisterMenu from './menus/register';
@@ -18,6 +19,7 @@ export enum MAIN_MENU_STATE {
   LOGIN,
   REGISTER,
   CHARACTER_SELECT,
+  CHARACTER_CREATE,
 }
 
 export class Game {
@@ -38,7 +40,7 @@ export class Game {
   }
 
   private async _init() {
-    this._main_menu_state = localStorage.getItem('dd_auth') ? MAIN_MENU_STATE.CHARACTER_SELECT : MAIN_MENU_STATE.LOGIN;
+    this._main_menu_state = localStorage.getItem('dd_auth') ? MAIN_MENU_STATE.CHARACTER_CREATE : MAIN_MENU_STATE.LOGIN;
     this._engine = (await EngineFactory.CreateAsync(this._canvas, undefined)) as Engine;
     this._scene = new Scene(this._engine);
     this._menu = AdvancedDynamicTexture.CreateFullscreenUI('main_menu');
@@ -52,8 +54,14 @@ export class Game {
       [MAIN_MENU_STATE.REGISTER]: () => new RegisterMenu(() => this._changeMenu(MAIN_MENU_STATE.CHARACTER_SELECT)),
       [MAIN_MENU_STATE.CHARACTER_SELECT]: async () => {
         const characters = await fetchPlayerCharacters();
-        return new CharacterMenu(this._scene, () => this._changeMenu(MAIN_MENU_STATE.LOGIN), characters);
+        return new CharacterMenu(
+          this._scene,
+          () => this._changeMenu(MAIN_MENU_STATE.LOGIN),
+          () => this._changeMenu(MAIN_MENU_STATE.CHARACTER_CREATE),
+          characters ?? [],
+        );
       },
+      [MAIN_MENU_STATE.CHARACTER_CREATE]: () => new CharacterCreate(),
     };
     const menuControl = await this._main_menu_states[this._main_menu_state]();
     this._menu.addControl(menuControl);

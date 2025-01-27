@@ -3,11 +3,11 @@ import passport from 'passport';
 import passportJWT from 'passport-jwt';
 import { Strategy as LocalStrategy } from 'passport-local';
 
-import { IUser } from '@/interfaces/IUser';
 import Logger from '@/loaders/logger';
 import { userFromUsernameQuery } from '@/queries/user';
 import { authenticateJWT, login } from '@/services/auth';
 import config from '@/config';
+import { User } from '@dungeon-delvers/types';
 
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
@@ -33,12 +33,12 @@ export default (app: Application) => {
   app.use(passport.session());
   passport.use(new LocalStrategy(login));
   passport.use(strategy);
-  passport.serializeUser((user: IUser, done) => {
+  passport.serializeUser((user: User, done) => {
     Logger.info(`Serializing user: ${user.username}`);
 
     done(null, user);
   });
-  passport.deserializeUser(async (inUser: IUser, done) => {
+  passport.deserializeUser(async (inUser: User, done) => {
     Logger.info(`Serializing user: ${inUser.username}`);
     const user = await userFromUsernameQuery(inUser.username);
     done(null, user);

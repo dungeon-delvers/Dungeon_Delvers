@@ -15,6 +15,7 @@ type InputTextOptions = {
 };
 
 export default class StyledInputText extends InputText {
+  private _hoverColor = colors.gray[3];
   private _options = {
     color: colors.white.primary,
     background: colors.gray.background,
@@ -30,11 +31,18 @@ export default class StyledInputText extends InputText {
     super(name);
     const styles = Object.entries(this._options) as Entries<InputTextOptions>;
     styles.forEach(([key, value]) => {
-      this[key] = (options && options[key]) || value;
+      (this as unknown as string)[key] = (options && options[key]) || value;
     });
     this.onFocusObservable.add(() => {
       this.background = colors.gray.background;
       this.color = colors.white.primary;
     });
+  }
+  pointerOutObservable() {
+    this.background = this._options.background;
+  }
+
+  pointerEnterObservable() {
+    this.background = this._hoverColor;
   }
 }

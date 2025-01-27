@@ -1,9 +1,9 @@
-import { IUser } from '@/interfaces/IUser';
 import { pool } from '@/services/database/postgres';
+import { User as DDUser } from '@dungeon-delvers/types';
 
 declare global {
   namespace Express {
-    interface User extends IUser {}
+    interface User extends DDUser {}
   }
 }
 
@@ -12,7 +12,7 @@ export const createUserQuery = async (email: string, username: string, passwordH
     text: 'INSERT INTO app_user (email, password_hash, username) VALUES ($1, $2, $3) RETURNING *',
     values: [email, passwordHash, username],
   };
-  const result = await pool.query<IUser>(query);
+  const result = await pool.query<DDUser>(query);
   console.log({ result });
   return result.rows[0];
 };
@@ -38,7 +38,7 @@ export const userFromUsernameQuery = async (username: string) => {
     text: 'SELECT * FROM app_user WHERE username = $1',
     values: [username],
   };
-  return (await pool.query<IUser>(query)).rows[0];
+  return (await pool.query<DDUser>(query)).rows[0];
 };
 
 export const userFromEmailQuery = async (email: string) => {
@@ -46,7 +46,7 @@ export const userFromEmailQuery = async (email: string) => {
     text: 'SELECT * FROM app_user WHERE email = $1',
     values: [email],
   };
-  return (await pool.query<IUser>(query)).rows[0];
+  return (await pool.query<DDUser>(query)).rows[0];
 };
 
 export const getUserFromID = async (id: number) => {
@@ -54,5 +54,5 @@ export const getUserFromID = async (id: number) => {
     text: 'SELECT * FROM app_user WHERE id = $1',
     values: [id],
   };
-  return (await pool.query<IUser>(query)).rows[0];
+  return (await pool.query<DDUser>(query)).rows[0];
 };

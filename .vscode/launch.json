@@ -12,25 +12,11 @@
       "cwd": "${workspaceRoot}"
     },
     {
-      "command": "npm run start:dev",
-      "name": "Launch Auth",
+      "command": "npm run test",
+      "name": "Test Auth",
       "request": "launch",
       "type": "node-terminal",
       "cwd": "${workspaceRoot}/auth"
-    },
-    {
-      "command": "npm run start:dev",
-      "name": "Launch Server",
-      "request": "launch",
-      "type": "node-terminal",
-      "cwd": "${workspaceRoot}/server"
-    },
-    {
-      "command": "npm run start",
-      "name": "Launch Client",
-      "request": "launch",
-      "type": "node-terminal",
-      "cwd": "${workspaceRoot}/client"
     }
   ]
 }

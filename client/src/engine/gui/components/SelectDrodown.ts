@@ -12,7 +12,7 @@ export default class SelectDropdown extends StackPanel {
   private _options: Option[];
   private _currentValue: string;
   private _stack: StackPanel;
-  constructor(name: string, options: Option[], currentValue?: string) {
+  constructor(name: string, options: Option[], currentValue?: string, onChangeCallback?: (value: unknown) => void) {
     super(name);
     this._currentValue = currentValue || options[0].value;
     this._options = options;
@@ -31,6 +31,9 @@ export default class SelectDropdown extends StackPanel {
       const optionButton = new Button(`${name}_${option.label}`, option.value);
       optionButton.onPointerClickObservable.add(() => {
         this._currentValue = option.value;
+        if (onChangeCallback) {
+          onChangeCallback(option.value);
+        }
         button.text = `${this._currentValue} ▼`;
         this._open = false;
         this.removeControl(this._stack);
@@ -38,5 +41,8 @@ export default class SelectDropdown extends StackPanel {
       this._stack.addControl(optionButton);
     });
     this.addControl(button);
+  }
+  get value() {
+    return this._currentValue;
   }
 }

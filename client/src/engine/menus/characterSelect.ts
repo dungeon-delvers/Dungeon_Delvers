@@ -1,9 +1,8 @@
-import { FollowCamera, Scene, SceneLoader, Vector3 } from '@babylonjs/core';
 import { RaceName } from '@dungeon-delvers/config';
+import { PlayerCharacter } from '@dungeon-delvers/types';
 
-import CharacterCreateScene from '../../../public/assets/models/character_create_scene.glb';
-import { IPlayerCharacter } from '../../interfaces/IPlayerCharacter';
-import { CharacterModels, CharacterProps } from '../graphics/race/race';
+import { CharacterModelsProps } from '../graphics/race/race';
+import { CharacterScene } from '../graphics/scenes/characterScene';
 import { Accept, Button, Cancel } from '../gui/components/Buttons';
 import StyledStack from '../gui/components/StyledStack';
 import Title from '../gui/components/Title';
@@ -41,22 +40,8 @@ const TITLE = `${menu_id}_title`;
 const LOGOUT = `${menu_id}_logout_button`;
 const LOGIN = `${menu_id}_login_button`;
 
-type CharacterCreationSettings = CharacterProps & {
-  cameraRadius: number;
-  cameraHeightOffset: number;
-};
-
-type CharactersCreationSettings = {
-  DWARF: CharacterCreationSettings;
-  GOBLIN: CharacterCreationSettings;
-  HUMAN: CharacterCreationSettings;
-  ORC: CharacterCreationSettings;
-};
-
 export default class CharacterSelect extends StyledStack {
-  private _camera: FollowCamera;
-  private _characterSettings: CharactersCreationSettings;
-  private _clickHandlers: Record<CHARACTER_ELEMENTS, null | (() => void)> = {
+  #clickHandlers: Record<CHARACTER_ELEMENTS, null | (() => void)> = {
     [CHARACTER_ELEMENTS.CHARACTER_1]: null,
     [CHARACTER_ELEMENTS.CHARACTER_2]: null,
     [CHARACTER_ELEMENTS.CHARACTER_3]: null,
@@ -64,20 +49,25 @@ export default class CharacterSelect extends StyledStack {
     [CHARACTER_ELEMENTS.CHARACTER_5]: null,
     [CHARACTER_ELEMENTS.CHARACTER_6]: null,
   };
-  private _characters: IPlayerCharacter[];
-  private _scene: Scene;
-  private _selectedRace: RaceName | null = null;
-  private _selectedGender: 'MALE' | 'FEMALE' | null = null;
-  private _goToCharacterCreate: () => void;
+  #characters: PlayerCharacter[];
+  #scene: CharacterScene;
+  #selectedRace: RaceName | null = null;
+  #selectedGender: 'MALE' | 'FEMALE' | null = null;
+  #goToCharacterCreate: () => void;
 
-  constructor(scene: Scene, _goToLogin: () => void, _goToCharacterCreate: () => void, characters: IPlayerCharacter[]) {
+  constructor(
+    scene: CharacterScene,
+    _goToLogin: () => void,
+    _goToCharacterCreate: () => void,
+    characters: PlayerCharacter[],
+  ) {
     super(menu_id, {
       width: '20% ',
       height: '100%',
     });
-    this._characters = characters;
-    this._scene = scene;
-    this._goToCharacterCreate = _goToCharacterCreate;
+    this.#characters = characters;
+    this.#scene = scene;
+    this.#goToCharacterCreate = _goToCharacterCreate;
     this.horizontalAlignment = StyledStack.HORIZONTAL_ALIGNMENT_LEFT;
     this.formElements = {
       [TITLE]: new Title(TITLE, 'Select Your Character', {
@@ -113,10 +103,9 @@ export default class CharacterSelect extends StyledStack {
     this.formElements[LOGIN].isEnabled = false;
     this.formElements[CHARACTER_ELEMENTS.CHARACTER_1].height = '80px';
     this.formElements[CHARACTER_ELEMENTS.CHARACTER_1].paddingTop = '20px';
-    Object.entries(this._clickHandlers).forEach(([key, element]) => {
+    Object.entries(this.#clickHandlers).forEach(([key, element]) => {
       this.formElements[key].onPointerUpObservable.add(element);
     });
-    this._renderCharacterCreationScene();
     this.formElements[LOGOUT].onPointerUpObservable.add(async () => {
       await this._logout();
       _goToLogin();
@@ -124,86 +113,20 @@ export default class CharacterSelect extends StyledStack {
   }
 
   private _renderCharacterSlot(key: CHARACTER_ELEMENTS, index: number) {
-    const characterExists = index in this._characters;
-    this._clickHandlers[key] = () => {
+    const characterExists = index in this.#characters;
+    this.#clickHandlers[key] = () => {
       if (characterExists) {
-        this._selectedRace = this._characters[index].race;
-        this._selectedGender = this._characters[index].gender;
-        this._setModelVisibility();
+        this.#selectedRace = this.#characters[index].race;
+        this.#selectedGender = this.#characters[index].gender;
+        this.#scene.selectedCharacter =
+          `${this.#selectedGender[0].toLocaleLowerCase()}_${this.#selectedRace.toLowerCase()}` as keyof CharacterModelsProps;
         this.formElements[LOGIN].isEnabled = true;
       } else {
-        this._goToCharacterCreate();
+        this.#goToCharacterCreate();
       }
     };
 
-    return characterExists ? this._characters[index].name : 'Create Character';
-  }
-
-  private async _renderCharacterCreationScene() {
-    this._scene.cameras.forEach(camera => {
-      camera.dispose();
-    });
-
-    this._camera = new FollowCamera(`${menu_id}_camera`, new Vector3(0, 5, -5), this._scene);
-    const characterSelectScene = await SceneLoader.ImportMeshAsync(null, '', CharacterCreateScene, this._scene);
-    characterSelectScene.lights.forEach(light => {
-      light.intensity = 20;
-    });
-    const result = await CharacterModels.loadCharacterMeshes(this._scene);
-    this._characterSettings = Object.entries(result.characters).reduce((accumulator, [key, value]) => {
-      const characterSelectData = value as CharacterCreationSettings;
-      if (['dwarf', 'goblin'].some(race => key.includes(race))) {
-        characterSelectData.cameraRadius = 3;
-        characterSelectData.cameraHeightOffset = 1;
-      }
-      if (['human', 'orc'].some(race => key.includes(race))) {
-        characterSelectData.cameraRadius = 6;
-        characterSelectData.cameraHeightOffset = 1.5;
-      }
-      accumulator[key as keyof CharactersCreationSettings] = characterSelectData;
-      return accumulator;
-    }, {} as CharactersCreationSettings);
-    result.root.position = new Vector3(0, 0.85, 0);
-    // this._selectedGender = 'm';
-    // this._selectedRace = 'human';
-    // this._setModelVisibility();
-    this._hideAllCharacters();
-    this._camera.radius = 6;
-    this._camera.heightOffset = 2;
-    this._camera.fov = 1;
-    this._camera.lockedTarget = result.root;
-    this._camera.upperRadiusLimit = 6;
-    this._camera.lowerRadiusLimit = 3;
-    this._camera.upperHeightOffsetLimit = 2;
-    this._camera.lowerHeightOffsetLimit = 1;
-    this._camera.maxCameraSpeed = 1;
-  }
-
-  private _hideAllCharacters() {
-    let character: keyof typeof this._characterSettings;
-    for (character in this._characterSettings) {
-      this._characterSettings[character].mesh.isVisible = false;
-      this._characterSettings[character].animations.idle.stop();
-    }
-  }
-
-  private _setModelVisibility() {
-    let character: keyof typeof this._characterSettings;
-    for (character in this._characterSettings) {
-      if (
-        this._selectedGender &&
-        this._selectedRace &&
-        character !== `${this._selectedGender[0].toLowerCase()}_${this._selectedRace.toLowerCase()}`
-      ) {
-        this._characterSettings[character].mesh.isVisible = false;
-        this._characterSettings[character].animations.idle.stop();
-      } else {
-        this._characterSettings[character].mesh.isVisible = true;
-        this._characterSettings[character].animations.idle.play(true);
-        this._camera.radius = this._characterSettings[character].cameraRadius;
-        this._camera.heightOffset = this._characterSettings[character].cameraHeightOffset;
-      }
-    }
+    return characterExists ? this.#characters[index].name : 'Create Character';
   }
 
   private async _logout() {

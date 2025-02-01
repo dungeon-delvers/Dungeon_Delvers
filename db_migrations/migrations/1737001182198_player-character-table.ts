@@ -20,7 +20,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
     [ATTRIBUTE.PER]: { type: 'integer', notNull: true },
     [ATTRIBUTE.RES]: { type: 'integer', notNull: true },
     level: { type: 'integer', notNull: true, default: 1 },
-    current_health: { type: 'integer', notNull: true },
+    current_health: { type: 'integer' },
     zoneId: { type: 'integer' },
     locX: { type: 'integer' },
     locY: { type: 'integer' },

@@ -97,8 +97,12 @@ export const PLAYER_CLASS = {
 
 export type PlayerClass = keyof typeof PLAYER_CLASS;
 
+export type PlayerCharacterCreation = Omit<
+  PlayerCharacter,
+  'id' | 'level' | 'surname' | 'current_health' | 'zoneId' | 'locX' | 'locY' | 'locZ'
+>;
+
 export type PlayerCharacter = Attributes & {
-  id: number;
   user_id: number;
   name: string;
   surname: string;
@@ -106,7 +110,7 @@ export type PlayerCharacter = Attributes & {
   gender: Gender;
   class: PlayerClass;
   level: number;
-  current_health: number;
+  current_health?: number;
   zoneId: number;
   locX: number;
   locY: number;

@@ -2,9 +2,10 @@
   "name": "dungeon-delvers",
   "repository": "https://github.com/dungeon_delvers/Dungeon_Delvers",
   "workspaces": [
+    "auth",
     "client",
-    "server",
-    "auth"
+    "devops",
+    "server"
   ],
   "version": "0.0.1",
   "description": "Online 3D Fantasy RPG MMO made with BabylonJS",

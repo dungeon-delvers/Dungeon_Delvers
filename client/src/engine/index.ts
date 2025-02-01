@@ -1,11 +1,13 @@
-import { ArcRotateCamera, Engine, EngineFactory, Scene, Sound, Vector3 } from '@babylonjs/core';
+import { ArcRotateCamera, Engine, EngineFactory, FollowCamera, Sound } from '@babylonjs/core';
 import '@babylonjs/core/Debug/debugLayer';
 import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
 import '@babylonjs/inspector';
 import '@babylonjs/loaders/glTF';
+import { PlayerCharacterCreation } from '@dungeon-delvers/types';
 
 import titleMusic from '../../public/assets/audio/title.mp3';
-import CharacterCreate from './menus/characterCreation';
+import { CharacterScene } from './graphics/scenes/characterScene';
+import CharacterCreate, { fetchRaces } from './menus/characterCreation';
 import CharacterMenu, { fetchPlayerCharacters } from './menus/characterSelect';
 import LoginMenu from './menus/login';
 import RegisterMenu from './menus/register';
@@ -24,14 +26,14 @@ export enum MAIN_MENU_STATE {
 
 export class Game {
   private _engine: Engine;
-  private _camera: ArcRotateCamera;
+  private _camera: ArcRotateCamera | FollowCamera;
   private _canvas: HTMLCanvasElement;
   private _state: GAME_STATE;
   private _menu: AdvancedDynamicTexture;
   private _main_menu_state: MAIN_MENU_STATE;
   private _main_menu_states: Record<MAIN_MENU_STATE, () => Control | Promise<Control>>;
-  private _scene: Scene;
-  private _scenes: Record<GAME_STATE, () => Scene>;
+  private _scene: CharacterScene;
+  // private _scenes: Record<GAME_STATE, () => Scene>;
 
   constructor() {
     this._canvas = this._createCanvas();
@@ -42,7 +44,8 @@ export class Game {
   private async _init() {
     this._main_menu_state = localStorage.getItem('dd_auth') ? MAIN_MENU_STATE.CHARACTER_CREATE : MAIN_MENU_STATE.LOGIN;
     this._engine = (await EngineFactory.CreateAsync(this._canvas, undefined)) as Engine;
-    this._scene = new Scene(this._engine);
+    // this._scene = new Scene(this._engine);
+    this._scene = new CharacterScene(this._engine);
     this._menu = AdvancedDynamicTexture.CreateFullscreenUI('main_menu');
     this._menu.registerClipboardEvents();
     this._main_menu_states = {
@@ -61,7 +64,10 @@ export class Game {
           characters ?? [],
         );
       },
-      [MAIN_MENU_STATE.CHARACTER_CREATE]: () => new CharacterCreate(),
+      [MAIN_MENU_STATE.CHARACTER_CREATE]: async () => {
+        const races = await fetchRaces();
+        return new CharacterCreate(this._scene, races, () => this._changeMenu(MAIN_MENU_STATE.CHARACTER_SELECT));
+      },
     };
     const menuControl = await this._main_menu_states[this._main_menu_state]();
     this._menu.addControl(menuControl);
@@ -78,8 +84,8 @@ export class Game {
         }
       }
     });
-    this._camera = new ArcRotateCamera('Camera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this._scene);
-    this._camera.attachControl(this._canvas, true);
+    // this._camera = new ArcRotateCamera('Camera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this._scene);
+    // this._camera.attachControl(this._canvas, true);
     new Sound('title_music', titleMusic.split(/[?#]/)[0], null, null, {
       autoplay: true,
       loop: true,
@@ -104,9 +110,6 @@ export class Game {
   private _changeMenu(state: MAIN_MENU_STATE) {
     this._menuSetter(state);
     this._engine.stopRenderLoop();
-
-    this._camera = new ArcRotateCamera('Camera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this._scene);
-    this._camera.attachControl(this._canvas, true);
 
     this._engine.runRenderLoop(() => {
       this._scene.render();

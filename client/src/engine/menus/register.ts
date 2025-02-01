@@ -96,6 +96,7 @@ export default class Register extends StyledStack {
           email: this._registerFormElements[INPUT_ELEMENTS.EMAIL].text,
           username: this._registerFormElements[INPUT_ELEMENTS.USERNAME].text,
           password: this._registerFormElements[INPUT_ELEMENTS.PASSWORD].text,
+          passwordRepeat: this._registerFormElements[INPUT_ELEMENTS.CONFIRMATION].text,
         }),
       },
     );

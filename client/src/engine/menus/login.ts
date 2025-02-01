@@ -80,11 +80,7 @@ export default class Login extends StyledStack {
 
     if (response.ok) {
       const result = await response.json();
-      // const socket = io(`${process.env.SERVER_URL}:${process.env.SERVER_PORT}`, {
-      //   query: {
-      //     token: result.token,
-      //   },
-      // });
+
       localStorage.setItem('dd_auth', JSON.stringify(result));
       this._goToCharacterSelect();
       Object.values(INPUT_ELEMENTS).map(value => {

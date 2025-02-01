@@ -117,4 +117,12 @@ export class CharacterModels {
   animations(key: keyof CharacterModelsProps) {
     return this._characters[key].animations;
   }
+  show(inCharacter: keyof CharacterModelsProps) {
+    for (const key in this._characters) {
+      this._characters[key].animations.idle.stop();
+      this._characters[key].mesh.isVisible = false;
+    }
+    this._characters[inCharacter].mesh.isVisible = true;
+    this._characters[inCharacter].animations.idle.play(true);
+  }
 }

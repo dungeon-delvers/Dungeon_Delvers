@@ -1,6 +1,7 @@
 .DS_Store
 .env
 .parcel-cache
+.npmrc
 .vercel
 auth/.env
 auth/coverage

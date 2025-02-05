@@ -1,6 +1,5 @@
 import { Engine, FollowCamera, Scene, SceneLoader, SceneOptions, Vector3 } from '@babylonjs/core';
 
-import CharacterCreateScene from '../../../../public/assets/models/character_create_scene.glb';
 import { CharacterModels, CharacterModelsProps } from '../race/race';
 
 export class CharacterScene extends Scene {
@@ -33,7 +32,12 @@ export class CharacterScene extends Scene {
     });
   }
   async loadSceneAssets() {
-    const characterSceneResult = await SceneLoader.ImportMeshAsync(null, '', CharacterCreateScene, this);
+    const characterSceneResult = await SceneLoader.ImportMeshAsync(
+      null,
+      `${process.env.SERVER_FILE_URL}:${process.env.SERVER_FILE_PORT}/models/zones/`,
+      'character_create_scene.glb',
+      this,
+    );
     characterSceneResult.lights.forEach(light => {
       light.intensity = 20;
     });

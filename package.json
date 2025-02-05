@@ -5,7 +5,8 @@
     "auth",
     "client",
     "devops",
-    "server"
+    "server",
+    "file-server"
   ],
   "version": "0.0.1",
   "description": "Online 3D Fantasy RPG MMO made with BabylonJS",

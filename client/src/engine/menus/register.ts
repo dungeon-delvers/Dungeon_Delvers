@@ -85,7 +85,7 @@ export default class Register extends StyledStack {
       return;
     }
     const response = await fetch(
-      `${process.env.AUTH_URL}${process.env.AUTH_PORT ? `:${process.env.AUTH_PORT}` : ''}/api/signup`,
+      `${process.env.SERVER_AUTH_URL}${process.env.SERVER_AUTH_PORT ? `:${process.env.SERVER_AUTH_PORT}` : ''}/api/signup`,
       {
         method: 'POST',
         mode: 'cors',

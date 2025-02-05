@@ -17,7 +17,7 @@ export const fetchRaces = async () => {
   const ddAuth = localStorage.getItem('dd_auth');
   const { token } = ddAuth && JSON.parse(ddAuth);
   const response = await fetch(
-    `${process.env.AUTH_URL}${process.env.AUTH_PORT ? `:${process.env.AUTH_PORT}` : ''}/api/races`,
+    `${process.env.SERVER_AUTH_URL}${process.env.SERVER_AUTH_PORT ? `:${process.env.SERVER_AUTH_PORT}` : ''}/api/races`,
     {
       method: 'GET',
       mode: 'cors',
@@ -268,9 +268,8 @@ export default class CharacterCreate extends Grid {
       PER: this.#attributes.PER.value,
       RES: this.#attributes.RES.value,
     };
-    console.log(character);
     const response = await fetch(
-      `${process.env.AUTH_URL}${process.env.AUTH_PORT ? `:${process.env.AUTH_PORT}` : ''}/api/character/create`,
+      `${process.env.SERVER_AUTH_URL}${process.env.SERVER_AUTH_PORT ? `:${process.env.SERVER_AUTH_PORT}` : ''}/api/character/create`,
       {
         method: 'POST',
         mode: 'cors',

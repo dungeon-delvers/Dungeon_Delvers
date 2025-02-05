@@ -8,55 +8,71 @@ services:
       - '5432:5432'
     volumes:
       - db_data:/var/lib/postgresql/data
-  db_migrations:
-    build: db_migrations
+  db-migrations:
+    build: db-migrations
     links:
       - db
     depends_on:
       - db
     env_file:
       - .env
-  auth:
+  server-auth:
     develop:
       watch:
         - action: sync+restart
-          path: ./auth
+          path: ./server-auth
           target: /app
           ignore:
             - coverage/
             - node_modules/
             - dist/
-    build: auth
+    build: server-auth
     depends_on:
       - db
-      - db_migrations
+      - db-migrations
     ports:
       - '8000:8000'
     env_file:
       - .env
-  server:
+  server-file:
     develop:
       watch:
         - action: sync+restart
-          path: ./server
+          path: ./server-file
           target: /app
           ignore:
             - coverage/
             - node_modules/
             - dist/
-    build: server
+    build: server-file
+    ports:
+      - '8081:8081'
+    env_file:
+      - .env
+  server-game:
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./server-game
+          target: /app
+          ignore:
+            - coverage/
+            - node_modules/
+            - dist/
+    build: server-game
     depends_on:
       - db
-      - db_migrations
+      - db-migrations
     ports:
       - '8080:8080'
     env_file:
       - .env
+
   client:
     build: client
     depends_on:
-      - auth
-      - server
+      - server-auth
+      - server-game
     ports:
       - '3000:3000'
     env_file:

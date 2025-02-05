@@ -3,7 +3,6 @@ import '@babylonjs/core/Debug/debugLayer';
 import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
 import '@babylonjs/inspector';
 import '@babylonjs/loaders/glTF';
-import { PlayerCharacterCreation } from '@dungeon-delvers/types';
 
 import titleMusic from '../../public/assets/audio/title.mp3';
 import { CharacterScene } from './graphics/scenes/characterScene';
@@ -42,7 +41,7 @@ export class Game {
   }
 
   private async _init() {
-    this._main_menu_state = localStorage.getItem('dd_auth') ? MAIN_MENU_STATE.CHARACTER_CREATE : MAIN_MENU_STATE.LOGIN;
+    this._main_menu_state = localStorage.getItem('dd_auth') ? MAIN_MENU_STATE.CHARACTER_SELECT : MAIN_MENU_STATE.LOGIN;
     this._engine = (await EngineFactory.CreateAsync(this._canvas, undefined)) as Engine;
     // this._scene = new Scene(this._engine);
     this._scene = new CharacterScene(this._engine);

@@ -1,4 +1,4 @@
-import { RaceName } from '@dungeon-delvers/config';
+import { Race } from '@dungeon-delvers/types';
 import { PlayerCharacter } from '@dungeon-delvers/types';
 
 import { CharacterModelsProps } from '../graphics/race/race';
@@ -13,7 +13,7 @@ export const fetchPlayerCharacters = async () => {
   const ddAuth = localStorage.getItem('dd_auth');
   const { token } = ddAuth && JSON.parse(ddAuth);
   const response = await fetch(
-    `${process.env.AUTH_URL}${process.env.AUTH_PORT ? `:${process.env.AUTH_PORT}` : ''}/api/characters`,
+    `${process.env.SERVER_AUTH_URL}${process.env.SERVER_AUTH_PORT ? `:${process.env.SERVER_AUTH_PORT}` : ''}/api/characters`,
     {
       method: 'GET',
       mode: 'cors',
@@ -51,7 +51,7 @@ export default class CharacterSelect extends StyledStack {
   };
   #characters: PlayerCharacter[];
   #scene: CharacterScene;
-  #selectedRace: RaceName | null = null;
+  #selectedRace: Race | null = null;
   #selectedGender: 'MALE' | 'FEMALE' | null = null;
   #goToCharacterCreate: () => void;
 
@@ -132,16 +132,19 @@ export default class CharacterSelect extends StyledStack {
   private async _logout() {
     const ddAuthString = localStorage.getItem('dd_auth');
     const user = ddAuthString && JSON.parse(ddAuthString);
-    await fetch(`${process.env.AUTH_URL}${process.env.AUTH_PORT ? `:${process.env.AUTH_PORT}` : ''}/api/logout`, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
+    await fetch(
+      `${process.env.SERVER_AUTH_URL}${process.env.SERVER_AUTH_PORT ? `:${process.env.SERVER_AUTH_PORT}` : ''}/api/logout`,
+      {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: user.id,
+        }),
       },
-      body: JSON.stringify({
-        id: user.id,
-      }),
-    });
+    );
     localStorage.removeItem('dd_auth');
   }
 }

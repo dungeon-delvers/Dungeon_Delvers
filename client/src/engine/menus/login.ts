@@ -64,7 +64,7 @@ export default class Login extends StyledStack {
       return;
     }
     const response = await fetch(
-      `${process.env.AUTH_URL}${process.env.AUTH_PORT ? `:${process.env.AUTH_PORT}` : ''}/api/login`,
+      `${process.env.SERVER_AUTH_URL}${process.env.SERVER_AUTH_PORT ? `:${process.env.SERVER_AUTH_PORT}` : ''}/api/login`,
       {
         method: 'POST',
         mode: 'cors',

@@ -34,7 +34,7 @@
   "dependencies": {
     "@babylonjs/core": "^7.34.2",
     "@babylonjs/gui": "^7.34.2",
-    "@babylonjs/inspector": "^7.34.2",
+    "@babylonjs/inspector": "^8.0.1",
     "@babylonjs/loaders": "^7.34.2",
     "@babylonjs/materials": "^7.34.2",
     "@dungeon-delvers/config": "0.0.27",

@@ -32,7 +32,7 @@
   "author": "Shawn Mealey",
   "license": "ISC",
   "dependencies": {
-    "@babylonjs/core": "^7.34.2",
+    "@babylonjs/core": "^8.0.1",
     "@babylonjs/gui": "^7.34.2",
     "@babylonjs/inspector": "^7.34.2",
     "@babylonjs/loaders": "^7.34.2",

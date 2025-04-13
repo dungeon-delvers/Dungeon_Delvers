@@ -20,9 +20,9 @@
     "clean": "concurrently \"npm run clean --ws\" \"rm -rf ./node_modules package-lock.json .parcel-cache\"",
     "deploy-demo": "npm run deploy-demo --workspace=client",
     "start": "docker compose up  --build --watch",
-    "test:auth": "npm run test  --workspace=auth",
+    "test:auth": "npm run test  --workspace=server-auth",
     "test:client": "npm run test  --workspace=client",
-    "test:server": "npm run test  --workspace=server",
+    "test:server": "npm run test  --workspace=server-game",
     "test": "npm run test --ws"
   },
   "keywords": [

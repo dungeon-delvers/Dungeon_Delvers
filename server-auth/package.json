@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc && tsc-alias",
     "clean": "rm -rf dist/** node_modules",
-    "start": "tsx ./src/app.ts -- --watch",
+    "start": "tsx watch ./src/app.ts",
     "test:coverage": "NODE_ENV=test && jest --coverage",
     "test": "NODE_ENV=test && jest"
   },

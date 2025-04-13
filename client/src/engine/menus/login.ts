@@ -22,9 +22,9 @@ const LOGIN = `${menu_id}_login_button`;
 const REGISTER = `${menu_id}_cancel_button`;
 
 export default class Login extends StyledStack {
-  private _goToCharacterSelect: () => void;
-  _shouldLogin: boolean = false;
-  private _loginFormElements = {
+  #goToCharacterSelect: () => void;
+  #shouldLogin: boolean = false;
+  #loginFormElements = {
     [TITLE]: new Title(TITLE, 'Dungeon Delvers'),
     [LABEL_ELEMENTS.USERNAME_LABEL]: new Label(LABEL_ELEMENTS.USERNAME_LABEL, 'Username:'),
     [INPUT_ELEMENTS.USERNAME]: new InputText(INPUT_ELEMENTS.USERNAME),
@@ -35,8 +35,8 @@ export default class Login extends StyledStack {
   };
   constructor(_goToRegister: () => void, goToCharacterSelect: () => void) {
     super(menu_id, { width: '25%', height: '450px' });
-    this.formElements = this._loginFormElements;
-    this._goToCharacterSelect = goToCharacterSelect;
+    this.formElements = this.#loginFormElements;
+    this.#goToCharacterSelect = goToCharacterSelect;
     Object.values(INPUT_ELEMENTS).map(value => {
       const input = this.formElements[value];
       input?.onBlurObservable.add(() => {
@@ -47,7 +47,7 @@ export default class Login extends StyledStack {
     (this.formElements[REGISTER] as Button).onClick = () => _goToRegister();
   }
   private validateInputs() {
-    this._shouldLogin = Object.values(INPUT_ELEMENTS).reduce((accumulator, value) => {
+    this.#shouldLogin = Object.values(INPUT_ELEMENTS).reduce((accumulator, value) => {
       const input = this.formElements[value] as InputElements;
 
       if (input) {
@@ -57,7 +57,7 @@ export default class Login extends StyledStack {
     }, false);
   }
   private async login() {
-    if (!this._shouldLogin) {
+    if (!this.#shouldLogin) {
       const error = new Error('Please fill out all fields');
       error.name = 'LOGIN_ERROR';
       this.renderError(error);
@@ -72,8 +72,8 @@ export default class Login extends StyledStack {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: this._loginFormElements[INPUT_ELEMENTS.USERNAME].text,
-          password: this._loginFormElements[INPUT_ELEMENTS.PASSWORD].text,
+          username: this.#loginFormElements[INPUT_ELEMENTS.USERNAME].text,
+          password: this.#loginFormElements[INPUT_ELEMENTS.PASSWORD].text,
         }),
       },
     );
@@ -82,9 +82,9 @@ export default class Login extends StyledStack {
       const result = await response.json();
 
       localStorage.setItem('dd_auth', JSON.stringify(result));
-      this._goToCharacterSelect();
+      this.#goToCharacterSelect();
       Object.values(INPUT_ELEMENTS).map(value => {
-        const input = this._loginFormElements[value];
+        const input = this.#loginFormElements[value];
         if (input) {
           input.text = '';
         }

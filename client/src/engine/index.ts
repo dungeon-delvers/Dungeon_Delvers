@@ -1,131 +1,194 @@
-import { ArcRotateCamera, Engine, EngineFactory, FollowCamera, Sound } from '@babylonjs/core';
-import '@babylonjs/core/Debug/debugLayer';
-import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
+import {
+  AnimationGroup,
+  AssetsManager,
+  DebugLayer,
+  Engine,
+  FollowCamera,
+  LoadSceneAsync,
+  Scene,
+  UniversalCamera,
+  Vector3,
+} from '@babylonjs/core';
+// import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
 import '@babylonjs/inspector';
-import '@babylonjs/loaders/glTF';
+import { Socket, io } from 'socket.io-client';
 
-import titleMusic from '../../public/assets/audio/title.mp3';
-import { CharacterScene } from './graphics/scenes/characterScene';
-import CharacterCreate, { fetchRaces } from './menus/characterCreation';
-import CharacterMenu, { fetchPlayerCharacters } from './menus/characterSelect';
-import LoginMenu from './menus/login';
-import RegisterMenu from './menus/register';
+// import '@babylonjs/loaders/glTF';
+// import { Gender, Race } from '@dungeon-delvers/types';
 
-export enum GAME_STATE {
-  MAIN_MENU,
-  CHARACTER_SELECT,
-}
+// import CharacterCreate, { fetchRaces } from './menus/characterCreation';
+// import CharacterSelect, { fetchPlayerCharacters } from './menus/characterSelect';
+// import Login from './menus/login';
+// import Register from './menus/register';
 
-export enum MAIN_MENU_STATE {
-  LOGIN,
-  REGISTER,
-  CHARACTER_SELECT,
-  CHARACTER_CREATE,
-}
+// export enum GAME_STATE {
+//   MAIN_MENU,
+//   IN_GAME,
+// }
+
+// export enum MAIN_MENU_STATE {
+//   LOGIN,
+//   REGISTER,
+//   CHARACTER_SELECT,
+//   CHARACTER_CREATE,
+// }
+
+// export class Game {
+//   #animationLoopCount = Math.floor(Math.random() * 10) + 1;
+//   #assetsManager: AssetsManager;
+//   #camera: FollowCamera;
+//   #currentAnimation: AnimationGroup;
+//   #currentLoop = 0;
+//   #menu: AdvancedDynamicTexture;
+//   #menuState: MAIN_MENU_STATE = MAIN_MENU_STATE.LOGIN;
+//   #main_menu_states: Record<MAIN_MENU_STATE, () => Control | Promise<Control>>;
+
+//   #scene: Scene;
+
+//   constructor(engine: Engine) {
+//     const scene = new Scene(engine);
+//     this.#scene = scene;
+//     this.#assetsManager = new AssetsManager(this.#scene);
+//     this.#camera = new FollowCamera(`character_scene_camera`, new Vector3(0, 5, -5), this.#scene);
+//     this.#camera.radius = 6;
+//     this.#camera.heightOffset = 2;
+//     this.#camera.fov = 1;
+//     this.loadZone('rook_tower_02_14_2025');
+//     this.loadCharacter('HUMAN', 'MALE');
+
+//     this.#main_menu_states = {
+//       [MAIN_MENU_STATE.LOGIN]: () =>
+//         new Login(
+//           () => this._changeMenu(MAIN_MENU_STATE.REGISTER),
+//           () => this._changeMenu(MAIN_MENU_STATE.CHARACTER_SELECT),
+//         ),
+//       [MAIN_MENU_STATE.REGISTER]: () => new Register(() => this._changeMenu(MAIN_MENU_STATE.CHARACTER_SELECT)),
+//       [MAIN_MENU_STATE.CHARACTER_SELECT]: async () => {
+//         const characters = await fetchPlayerCharacters();
+//         return new CharacterSelect(
+//           () => this._changeMenu(MAIN_MENU_STATE.LOGIN),
+//           () => this._changeMenu(MAIN_MENU_STATE.CHARACTER_CREATE),
+//           characters ?? [],
+//         );
+//       },
+//       [MAIN_MENU_STATE.CHARACTER_CREATE]: async () => {
+//         const races = await fetchRaces();
+//         return new CharacterCreate(races, () => this._changeMenu(MAIN_MENU_STATE.CHARACTER_SELECT));
+//       },
+//     };
+//     this.#menu = AdvancedDynamicTexture.CreateFullscreenUI(this.#menuState.toString());
+//     this.#menu.addControl(this.#main_menu_states[this.#menuState]() as Control);
+
+//     this.#assetsManager.load();
+//     this.#assetsManager.onFinish = () => {
+//       scene.lights.forEach(light => {
+//         light.intensity = 10;
+//       });
+//       this.#currentAnimation.onAnimationGroupLoopObservable.add(() => {
+//         if (this.#currentLoop === this.#animationLoopCount) {
+//           this.#currentAnimation.pause();
+//           const randomAnimationIndex = Math.floor(Math.random() * (4 - 2 + 1)) + 2;
+//           const randomIdle = this.#scene.animationGroups[randomAnimationIndex];
+//           randomIdle.onAnimationGroupLoopObservable.add(() => {
+//             randomIdle.pause();
+//             this.#currentAnimation.play(true);
+//           });
+//           randomIdle.play(true);
+
+//           this.#currentLoop = 0;
+//           this.#animationLoopCount = Math.floor(Math.random() * 10) + 1;
+//         }
+//         this.#currentLoop++;
+//       });
+//       engine.runRenderLoop(function () {
+//         scene.render();
+//       });
+//       window.addEventListener('keydown', ev => {
+//         // Shift+Ctrl+I
+//         if (ev.shiftKey && ev.ctrlKey && ev.key === 'I') {
+//           if (this.#scene.debugLayer.isVisible()) {
+//             this.#scene.debugLayer.hide();
+//           } else {
+//             this.#scene.debugLayer.show();
+//           }
+//         }
+//       });
+//     };
+//   }
+
+//   loadZone(zoneName: string = 'rook_tower_02_14_2025') {
+//     this.#assetsManager.addMeshTask(
+//       'zone',
+//       null,
+//       `${process.env.SERVER_FILE_URL}:${process.env.SERVER_FILE_PORT}/models/zones/`,
+//       `${zoneName}.glb`,
+//     );
+//   }
+
+//   loadCharacter(race: Race, gender: Gender) {
+//     const task = this.#assetsManager.addMeshTask(
+//       `${race}_${gender}`,
+//       null,
+//       `${process.env.SERVER_FILE_URL}:${process.env.SERVER_FILE_PORT}/models/characters/${race}_${gender}/`,
+//       `${race}_${gender}.glb`,
+//     );
+//     task.onSuccess = task => {
+//       task.loadedMeshes[0].position = new Vector3(0, 3.5, 5.5);
+//       this.#currentAnimation = task.loadedAnimationGroups[1];
+//       this.#currentAnimation.play(true);
+//       this.#camera.lockedTarget = task.loadedMeshes[0];
+//     };
+//     this.#assetsManager.load();
+//   }
+//   private _changeMenu(state: MAIN_MENU_STATE) {
+//     this._menuSetter(state);
+//   }
+
+//   private async _menuSetter(state: MAIN_MENU_STATE) {
+//     this.#menu.getChildren().forEach(child => {
+//       child.dispose();
+//     });
+//     if (this.#main_menu_states[state]() instanceof Promise) {
+//       const menuControl = await this.#main_menu_states[state]();
+//       this.#menu.addControl(menuControl);
+//     } else {
+//       this.#menu.addControl(this.#main_menu_states[state]() as Control);
+//     }
+//   }
+// }
 
 export class Game {
-  private _engine: Engine;
-  private _camera: ArcRotateCamera | FollowCamera;
-  private _canvas: HTMLCanvasElement;
-  private _state: GAME_STATE;
-  private _menu: AdvancedDynamicTexture;
-  private _main_menu_state: MAIN_MENU_STATE;
-  private _main_menu_states: Record<MAIN_MENU_STATE, () => Control | Promise<Control>>;
-  private _scene: CharacterScene;
-  // private _scenes: Record<GAME_STATE, () => Scene>;
-
-  constructor() {
-    this._canvas = this._createCanvas();
-    // initialize babylon scene and engine
-    this._init();
-  }
-
-  private async _init() {
-    this._main_menu_state = localStorage.getItem('dd_auth') ? MAIN_MENU_STATE.CHARACTER_SELECT : MAIN_MENU_STATE.LOGIN;
-    this._engine = (await EngineFactory.CreateAsync(this._canvas, undefined)) as Engine;
-    // this._scene = new Scene(this._engine);
-    this._scene = new CharacterScene(this._engine);
-    this._menu = AdvancedDynamicTexture.CreateFullscreenUI('main_menu');
-    this._menu.registerClipboardEvents();
-    this._main_menu_states = {
-      [MAIN_MENU_STATE.LOGIN]: () =>
-        new LoginMenu(
-          () => this._changeMenu(MAIN_MENU_STATE.REGISTER),
-          () => this._changeMenu(MAIN_MENU_STATE.CHARACTER_SELECT),
-        ),
-      [MAIN_MENU_STATE.REGISTER]: () => new RegisterMenu(() => this._changeMenu(MAIN_MENU_STATE.CHARACTER_SELECT)),
-      [MAIN_MENU_STATE.CHARACTER_SELECT]: async () => {
-        const characters = await fetchPlayerCharacters();
-        return new CharacterMenu(
-          this._scene,
-          () => this._changeMenu(MAIN_MENU_STATE.LOGIN),
-          () => this._changeMenu(MAIN_MENU_STATE.CHARACTER_CREATE),
-          characters ?? [],
-        );
-      },
-      [MAIN_MENU_STATE.CHARACTER_CREATE]: async () => {
-        const races = await fetchRaces();
-        return new CharacterCreate(this._scene, races, () => this._changeMenu(MAIN_MENU_STATE.CHARACTER_SELECT));
-      },
-    };
-    const menuControl = await this._main_menu_states[this._main_menu_state]();
-    this._menu.addControl(menuControl);
-    window.addEventListener('resize', () => {
-      this._engine.resize();
-    });
+  #socket: Socket;
+  #scene: Scene;
+  constructor(engine: Engine) {
+    this.#socket = io(`${process.env.SERVER_GAME_URL}:${process.env.SERVER_GAME_PORT}`);
+    this.#scene = new Scene(engine);
     window.addEventListener('keydown', ev => {
-      // Shift+Ctrl+Alt+I
+      // Shift+Ctrl+I
       if (ev.shiftKey && ev.ctrlKey && ev.key === 'I') {
-        if (this._scene.debugLayer.isVisible()) {
-          this._scene.debugLayer.hide();
+        console.log('Debug layer');
+        if (this.#scene.debugLayer.isVisible()) {
+          this.#scene.debugLayer.hide();
         } else {
-          this._scene.debugLayer.show();
+          this.#scene.debugLayer.show();
         }
       }
     });
-    // this._camera = new ArcRotateCamera('Camera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this._scene);
-    // this._camera.attachControl(this._canvas, true);
-    new Sound('title_music', titleMusic.split(/[?#]/)[0], null, null, {
-      autoplay: true,
-      loop: true,
+    this.#socket.on('connect', () => {
+      console.log('Connected to server');
     });
-    this._engine.runRenderLoop(() => {
-      this._scene.render();
+    this.#socket.on('zoneLoaded', async serializedZone => {
+      const scene = await LoadSceneAsync(`data:${serializedZone}`, engine);
+      this.#scene = scene;
+      const camera = this.#scene.getNodeById('camera') as UniversalCamera;
+      console.log(camera);
+      camera.attachControl();
+      engine.runRenderLoop(function () {
+        scene.render();
+      });
     });
-  }
-
-  private async _menuSetter(state: MAIN_MENU_STATE) {
-    this._menu.getChildren().forEach(child => {
-      child.dispose();
+    this.#socket.on('disconnect', () => {
+      console.log('Disconnected from server');
     });
-    if (this._main_menu_states[state]() instanceof Promise) {
-      const menuControl = await this._main_menu_states[state]();
-      this._menu.addControl(menuControl);
-    } else {
-      this._menu.addControl(this._main_menu_states[state]() as Control);
-    }
-  }
-
-  private _changeMenu(state: MAIN_MENU_STATE) {
-    this._menuSetter(state);
-    this._engine.stopRenderLoop();
-
-    this._engine.runRenderLoop(() => {
-      this._scene.render();
-    });
-  }
-
-  private _createCanvas() {
-    const canvas = document.createElement('canvas');
-    canvas.id = 'renderCanvas';
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    canvas.style.display = 'block';
-    canvas.oncontextmenu = () => false;
-    canvas.id = 'game';
-    document.body.appendChild(canvas);
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    return canvas;
   }
 }

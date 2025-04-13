@@ -1,8 +1,8 @@
-import { Race } from '@dungeon-delvers/types';
+// import { Race } from '@dungeon-delvers/types';
 import { PlayerCharacter } from '@dungeon-delvers/types';
 
-import { CharacterModelsProps } from '../graphics/race/race';
-import { CharacterScene } from '../graphics/scenes/characterScene';
+// import { CharacterModelsProps } from '../graphics/race/race';
+// import { CharacterScene } from '../graphics/scenes/characterScene';
 import { Accept, Button, Cancel } from '../gui/components/Buttons';
 import StyledStack from '../gui/components/StyledStack';
 import Title from '../gui/components/Title';
@@ -50,23 +50,18 @@ export default class CharacterSelect extends StyledStack {
     [CHARACTER_ELEMENTS.CHARACTER_6]: null,
   };
   #characters: PlayerCharacter[];
-  #scene: CharacterScene;
-  #selectedRace: Race | null = null;
-  #selectedGender: 'MALE' | 'FEMALE' | null = null;
+  // #zone: Zone;
+  // #selectedRace: Race | null = null;
+  // #selectedGender: 'MALE' | 'FEMALE' | null = null;
   #goToCharacterCreate: () => void;
 
-  constructor(
-    scene: CharacterScene,
-    _goToLogin: () => void,
-    _goToCharacterCreate: () => void,
-    characters: PlayerCharacter[],
-  ) {
+  constructor(_goToLogin: () => void, _goToCharacterCreate: () => void, characters: PlayerCharacter[]) {
     super(menu_id, {
       width: '20% ',
       height: '100%',
     });
     this.#characters = characters;
-    this.#scene = scene;
+    // this.#zone = zone;
     this.#goToCharacterCreate = _goToCharacterCreate;
     this.horizontalAlignment = StyledStack.HORIZONTAL_ALIGNMENT_LEFT;
     this.formElements = {
@@ -116,10 +111,10 @@ export default class CharacterSelect extends StyledStack {
     const characterExists = index in this.#characters;
     this.#clickHandlers[key] = () => {
       if (characterExists) {
-        this.#selectedRace = this.#characters[index].race;
-        this.#selectedGender = this.#characters[index].gender;
-        this.#scene.selectedCharacter =
-          `${this.#selectedGender[0].toLocaleLowerCase()}_${this.#selectedRace.toLowerCase()}` as keyof CharacterModelsProps;
+        // this.#selectedRace = this.#characters[index].race;
+        // this.#selectedGender = this.#characters[index].gender;
+        /*this.#zone.selectedCharacter =
+          `${this.#selectedGender[0].toLocaleLowerCase()}_${this.#selectedRace.toLowerCase()}` as keyof CharacterModelsProps;*/
         this.formElements[LOGIN].isEnabled = true;
       } else {
         this.#goToCharacterCreate();

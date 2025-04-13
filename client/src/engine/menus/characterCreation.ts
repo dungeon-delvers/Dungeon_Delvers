@@ -1,8 +1,8 @@
 import { Grid, Rectangle, StackPanel, TextBlock } from '@babylonjs/gui';
-import { ATTRIBUTE, Attribute, PLAYER_CLASS, PlayerClass, RACE, Race, RaceData } from '@dungeon-delvers/types';
+import { Attribute, PLAYER_CLASS, PlayerClass, RACE, Race, RaceData } from '@dungeon-delvers/types';
 
-import { CharacterModelsProps } from '../graphics/race/race';
-import { CharacterScene } from '../graphics/scenes/characterScene';
+// import { CharacterModelsProps } from '../graphics/race/race';
+// import { Zone } from '../graphics/zone';
 import { Accept, Cancel } from '../gui/components/Buttons';
 import Button from '../gui/components/Buttons/Button';
 import StyledInputText from '../gui/components/InputText';
@@ -41,15 +41,16 @@ export default class CharacterCreate extends Grid {
   #raceData: RaceData[];
   #raceDescription: TextBlock;
   #rightStack: StackPanel;
-  #scene: CharacterScene;
+  // #zone: Zone;
   #selectedClass: PlayerClass = 'FIGHTER';
   #selectedGender: 'm' | 'f' = 'm';
   #selectedRace: Race = 'HUMAN';
 
-  constructor(scene: CharacterScene, raceData, goToCharacterSelect: () => void) {
+  constructor(raceData, goToCharacterSelect: () => void) {
     super(menu_id);
-    this.#scene = scene;
+    // this.#zone = zone;
     this.#raceData = raceData;
+    console.log(this.#raceDescription);
     this.#raceDescription = new TextBlock(
       `${menu_id}_racial_description`,
       this.#raceData.find(element => element.race === this.#selectedRace)?.description,
@@ -129,7 +130,7 @@ export default class CharacterCreate extends Grid {
         const description = this.#raceData.find(element => element.race === this.#selectedRace)?.description || '';
         this.#raceDescription.text = description;
         this.renderAttributes();
-        this.updateCharacter();
+        // this.updateCharacter();
       },
     );
     this.#leftStack.addControl(raceSelectDropdown);
@@ -164,11 +165,11 @@ export default class CharacterCreate extends Grid {
     const femaleButton = new Button(`${menu_id}_female_button`, '♀');
     maleButton.onPointerClickObservable.add(() => {
       this.#selectedGender = 'm';
-      this.updateCharacter();
+      // this.updateCharacter();
     });
     femaleButton.onPointerClickObservable.add(() => {
       this.#selectedGender = 'f';
-      this.updateCharacter();
+      // this.updateCharacter();
     });
     maleButton.width = '40px';
     femaleButton.width = '40px';
@@ -234,10 +235,10 @@ export default class CharacterCreate extends Grid {
     line.background = colors.gold.primary;
     stack.addControl(line);
   }
-  updateCharacter() {
-    this.#scene.selectedCharacter =
-      `${this.#selectedGender}_${this.#selectedRace.toLowerCase()}` as keyof CharacterModelsProps;
-  }
+  // updateCharacter() {
+  //   this.#zone.scene.selectedCharacter =
+  //     `${this.#selectedGender}_${this.#selectedRace.toLowerCase()}` as keyof CharacterModelsProps;
+  // }
 
   renderAttributes() {
     const attributes = this.#raceData.find(element => element.race === this.#selectedRace) as RaceData;

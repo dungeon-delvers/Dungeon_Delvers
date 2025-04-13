@@ -12,9 +12,10 @@
   "description": "Online 3D Fantasy RPG MMO made with BabylonJS",
   "main": "index.js",
   "scripts": {
-    "build:auth": "npm run build --workspace=auth",
+    "build:auth": "npm run build --workspace=server-auth",
     "build:client": "npm run build --workspace=client",
-    "build:server": "npm run build --workspace=server",
+    "build:file": "npm run build --workspace=file-server",
+    "build:game": "npm run build --workspace=server-game",
     "build": "npm run build --ws",
     "clean": "concurrently \"npm run clean --ws\" \"rm -rf ./node_modules package-lock.json .parcel-cache\"",
     "deploy-demo": "npm run deploy-demo --workspace=client",

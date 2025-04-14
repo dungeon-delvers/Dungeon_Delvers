@@ -1,7 +1,7 @@
 import { Algorithm } from 'jsonwebtoken';
 
 type NodeEnv = 'test' | 'development' | 'production';
-
+console.log(process.env.SERVER_AUTH_PORT);
 export default {
   api: {
     prefix: '/api',

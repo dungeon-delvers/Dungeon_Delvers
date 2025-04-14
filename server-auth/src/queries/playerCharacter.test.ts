@@ -36,7 +36,7 @@ describe('PlayerCharacter Queries', () => {
         text: `
     INSERT INTO player_character (
     user_id,
-    name, level, race, gender, class, "${ATTRIBUTE.CON}", "${ATTRIBUTE.DEX}", "${ATTRIBUTE.INT}", "${ATTRIBUTE.MIG}", "${ATTRIBUTE.PER}", "${ATTRIBUTE.RES}")
+    name, race, gender, class, "${ATTRIBUTE.CON}", "${ATTRIBUTE.DEX}", "${ATTRIBUTE.INT}", "${ATTRIBUTE.MIG}", "${ATTRIBUTE.PER}", "${ATTRIBUTE.RES}")
     VALUES ($1, 1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
         values: [
           1,

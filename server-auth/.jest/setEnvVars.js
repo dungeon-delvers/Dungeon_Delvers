@@ -1,4 +1,4 @@
-process.env.AUTH_PORT = 8000;
+process.env.SERVER_AUTH_PORT = 8000;
 process.env.POSTGRES_USER = 'test_user';
 process.env.POSTGRES_HOST = 'test-host';
 process.env.POSTGRES_DB = 'test-db';

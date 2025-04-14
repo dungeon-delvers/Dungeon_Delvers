@@ -8,7 +8,6 @@ describe('Config', () => {
   });
 
   it('should parse the SERVER_AUTH_PORT correctly', () => {
-    process.env.SERVER_AUTH_PORT = '8000';
     expect(config.port).toBe(8000);
   });
 

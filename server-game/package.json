@@ -20,7 +20,7 @@
   "author": "Shawn Mealey",
   "license": "ISC",
   "dependencies": {
-    "@babylonjs/core": "^7.34.2",
+    "@babylonjs/core": "^8.2.0",
     "@babylonjs/loaders": "^7.34.2",
     "@dungeon-delvers/config": "0.0.27",
     "@dungeon-delvers/types": "0.0.26",

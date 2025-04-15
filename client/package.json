@@ -40,6 +40,7 @@
     "@dungeon-delvers/config": "0.0.27",
     "@dungeon-delvers/types": "0.0.26",
     "@parcel/config-default": "^2.9.2",
+    "@parcel/watcher": "^2.5.1",
     "alea": "^1.0.1",
     "delaunay-triangulate": "^1.1.6",
     "dotenv": "^16.4.5",

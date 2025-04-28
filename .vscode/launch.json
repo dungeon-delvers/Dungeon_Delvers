@@ -12,11 +12,18 @@
       "cwd": "${workspaceRoot}"
     },
     {
-      "command": "npm run test",
+      "command": "npm run test:server-auth",
       "name": "Test Auth",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceRoot}/auth"
+      "cwd": "${workspaceRoot}/server-auth"
+    },
+    {
+      "command": "npm run test",
+      "name": "Test Game Server",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceRoot}/server-game"
     }
   ]
 }

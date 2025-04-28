@@ -12,10 +12,10 @@ export const isAuthSocket = (socket: Socket, next: (error?: ExtendedError) => vo
     socket.data.user = decoded;
   } catch (error) {
     if (error instanceof Error) {
-      return next(error);
+      return error;
     } else {
       throw new Error('Invalid token');
     }
   }
-  next();
+  return;
 };

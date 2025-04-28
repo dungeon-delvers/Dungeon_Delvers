@@ -1,105 +1,97 @@
-export const ATTRIBUTE = {
-  CON: 'CON',
-  DEX: 'DEX',
-  INT: 'INT',
-  MIG: 'MIG',
-  PER: 'PER',
-  RES: 'RES',
-};
+export const ATTRIBUTES = ['CON', 'DEX', 'INT', 'MIG', 'PER', 'RES'] as const;
 
-export type Attribute = keyof typeof ATTRIBUTE;
+export type Attribute = (typeof ATTRIBUTES)[number];
 
 export type Attributes = Record<Attribute, number>;
 
-export const ABILITY_EFFECT_TYPE = {
-  ALTERATION: 'ALTERATION',
-  BUFF: 'BUFF',
-  DAMAGE: 'DAMAGE',
-  DEBUFF: 'DEBUFF',
-  HEALING: 'HEALING',
-};
+export const ABILITY_EFFECT_TYPE = [
+  'ALTERATION',
+  'BUFF',
+  'DAMAGE',
+  'DEBUFF',
+  'HEALING',
+] as const;
 
-export type AbilityEffectType = keyof typeof ABILITY_EFFECT_TYPE;
+export type AbilityEffectType = (typeof ABILITY_EFFECT_TYPE)[number];
 
-export const GENDER = {
-  FEMALE: 'FEMALE',
-  MALE: 'MALE',
-};
+export const GENDER = ['FEMALE', 'MALE', 'NON-BINARY'] as const;
 
-export type Gender = keyof typeof GENDER;
+export type Gender = (typeof GENDER)[number];
 
-export const ITEM_SLOT = {
-  PRIMARY_SLOT: 'PRIMARY_SLOT',
-  SECONDARY_SLOT: 'SECONDARY_SLOT',
-  RANGED: 'RANGED',
-  HEAD: 'HEAD',
-  ARMS: 'ARMS',
-  SHOULDER: 'SHOULDER',
-  BACK: 'BACK',
-  CHEST: 'CHEST',
-  LEGS: 'LEGS',
-  FEET: 'FEET',
-  HANDS: 'HANDS',
-  NECK: 'NECK',
-  WRIST: 'WRIST',
-  BRACLET1: 'BRACLET1',
-  BRACLET2: 'BRACLET2',
-  RING1: 'RING1',
-  RING2: 'RING2',
-};
+export const ITEM_SLOT = [
+  'PRIMARY_SLOT',
+  'SECONDARY_SLOT',
+  'RANGED',
+  'HEAD',
+  'ARMS',
+  'SHOULDER',
+  'BACK',
+  'CHEST',
+  'LEGS',
+  'FEET',
+  'HANDS',
+  'NECK',
+  'WRIST',
+  'BRACLET1',
+  'BRACLET2',
+  'RING1',
+  'RING2',
+] as const;
 
-export type ItemSlot = keyof typeof ITEM_SLOT;
+export type ItemSlot = (typeof ITEM_SLOT)[number];
 
-export const ITEM_TYPE = {
-  WEAPON: 'WEAPON',
-  ARMOR: 'ARMOR',
-  CONSUMABLE: 'CONSUMABLE',
-  QUEST: 'QUEST',
-  INGREDIENT: 'INGREDIENT',
-  MISC: 'MISC',
-  LORE: 'LORE',
-  NO_DROP: 'NO_DROP',
-};
+export const ITEM_TYPE = [
+  'WEAPON',
+  'ARMOR',
+  'CONSUMABLE',
+  'QUEST',
+  'INGREDIENT',
+  'MISC',
+  'LORE',
+  'NO_DROP',
+] as const;
 
-export type ItemType = keyof typeof ITEM_TYPE;
+export type ItemType = (typeof ITEM_TYPE)[number];
 
-export const MESSAGE_TYPE = {
-  AUCTION: 'AUCTION',
-  COMBAT: 'COMBAT',
-  EMOTE: 'EMOTE',
-  GUILD: 'GUILD',
-  OUT_OF_CHARACTER: 'OUT_OF_CHARACTER',
-  PARTY: 'PARTY',
-  SAY: 'SAY',
-  SHOUT: 'SHOUT',
-  SYSTEM: 'SYSTEM',
-  WHISPER: 'WHISPER',
-};
+export const MESSAGE_TYPE = [
+  'AUCTION',
+  'COMBAT',
+  'EMOTE',
+  'GUILD',
+  'OUT_OF_CHARACTER',
+  'PARTY',
+  'SAY',
+  'SHOUT',
+  'SYSTEM',
+  'WHISPER',
+] as const;
 
-export type MessageType = keyof typeof MESSAGE_TYPE;
+export type MessageType = (typeof MESSAGE_TYPE)[number];
 
-export const NPC_TYPE = {
-  BANKER: 'BANKER',
-  MERCHANT: 'MERCHANT',
-  MONSTER: 'MONSTER',
-  QUEST_GIVER: 'QUEST_GIVER',
-  TRAINER: 'TRAINER',
-};
+export const NPC_TYPE = [
+  'BANKER',
+  'MERCHANT',
+  'MONSTER',
+  'QUEST_GIVER',
+  'TRAINER',
+] as const;
 
-export type NpcType = keyof typeof NPC_TYPE;
+export type NpcType = (typeof NPC_TYPE)[number];
 
-export const PLAYER_CLASS = {
-  FIGHTER: 'FIGHTER',
-  MAGE: 'MAGE',
-  SCOUT: 'SCOUT',
-  HEALER: 'HEALER',
-};
+export const PLAYER_CLASS = ['FIGHTER', 'MAGE', 'SCOUT', 'HEALER'] as const;
 
-export type PlayerClass = keyof typeof PLAYER_CLASS;
+export type PlayerClass = (typeof PLAYER_CLASS)[number];
 
 export type PlayerCharacterCreation = Omit<
   PlayerCharacter,
-  'id' | 'level' | 'surname' | 'current_health' | 'zoneId' | 'locX' | 'locY' | 'locZ'
+  | 'id'
+  | 'level'
+  | 'surname'
+  | 'current_health'
+  | 'zoneId'
+  | 'locX'
+  | 'locY'
+  | 'locZ'
 >;
 
 export type PlayerCharacter = Attributes & {
@@ -117,42 +109,51 @@ export type PlayerCharacter = Attributes & {
   locZ: number;
 };
 
-export const RACE = {
-  DWARF: 'DWARF',
-  GOBLIN: 'GOBLIN',
-  HUMAN: 'HUMAN',
-  ORC: 'ORC',
-};
+export const RACE = ['DWARF', 'GOBLIN', 'HUMAN', 'ORC'] as const;
 
-export type Race = keyof typeof RACE;
+export const MONSTER_TYPE = [
+  'ABERRATION',
+  'BEAST',
+  'CONSTRUCT',
+  'DRAGON',
+  'ELEMENTAL',
+  'ETHEREAL',
+  'FAIRY',
+  'GIANT',
+  'HUMANOID',
+  'INFERNAL',
+  'MAGICAL_BEAST',
+  'OOZE',
+  'OUTSIDER',
+  'PLANT',
+  'UNDEAD',
+] as const;
+
+export type Race = (typeof RACE)[number];
 
 export type RaceData = Attributes & {
   race: Race;
   description: string;
 };
 
-export const STATS = {
-  ACCURACY: 'ACCURACY',
-  ACTION_SPEED: 'ACTION_SPEED',
-  AREA_OF_EFFECT: 'AREA_OF_EFFECT',
-  CONCENTRATION: 'CONCENTRATION',
-  DAMAGE: 'DAMAGE',
-  DEFLECTION: 'DEFLECTION',
-  DURATION: 'DURATION',
-  FORTITUDE: 'FORTITUDE',
-  HEALING: 'HEALING',
-  HEALTH: 'HEALTH',
-};
+export const STATS = [
+  'ACCURACY',
+  'ACTION_SPEED',
+  'AREA_OF_EFFECT',
+  'CONCENTRATION',
+  'DAMAGE',
+  'DEFLECTION',
+  'DURATION',
+  'FORTITUDE',
+  'HEALING',
+  'HEALTH',
+] as const;
 
-export type Stat = keyof typeof STATS;
+export type Stat = (typeof STATS)[number];
 
-export const USER_ROLE = {
-  ADMIN: 'ADMIN',
-  BANNED: 'BANNED',
-  PLAYER: 'PLAYER',
-};
+export const USER_ROLE = ['ADMIN', 'BANNED', 'PLAYER'] as const;
 
-export type UserRole = keyof typeof USER_ROLE;
+export type UserRole = (typeof USER_ROLE)[number];
 
 export interface User {
   id: number;

@@ -1,5 +1,6 @@
 import {
   Engine,
+  FloatArray,
   FreeCamera,
   HemisphericLight,
   IndicesArray,
@@ -12,8 +13,6 @@ import {
   VertexData,
 } from '@babylonjs/core';
 import { createNoise3D } from 'simplex-noise';
-
-import LoggerInstance from '@/loaders/logger';
 
 export class Zone {
   #camera: FreeCamera;
@@ -67,5 +66,18 @@ export class Zone {
 
   set camera(camera: FreeCamera) {
     this.#camera = camera;
+  }
+
+  get scene(): Scene {
+    return this.#scene;
+  }
+
+  get positions(): FloatArray {
+    const groundMesh = this.#scene.getMeshById('ground');
+    const positions = groundMesh ? groundMesh.getVerticesData(VertexBuffer.PositionKind) : null;
+    if (positions) {
+      return positions;
+    }
+    return [];
   }
 }

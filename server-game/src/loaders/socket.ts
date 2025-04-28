@@ -9,9 +9,9 @@ export default (io: Server) => {
   console.log(isAuthSocket);
   Logger.info('✌️ Socket.IO is loading');
   events(io);
-  io.use((socket, next) => {
-    isAuthSocket(socket, next);
-    next();
-  });
+  // io.use((socket, next) => {
+  //   isAuthSocket(socket, next);
+  //   next();
+  // });
   Logger.info('✌️ Socket.IO loaded');
 };

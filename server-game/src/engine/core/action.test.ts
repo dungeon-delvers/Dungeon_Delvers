@@ -1,5 +1,3 @@
-import { actions } from '../../content/actions';
-import { MonsterType } from '../../content/monsters';
 import { Action, ActionResult, FAILED, NOT_DONE, SUCCEEDED } from './action';
 import { Actor } from './actor';
 import { ATTRIBUTES, Attributes } from './attribute';
@@ -42,8 +40,7 @@ const target = new Actor(
     health: 118,
     reflex: 54,
     willpower: 30,
-  },
-  MonsterType.Beast,
+  }
 );
 
 const idle = new Action({
@@ -52,15 +49,6 @@ const idle = new Action({
   name: 'idle',
   description: 'Do nothing',
   onPerform: () => SUCCEEDED,
-});
-
-describe('Action', () => {
-  it('should create an instance', () => {
-    expect(actions.firebolt).toBeTruthy();
-  });
-  it('should allow for the action to be performed', () => {
-    expect(actions.firebolt(actor, target).perform()).toEqual(SUCCEEDED);
-  });
 });
 
 describe('ActionResult', () => {

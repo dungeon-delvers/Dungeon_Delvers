@@ -1,11 +1,10 @@
 import {
-  AnimationGroup,
-  AssetsManager,
-  DebugLayer,
+  AppendSceneAsync,
+  Color3,
   Engine,
-  FollowCamera,
-  LoadSceneAsync,
+  MeshBuilder,
   Scene,
+  StandardMaterial,
   UniversalCamera,
   Vector3,
 } from '@babylonjs/core';
@@ -178,14 +177,26 @@ export class Game {
       console.log('Connected to server');
     });
     this.#socket.on('zoneLoaded', async serializedZone => {
-      const scene = await LoadSceneAsync(`data:${serializedZone}`, engine);
-      this.#scene = scene;
+      await AppendSceneAsync(`data:${serializedZone}`, this.#scene);
       const camera = this.#scene.getNodeById('camera') as UniversalCamera;
       console.log(camera);
       camera.attachControl();
-      engine.runRenderLoop(function () {
-        scene.render();
+      engine.runRenderLoop(() => {
+        this.#scene.render();
       });
+    });
+    this.#socket.on('actorsLoaded', actors => {
+      console.log('Actors loaded', actors);
+      for (const actor of Object.values(actors)) {
+        const { id, name, position, rotation } = actor;
+        console.log(this.#scene);
+        const actorMesh = MeshBuilder.CreateCapsule(name, { height: 1.75 }, this.#scene);
+        console.log(actorMesh);
+        actorMesh.position = new Vector3(position.x, position.y + 1.75, position.z);
+        const actorMaterial = new StandardMaterial('actorMaterial', this.#scene);
+        actorMaterial.diffuseColor = new Color3(Math.random(), Math.random(), Math.random());
+        actorMesh.material = actorMaterial;
+      }
     });
     this.#socket.on('disconnect', () => {
       console.log('Disconnected from server');

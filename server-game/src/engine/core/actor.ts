@@ -1,3 +1,5 @@
+import { MonsterType } from '@dungeon-delvers/types';
+
 import { ATTRIBUTES, Attributes } from './attribute';
 
 const MOD_ACCURACY = 0.01;
@@ -12,22 +14,6 @@ const MOD_HEALING = 0.03;
 const MOD_HEALTH = 0.05;
 const MOD_REFLEX = 0.02;
 const MOD_WILLPOWER = 0.02;
-
-export enum ActorType {
-  HUMANOID = 'HUMANOID',
-  BEAST = 'BEAST',
-  UNDEAD = 'UNDEAD',
-  ELEMENTAL = 'ELEMENTAL',
-  CONSTRUCT = 'CONSTRUCT',
-  SYLVAN = 'SYLVAN',
-  FIEND = 'FIEND',
-  CELESTIAL = 'CELESTIAL',
-  GIANT = 'GIANT',
-  ABBERATION = 'ABBERATION',
-  DRAGON = 'DRAGON',
-  OOZE = 'OOZE',
-  PLANT = 'PLANT',
-}
 
 export enum ATTACK_RESULT {
   CRITICAL = 'CRITICAL',
@@ -76,7 +62,7 @@ export class Actor {
     maxHealth: number;
   };
 
-  constructor(id: string, attributes: Attributes, baseStats: BaseStats, _type: ActorType) {
+  constructor(id: string, attributes: Attributes, baseStats: BaseStats, _type: MonsterType) {
     this._id = id;
     this._attributes = attributes;
     this._actionStats = {

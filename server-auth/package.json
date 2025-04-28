@@ -12,7 +12,7 @@
     "clean": "rm -rf dist/** node_modules",
     "start": "tsx watch ./src/app.ts",
     "test:coverage": "NODE_ENV=test && jest --coverage",
-    "test": "NODE_ENV=test && jest"
+    "test": "NODE_ENV=test  && jest --experimental-vm-modules"
   },
   "keywords": [
     "node",
@@ -24,7 +24,7 @@
   "author": "Shawn Mealey",
   "license": "ISC",
   "dependencies": {
-    "@dungeon-delvers/types": "0.0.26",
+    "@dungeon-delvers/types": "^0.0.30",
     "bcrypt": "5.1.1",
     "celebrate": "^15.0.3",
     "cors": "2.8.5",

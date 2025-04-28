@@ -1,4 +1,5 @@
-import { MonsterType } from '../../content/monsters';
+import { MONSTER_TYPE } from '@dungeon-delvers/types';
+
 import { ATTACK_RESULT, Actor } from './actor';
 import { ATTRIBUTES, Attributes } from './attribute';
 
@@ -20,7 +21,7 @@ const actor = new Actor(
     reflex: 53, // 54
     willpower: 30, // 30
   },
-  MonsterType.Humanoid,
+  MONSTER_TYPE.HUMANOID,
 );
 
 afterEach(() => {

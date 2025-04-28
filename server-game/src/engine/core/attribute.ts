@@ -1,21 +1,15 @@
-export enum ATTRIBUTES {
-  CON = 'CONSTITUTION',
-  DEX = 'DEXTERITY',
-  INT = 'INTELLECT',
-  MIG = 'MIGHT',
-  PER = 'PERCEPTION',
-  RES = 'RESOLVE',
-}
-
+import { Attribute as AttributeName } from '@dungeon-delvers/types';
 export const ATTRIBUTE_MAX_VALUE = 18;
 export const ATTRIBUTE_MIN_VALUE = 3;
+
+type AttributeValues = Record<AttributeName, number>;
 
 class Attribute {
   private _value: number;
   constructor(_value: number) {
     if (!this.attributeWithinBounds(_value)) {
       throw new Error(
-        `Attribute value ${_value} is not within the bounds of ${ATTRIBUTE_MIN_VALUE} and ${ATTRIBUTE_MAX_VALUE}`,
+        `Attribute value ${_value} is not within the bounds of ${ATTRIBUTE_MIN_VALUE} and ${ATTRIBUTE_MAX_VALUE}`
       );
     }
     this._value = _value;
@@ -27,7 +21,9 @@ class Attribute {
     this._value = _value;
   }
   attributeWithinBounds(value: number) {
-    return value >= ATTRIBUTE_MIN_VALUE && value <= ATTRIBUTE_MAX_VALUE ? true : false;
+    return value >= ATTRIBUTE_MIN_VALUE && value <= ATTRIBUTE_MAX_VALUE
+      ? true
+      : false;
   }
   calculateModifier(modifier: number) {
     return (this._value - 10) * modifier;
@@ -70,65 +66,35 @@ export class Resolve extends Attribute {
   }
 }
 
-export type attributeProps = {
-  [ATTRIBUTES.CON]: number;
-  [ATTRIBUTES.DEX]: number;
-  [ATTRIBUTES.INT]: number;
-  [ATTRIBUTES.MIG]: number;
-  [ATTRIBUTES.PER]: number;
-  [ATTRIBUTES.RES]: number;
-};
-
 export class Attributes {
-  private _attributes = {
-    [ATTRIBUTES.CON]: new Constitution(10),
-    [ATTRIBUTES.DEX]: new Dexterity(10),
-    [ATTRIBUTES.INT]: new Intellect(10),
-    [ATTRIBUTES.MIG]: new Might(10),
-    [ATTRIBUTES.PER]: new Perception(10),
-    [ATTRIBUTES.RES]: new Resolve(10),
-  };
-  constructor({
-    [ATTRIBUTES.CON]: constitution,
-    [ATTRIBUTES.DEX]: dexterity,
-    [ATTRIBUTES.INT]: intellect,
-    [ATTRIBUTES.MIG]: might,
-    [ATTRIBUTES.PER]: perception,
-    [ATTRIBUTES.RES]: resolve,
-  }: attributeProps) {
-    this._attributes[ATTRIBUTES.CON] = new Constitution(constitution);
-    this._attributes[ATTRIBUTES.DEX] = new Dexterity(dexterity);
-    this._attributes[ATTRIBUTES.INT] = new Intellect(intellect);
-    this._attributes[ATTRIBUTES.MIG] = new Might(might);
-    this._attributes[ATTRIBUTES.PER] = new Perception(perception);
-    this._attributes[ATTRIBUTES.RES] = new Resolve(resolve);
+  #attributes: Record<AttributeName, Attribute> | {} = {};
+  constructor(attributes: AttributeValues) {
+    this.#attributes['CON'] = new Constitution(attributes['CON']);
+    this.#attributes['DEX'] = new Dexterity(attributes['DEX']);
+    this.#attributes['INT'] = new Intellect(attributes['INT']);
+    this.#attributes['MIG'] = new Might(attributes['MIG']);
+    this.#attributes['PER'] = new Perception(attributes['PER']);
+    this.#attributes['RES'] = new Resolve(attributes['RES']);
   }
 
-  setAttributes({
-    [ATTRIBUTES.CON]: constitution,
-    [ATTRIBUTES.DEX]: dexterity,
-    [ATTRIBUTES.INT]: intellect,
-    [ATTRIBUTES.MIG]: might,
-    [ATTRIBUTES.PER]: perception,
-    [ATTRIBUTES.RES]: resolve,
-  }: attributeProps) {
-    this._attributes[ATTRIBUTES.CON] = new Constitution(constitution);
-    this._attributes[ATTRIBUTES.DEX] = new Dexterity(dexterity);
-    this._attributes[ATTRIBUTES.INT] = new Intellect(intellect);
-    this._attributes[ATTRIBUTES.MIG] = new Might(might);
-    this._attributes[ATTRIBUTES.PER] = new Perception(perception);
-    this._attributes[ATTRIBUTES.RES] = new Resolve(resolve);
+  setAttributes(attributes: AttributeValues) {
+    this.#attributes['CON'] = new Constitution(attributes['CON']);
+    this.#attributes['DEX'] = new Dexterity(attributes['DEX']);
+    this.#attributes['INT'] = new Intellect(attributes['INT']);
+    this.#attributes['MIG'] = new Might(attributes['MIG']);
+    this.#attributes['PER'] = new Perception(attributes['PER']);
+    this.#attributes['RES'] = new Resolve(attributes['RES']);
   }
 
   getAttributes() {
-    return this._attributes;
+    return this.#attributes;
   }
 
-  setAttribute(attribute: ATTRIBUTES, value: number) {
-    this._attributes[attribute].value = value;
+  setAttribute(attribute: AttributeName, value: number) {
+    this.#attributes[attribute].value = value;
   }
 
-  getAttribute(attribute: ATTRIBUTES) {
-    return this._attributes[attribute];
+  getAttribute(attribute: AttributeName) {
+    return this.#attributes[attribute];
   }
 }

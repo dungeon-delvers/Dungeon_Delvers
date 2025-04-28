@@ -129,6 +129,8 @@ export const MONSTER_TYPE = [
   'UNDEAD',
 ] as const;
 
+export type MonsterType = (typeof MONSTER_TYPE)[number];
+
 export type Race = (typeof RACE)[number];
 
 export type RaceData = Attributes & {

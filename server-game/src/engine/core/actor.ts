@@ -1,6 +1,6 @@
 import { MonsterType } from '@dungeon-delvers/types';
 
-import { ATTRIBUTES, Attributes } from './attribute';
+import { Attributes } from './attribute';
 
 const MOD_ACCURACY = 0.01;
 const MOD_ACTION_SPEED = 0.03;
@@ -62,46 +62,67 @@ export class Actor {
     maxHealth: number;
   };
 
-  constructor(id: string, attributes: Attributes, baseStats: BaseStats, _type: MonsterType) {
+  constructor(
+    id: string,
+    attributes: Attributes,
+    baseStats: BaseStats,
+    _type: MonsterType
+  ) {
     this._id = id;
     this._attributes = attributes;
     this._actionStats = {
       accuracy: this.calculateStat(
         baseStats.accuracy,
-        this._attributes.getAttribute(ATTRIBUTES.PER).calculateModifier(MOD_ACCURACY),
+        this._attributes.getAttribute('PER').calculateModifier(MOD_ACCURACY)
       ),
-      actionSpeed: Math.ceil(this._attributes.getAttribute(ATTRIBUTES.DEX).calculateModifier(MOD_ACTION_SPEED)),
-      areaOfEffect: Math.ceil(this._attributes.getAttribute(ATTRIBUTES.INT).calculateModifier(MOD_AREA_OF_EFFECT)),
-      damageMod: this._attributes.getAttribute(ATTRIBUTES.MIG).calculateModifier(MOD_DAMAGE),
-      duration: Math.ceil(this._attributes.getAttribute(ATTRIBUTES.INT).calculateModifier(MOD_DURATION)),
-      healing: Math.ceil(this._attributes.getAttribute(ATTRIBUTES.MIG).calculateModifier(MOD_HEALING)),
+      actionSpeed: Math.ceil(
+        this._attributes.getAttribute('DEX').calculateModifier(MOD_ACTION_SPEED)
+      ),
+      areaOfEffect: Math.ceil(
+        this._attributes
+          .getAttribute('INT')
+          .calculateModifier(MOD_AREA_OF_EFFECT)
+      ),
+      damageMod: this._attributes
+        .getAttribute('MIG')
+        .calculateModifier(MOD_DAMAGE),
+      duration: Math.ceil(
+        this._attributes.getAttribute('INT').calculateModifier(MOD_DURATION)
+      ),
+      healing: Math.ceil(
+        this._attributes.getAttribute('MIG').calculateModifier(MOD_HEALING)
+      ),
     };
     this._defenseStats = {
       deflection: this.calculateStat(
         baseStats.deflection,
-        this._attributes.getAttribute(ATTRIBUTES.RES).calculateModifier(MOD_DEFLECTION),
+        this._attributes.getAttribute('RES').calculateModifier(MOD_DEFLECTION)
       ),
       fortitude: this.calculateStat(
         baseStats.fortitude,
-        this._attributes.getAttribute(ATTRIBUTES.CON).calculateModifier(MOD_FORTITUDE) +
-          this._attributes.getAttribute(ATTRIBUTES.MIG).calculateModifier(MOD_FORTITUDE),
+        this._attributes.getAttribute('CON').calculateModifier(MOD_FORTITUDE) +
+          this._attributes.getAttribute('MIG').calculateModifier(MOD_FORTITUDE)
       ),
       reflex: this.calculateStat(
         baseStats.reflex,
-        this._attributes.getAttribute(ATTRIBUTES.DEX).calculateModifier(MOD_REFLEX) +
-          this._attributes.getAttribute(ATTRIBUTES.PER).calculateModifier(MOD_REFLEX),
+        this._attributes.getAttribute('DEX').calculateModifier(MOD_REFLEX) +
+          this._attributes.getAttribute('PER').calculateModifier(MOD_REFLEX)
       ),
       willpower: this.calculateStat(
         baseStats.willpower,
-        this._attributes.getAttribute(ATTRIBUTES.INT).calculateModifier(MOD_WILLPOWER) +
-          this._attributes.getAttribute(ATTRIBUTES.RES).calculateModifier(MOD_WILLPOWER),
+        this._attributes.getAttribute('INT').calculateModifier(MOD_WILLPOWER) +
+          this._attributes.getAttribute('RES').calculateModifier(MOD_WILLPOWER)
       ),
     };
     this._passiveStats = {
-      concentration: Math.ceil(this._attributes.getAttribute(ATTRIBUTES.RES).calculateModifier(MOD_CONCENTRATION) + 0),
+      concentration: Math.ceil(
+        this._attributes
+          .getAttribute('RES')
+          .calculateModifier(MOD_CONCENTRATION) + 0
+      ),
       maxHealth: this.calculateStat(
         baseStats.health,
-        this._attributes.getAttribute(ATTRIBUTES.CON).calculateModifier(MOD_HEALTH),
+        this._attributes.getAttribute('CON').calculateModifier(MOD_HEALTH)
       ),
     };
     // On creation, set current health to max health
@@ -150,7 +171,9 @@ export class Actor {
   }
 
   attackResolution = (target: Actor, defenseStat: keyof DefenseStats) => {
-    const hitChance = Math.floor(Math.random() * 100) + Math.floor(this.stats.accuracy - target.stats[defenseStat]);
+    const hitChance =
+      Math.floor(Math.random() * 100) +
+      Math.floor(this.stats.accuracy - target.stats[defenseStat]);
     if (hitChance >= 101) {
       return ATTACK_RESULT.CRITICAL;
     } else if (hitChance >= 50) {
@@ -162,10 +185,18 @@ export class Actor {
     }
   };
 
-  calculateDamage = (target: Actor, defenseStat: keyof DefenseStats, minDamage: number, maxDamage: number) => {
+  calculateDamage = (
+    target: Actor,
+    defenseStat: keyof DefenseStats,
+    minDamage: number,
+    maxDamage: number
+  ) => {
     const attackResult = this.attackResolution(target, defenseStat);
     const damage = () =>
-      Math.floor((Math.random() * (maxDamage - minDamage + 1) + minDamage) * (1 + this.stats.damageMod));
+      Math.floor(
+        (Math.random() * (maxDamage - minDamage + 1) + minDamage) *
+          (1 + this.stats.damageMod)
+      );
     switch (attackResult) {
       case ATTACK_RESULT.CRITICAL:
         return Math.floor(damage() * 1.5);

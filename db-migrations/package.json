@@ -20,7 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@dungeon-delvers/config": "0.0.12",
-    "@dungeon-delvers/types": "^0.0.30",
+    "@dungeon-delvers/types": "^0.0.31",
     "dotenv": "^16.4.5",
     "eslint": "^9.10.0",
     "node-pg-migrate": "^7.6.1",

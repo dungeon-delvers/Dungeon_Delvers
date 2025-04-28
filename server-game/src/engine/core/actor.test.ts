@@ -1,17 +1,15 @@
-import { MONSTER_TYPE } from '@dungeon-delvers/types';
-
 import { ATTACK_RESULT, Actor } from './actor';
-import { ATTRIBUTES, Attributes } from './attribute';
+import { Attributes } from './attribute';
 
 const actor = new Actor(
   'test',
   new Attributes({
-    [ATTRIBUTES.CON]: 14,
-    [ATTRIBUTES.DEX]: 16,
-    [ATTRIBUTES.INT]: 9,
-    [ATTRIBUTES.MIG]: 11,
-    [ATTRIBUTES.PER]: 15,
-    [ATTRIBUTES.RES]: 10,
+    CON: 14,
+    DEX: 16,
+    INT: 9,
+    MIG: 11,
+    PER: 15,
+    RES: 10,
   }),
   {
     accuracy: 46, // 47
@@ -21,7 +19,7 @@ const actor = new Actor(
     reflex: 53, // 54
     willpower: 30, // 30
   },
-  MONSTER_TYPE.HUMANOID,
+  'HUMANOID'
 );
 
 afterEach(() => {

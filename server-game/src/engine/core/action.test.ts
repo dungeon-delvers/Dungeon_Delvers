@@ -1,16 +1,16 @@
 import { Action, ActionResult, FAILED, NOT_DONE, SUCCEEDED } from './action';
 import { Actor } from './actor';
-import { ATTRIBUTES, Attributes } from './attribute';
+import { Attributes } from './attribute';
 
 const actor = new Actor(
   'hero',
   new Attributes({
-    [ATTRIBUTES.CON]: 14,
-    [ATTRIBUTES.DEX]: 16,
-    [ATTRIBUTES.INT]: 9,
-    [ATTRIBUTES.MIG]: 11,
-    [ATTRIBUTES.PER]: 15,
-    [ATTRIBUTES.RES]: 10,
+    CON: 14,
+    DEX: 16,
+    INT: 9,
+    MIG: 11,
+    PER: 15,
+    RES: 10,
   }),
   {
     accuracy: 46,
@@ -20,18 +20,18 @@ const actor = new Actor(
     reflex: 53,
     willpower: 30,
   },
-  MonsterType.Humanoid,
+  'HUMANOID'
 );
 
 const target = new Actor(
   'bat',
   new Attributes({
-    [ATTRIBUTES.CON]: 10,
-    [ATTRIBUTES.DEX]: 10,
-    [ATTRIBUTES.INT]: 4,
-    [ATTRIBUTES.MIG]: 10,
-    [ATTRIBUTES.PER]: 15,
-    [ATTRIBUTES.RES]: 10,
+    CON: 10,
+    DEX: 10,
+    INT: 4,
+    MIG: 10,
+    PER: 15,
+    RES: 10,
   }),
   {
     accuracy: 47,
@@ -40,7 +40,8 @@ const target = new Actor(
     health: 118,
     reflex: 54,
     willpower: 30,
-  }
+  },
+  'BEAST'
 );
 
 const idle = new Action({
@@ -58,7 +59,7 @@ describe('ActionResult', () => {
         alternative: idle,
         done: true,
         succeeded: true,
-      }),
+      })
     ).toBeTruthy();
   });
 });
@@ -69,7 +70,7 @@ describe('SUCCEEDED', () => {
       new ActionResult({
         done: true,
         succeeded: true,
-      }),
+      })
     );
   });
 });
@@ -80,7 +81,7 @@ describe('FAILED', () => {
       new ActionResult({
         done: true,
         succeeded: false,
-      }),
+      })
     );
   });
 });
@@ -92,7 +93,7 @@ describe('NOT_DONE', () => {
         alternative: idle,
         done: false,
         succeeded: false,
-      }),
+      })
     );
   });
 });

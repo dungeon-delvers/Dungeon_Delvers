@@ -1,26 +1,21 @@
 {
   "name": "@dungeon-delvers/types",
-  "version": "0.0.31",
-  "description": "Types for the various workspaces for dungeon_delvers",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/HarlemLineHustle/Dungeon_Delvers.git"
-  },
-  "scripts": {
-    "prepublish": "tsc index.ts"
-  },
+  "version": "0.0.1",
+  "description": "This workspace gets symlinked to other workspaces/copied via docker and contains shared types to use across the project.",
   "keywords": [
-    "typescript",
-    "types",
-    "mmo",
-    "javascript",
-    "game"
+    "Typescript",
+    "BabylonJS",
+    "Javascript",
+    "Types"
   ],
-  "author": "Shawn Mealey",
   "license": "ISC",
-  "devDependencies": {
-    "@dungeon-delvers/config": "^0.0.27",
-    "typescript": "^5.7.3"
+  "author": "Shawn Mealey",
+  "type": "commonjs",
+  "main": "game.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@babylonjs/core": "^8.2.0"
   }
 }

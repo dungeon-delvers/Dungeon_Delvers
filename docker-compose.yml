@@ -16,6 +16,10 @@ services:
       - db
     env_file:
       - .env
+    volumes:
+      - type: bind
+        source: ./types/
+        target: /app/@types
   server-auth:
     develop:
       watch:
@@ -34,6 +38,10 @@ services:
       - '8000:8000'
     env_file:
       - .env
+    volumes:
+      - type: bind
+        source: ./types/
+        target: /app/@types
   server-file:
     develop:
       watch:
@@ -49,6 +57,10 @@ services:
       - '8081:8081'
     env_file:
       - .env
+    volumes:
+      - type: bind
+        source: ./types/
+        target: /app/@types
   server-game:
     develop:
       watch:
@@ -67,6 +79,10 @@ services:
       - '8080:8080'
     env_file:
       - .env
+    volumes:
+      - type: bind
+        source: ./types/
+        target: /app/@types
   client:
     build: client
     depends_on:
@@ -83,5 +99,8 @@ services:
       - type: bind
         source: ./client/public
         target: /app/public
+      - type: bind
+        source: ./types/
+        target: /app/@types
 volumes:
   db_data:

@@ -1,4 +1,4 @@
-import { Actor } from './actor';
+import { ActorType } from 'types/game';
 
 export type ActionResultArgs = {
   succeeded: boolean;
@@ -7,14 +7,14 @@ export type ActionResultArgs = {
 };
 
 export type ActionArgs = {
-  actor: Actor;
+  actor: ActorType;
   cooldown?: number;
   cost?: number;
   description: string;
   name: string;
   onPerform: () => ActionResult;
   range?: number;
-  target: Actor | null;
+  target: ActorType | null;
 };
 
 export class ActionResult {
@@ -57,59 +57,68 @@ export const NOT_DONE = (alternative: Action) =>
   });
 
 export class Action {
-  private _actor: Actor;
-  private _target: Actor | null = null;
-  private _cooldown: number;
-  private _cost: number;
-  private _description: string;
-  private _name: string;
-  private _range: number;
-  private _onPerform: () => ActionResult;
+  #actor: ActorType;
+  #target: ActorType | null = null;
+  #cooldown: number;
+  #cost: number;
+  #description: string;
+  #name: string;
+  #range: number;
+  #onPerform: () => ActionResult;
 
-  constructor({ name, actor, target, description, cost = 0, cooldown = 0, range = 0, onPerform }: ActionArgs) {
-    this._actor = actor;
-    this._target = target;
-    this._name = name;
-    this._description = description;
-    this._cost = cost;
-    this._cooldown = cooldown;
-    this._range = range;
-    this._onPerform = onPerform;
+  constructor({
+    name,
+    actor,
+    target,
+    description,
+    cost = 0,
+    cooldown = 0,
+    range = 0,
+    onPerform,
+  }: ActionArgs) {
+    this.#actor = actor;
+    this.#target = target;
+    this.#name = name;
+    this.#description = description;
+    this.#cost = cost;
+    this.#cooldown = cooldown;
+    this.#range = range;
+    this.#onPerform = onPerform;
   }
 
   perform(): ActionResult {
-    return this._onPerform();
+    return this.#onPerform();
   }
 
   get target() {
-    return this._target;
+    return this.#target;
   }
 
-  set target(inTarget: Actor | null) {
-    this._target = inTarget;
+  set target(inTarget: ActorType | null) {
+    this.#target = inTarget;
   }
 
   get actor() {
-    return this._actor;
+    return this.#actor;
   }
 
   get cooldown() {
-    return this._cooldown;
+    return this.#cooldown;
   }
 
   get cost() {
-    return this._cost;
+    return this.#cost;
   }
 
   get description() {
-    return this._description;
+    return this.#description;
   }
 
   get name() {
-    return this._name;
+    return this.#name;
   }
 
   get range() {
-    return this._range;
+    return this.#range;
   }
 }

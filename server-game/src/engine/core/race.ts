@@ -1,4 +1,4 @@
-import { Race as RaceName } from '@dungeon-delvers/types';
+import { Race as RaceName } from 'types/game';
 import { Attributes } from './attribute';
 
 export class Race {

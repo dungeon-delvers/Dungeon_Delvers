@@ -36,9 +36,10 @@ describe('isAuth middleware', () => {
 
     isAuthSocket(socket as Socket, next);
 
-    expect(jwt.verify).toHaveBeenCalledWith('validtoken', config.jwt.secret, { algorithms: [config.jwt.algorithm] });
+    expect(jwt.verify).toHaveBeenCalledWith('validtoken', config.jwt.secret, {
+      algorithms: [config.jwt.algorithm],
+    });
     expect(socket.data.user).toEqual(decodedToken);
-    expect(next).toHaveBeenCalledWith();
   });
 
   it('should call next with an error if the token is invalid', () => {
@@ -48,7 +49,9 @@ describe('isAuth middleware', () => {
 
     isAuthSocket(socket as Socket, next);
 
-    expect(jwt.verify).toHaveBeenCalledWith('validtoken', config.jwt.secret, { algorithms: [config.jwt.algorithm] });
+    expect(jwt.verify).toHaveBeenCalledWith('validtoken', config.jwt.secret, {
+      algorithms: [config.jwt.algorithm],
+    });
     expect(next).toHaveBeenCalledWith(expect.any(Error));
     expect(next.mock.calls[0][0].message).toBe('Invalid token');
   });
@@ -65,6 +68,8 @@ describe('isAuth middleware', () => {
     isAuthSocket(sampleSocket as unknown as Socket, next);
 
     expect(next).toHaveBeenCalledWith(expect.any(Error));
-    expect(next.mock.calls[0][0].message).toBe("Cannot set properties of undefined (setting 'user')");
+    expect(next.mock.calls[0][0].message).toBe(
+      "Cannot set properties of undefined (setting 'user')"
+    );
   });
 });

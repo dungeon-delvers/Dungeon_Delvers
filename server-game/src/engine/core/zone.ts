@@ -1,23 +1,54 @@
-import { GroundMesh, MeshBuilder, Scene, StandardMaterial } from '@babylonjs/core';
+import {
+  GroundMesh,
+  MeshBuilder,
+  Scene,
+  StandardMaterial,
+} from '@babylonjs/core';
 
-export class Zone {
-  private _scene: Scene;
-  private _ground: GroundMesh;
+export type ZoneType = {
+  id: string;
+  ground: GroundMesh;
+  scene: Scene;
+  name: string;
+};
+
+export class Zone implements ZoneType {
+  #id: string;
+  #name: string;
+  #scene: Scene;
+  #ground: GroundMesh;
 
   constructor(scene: Scene) {
-    this._scene = scene;
+    this.#scene = scene;
     const subdivisions = 5;
 
-    this._ground = MeshBuilder.CreateGround('ground', { width: 100, height: 100, subdivisions }, scene);
-    this._ground.position.y = 0;
-    this._ground.material = new StandardMaterial('groundMaterial', scene);
+    this.#ground = MeshBuilder.CreateGround(
+      'ground',
+      { width: 100, height: 100, subdivisions },
+      scene
+    );
+    this.#ground.position.y = 0;
+    this.#ground.material = new StandardMaterial('groundMaterial', scene);
   }
 
   public get scene(): Scene {
-    return this._scene;
+    return this.#scene;
   }
 
   public get ground(): GroundMesh {
-    return this._ground;
+    return this.#ground;
+  }
+
+  public get id(): string {
+    return this.#id;
+  }
+  public set id(inId: string) {
+    this.#id = inId;
+  }
+  public get name(): string {
+    return this.#name;
+  }
+  public set name(inName: string) {
+    this.#name = inName;
   }
 }

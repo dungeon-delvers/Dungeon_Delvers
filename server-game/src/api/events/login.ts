@@ -4,8 +4,7 @@ import LoggerInstance from '@/loaders/logger';
 import { Zone } from '@/services/zone';
 
 export default (io: Server) => {
-  console.log('Loading login event');
-  io.on('connection', async socket => {
+  io.on('connection', async (socket) => {
     LoggerInstance.info('User connected');
     const zone = new Zone();
     const positions = zone.positions;

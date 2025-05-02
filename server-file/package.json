@@ -19,7 +19,6 @@
   "author": "Shawn Mealey",
   "license": "ISC",
   "dependencies": {
-    "@dungeon-delvers/types": "^0.0.31",
     "cors": "2.8.5",
     "express": "^4.21.2",
     "express-session": "^1.18.1",

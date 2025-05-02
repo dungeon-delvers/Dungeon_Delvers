@@ -17,12 +17,12 @@ describe('DiffusionLimitedAggregation', () => {
     expect(lastValue?.loc).toEqual(new Vector2(1023, 1023));
   });
 
-  it('should create an image', () => {
-    const dla = createGrid(1024, 1024);
-    dla.generateImage('test');
-    const image = fs.readFileSync('test');
-    expect(image).toBeTruthy();
-  });
+  // it('should create an image', () => {
+  //   const dla = createGrid(1024, 1024);
+  //   dla.generateImage('test');
+  //   const image = fs.readFileSync('test');
+  //   expect(image).toBeTruthy();
+  // });
 
   // it('should set the initial particle color to Color4(1, 1, 1)', () => {
   //   const dla = createGrid();

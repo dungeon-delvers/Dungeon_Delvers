@@ -1,18 +1,8 @@
-export class GameEngine {
-  private static instance: GameEngine;
+export class Engine {
+  private;
+  constructor() {}
 
-  private constructor() {
-    // Private constructor to prevent instantiation
-  }
-
-  public static getInstance(): GameEngine {
-    if (!GameEngine.instance) {
-      GameEngine.instance = new GameEngine();
-    }
-    return GameEngine.instance;
-  }
-
-  public init() {
-    console.log('Game engine initialized');
+  init() {
+    // Initialize game components
   }
 }

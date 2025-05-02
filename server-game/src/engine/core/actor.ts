@@ -1,6 +1,7 @@
-import { MonsterType } from '@dungeon-delvers/types';
+import { ActorType, BaseStats, DefenseStats, MonsterType } from 'types/game';
 
 import { Attributes } from './attribute';
+import { Vector3 } from '@babylonjs/core';
 
 const MOD_ACCURACY = 0.01;
 const MOD_ACTION_SPEED = 0.03;
@@ -15,32 +16,15 @@ const MOD_HEALTH = 0.05;
 const MOD_REFLEX = 0.02;
 const MOD_WILLPOWER = 0.02;
 
-export enum ATTACK_RESULT {
-  CRITICAL = 'CRITICAL',
-  HIT = 'HIT',
-  MISS = 'MISS',
-  GRAZE = 'GRAZE',
-}
-
-export type DefenseStats = {
-  deflection: number;
-  fortitude: number;
-  reflex: number;
-  willpower: number;
-};
-
-export type BaseStats = DefenseStats & {
-  accuracy: number;
-  health: number;
-};
-
-export class Actor {
-  private _id: string;
-  private _attributes: Attributes;
-  private currentHealth: number;
-  private _name: string;
+export class Actor implements ActorType {
+  #id: string;
+  #attributes: Attributes;
+  #name: string;
+  #position: Vector3;
+  #rotation: Vector3;
+  #zoneId: string;
   // Action stats are calculated based on actor's action/weapon
-  private _actionStats: {
+  #actionStats: {
     accuracy: number;
     actionSpeed: number;
     areaOfEffect: number;
@@ -50,143 +34,172 @@ export class Actor {
   };
 
   // Defense stats are calculated based on actor's level and class
-  private _defenseStats: {
+  #defenseStats: {
     deflection: number;
     fortitude: number;
     reflex: number;
     willpower: number;
   };
   // Passive stats are calculated based on actor's level and class
-  private _passiveStats: {
+  #passiveStats: {
     concentration: number;
+    currentHealth: number;
     maxHealth: number;
   };
 
   constructor(
     id: string,
+    name: string,
     attributes: Attributes,
     baseStats: BaseStats,
+    position: Vector3,
+    rotation: Vector3,
     _type: MonsterType
   ) {
-    this._id = id;
-    this._attributes = attributes;
-    this._actionStats = {
+    this.#id = id;
+    this.#name = name;
+    this.#attributes = attributes;
+    this.#actionStats = {
       accuracy: this.calculateStat(
         baseStats.accuracy,
-        this._attributes.getAttribute('PER').calculateModifier(MOD_ACCURACY)
+        this.#attributes.getAttribute('PER').calculateModifier(MOD_ACCURACY)
       ),
       actionSpeed: Math.ceil(
-        this._attributes.getAttribute('DEX').calculateModifier(MOD_ACTION_SPEED)
+        this.#attributes.getAttribute('DEX').calculateModifier(MOD_ACTION_SPEED)
       ),
       areaOfEffect: Math.ceil(
-        this._attributes
+        this.#attributes
           .getAttribute('INT')
           .calculateModifier(MOD_AREA_OF_EFFECT)
       ),
-      damageMod: this._attributes
+      damageMod: this.#attributes
         .getAttribute('MIG')
         .calculateModifier(MOD_DAMAGE),
       duration: Math.ceil(
-        this._attributes.getAttribute('INT').calculateModifier(MOD_DURATION)
+        this.#attributes.getAttribute('INT').calculateModifier(MOD_DURATION)
       ),
       healing: Math.ceil(
-        this._attributes.getAttribute('MIG').calculateModifier(MOD_HEALING)
+        this.#attributes.getAttribute('MIG').calculateModifier(MOD_HEALING)
       ),
     };
-    this._defenseStats = {
+    this.#defenseStats = {
       deflection: this.calculateStat(
         baseStats.deflection,
-        this._attributes.getAttribute('RES').calculateModifier(MOD_DEFLECTION)
+        this.#attributes.getAttribute('RES').calculateModifier(MOD_DEFLECTION)
       ),
       fortitude: this.calculateStat(
         baseStats.fortitude,
-        this._attributes.getAttribute('CON').calculateModifier(MOD_FORTITUDE) +
-          this._attributes.getAttribute('MIG').calculateModifier(MOD_FORTITUDE)
+        this.#attributes.getAttribute('CON').calculateModifier(MOD_FORTITUDE) +
+          this.#attributes.getAttribute('MIG').calculateModifier(MOD_FORTITUDE)
       ),
       reflex: this.calculateStat(
         baseStats.reflex,
-        this._attributes.getAttribute('DEX').calculateModifier(MOD_REFLEX) +
-          this._attributes.getAttribute('PER').calculateModifier(MOD_REFLEX)
+        this.#attributes.getAttribute('DEX').calculateModifier(MOD_REFLEX) +
+          this.#attributes.getAttribute('PER').calculateModifier(MOD_REFLEX)
       ),
       willpower: this.calculateStat(
         baseStats.willpower,
-        this._attributes.getAttribute('INT').calculateModifier(MOD_WILLPOWER) +
-          this._attributes.getAttribute('RES').calculateModifier(MOD_WILLPOWER)
+        this.#attributes.getAttribute('INT').calculateModifier(MOD_WILLPOWER) +
+          this.#attributes.getAttribute('RES').calculateModifier(MOD_WILLPOWER)
       ),
     };
-    this._passiveStats = {
+    const maxHealth = this.calculateStat(
+      baseStats.health,
+      this.#attributes.getAttribute('CON').calculateModifier(MOD_HEALTH)
+    );
+    this.#passiveStats = {
       concentration: Math.ceil(
-        this._attributes
+        this.#attributes
           .getAttribute('RES')
           .calculateModifier(MOD_CONCENTRATION) + 0
       ),
-      maxHealth: this.calculateStat(
-        baseStats.health,
-        this._attributes.getAttribute('CON').calculateModifier(MOD_HEALTH)
-      ),
+      maxHealth: maxHealth,
+      currentHealth: maxHealth,
     };
-    // On creation, set current health to max health
-    this.currentHealth = this._passiveStats.maxHealth;
+    this.#position = position;
+    this.#rotation = rotation;
   }
-  calculateStat(base: number, modifiers: number) {
-    return Math.ceil(base * 1 + modifiers);
+
+  get health() {
+    return this.#passiveStats.currentHealth;
+  }
+
+  set health(value: number) {
+    this.#passiveStats.currentHealth = value;
   }
 
   get id() {
-    return this._id;
+    return this.#id;
   }
 
   set id(inId: string) {
-    this._id = inId;
+    this.#id = inId;
+  }
+
+  get isAlive() {
+    return this.#passiveStats.currentHealth > 0;
+  }
+
+  get maxHealth() {
+    return this.#passiveStats.maxHealth;
+  }
+
+  set maxHealth(value: number) {
+    this.#passiveStats.maxHealth = value;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  get position() {
+    return this.#position;
+  }
+
+  set position(value: Vector3) {
+    this.#position = value;
+  }
+
+  get rotation() {
+    return this.#rotation;
+  }
+  set rotation(value: Vector3) {
+    this.#rotation = value;
   }
 
   get stats() {
     return {
-      ...this._actionStats,
-      ...this._defenseStats,
-      ...this._passiveStats,
+      ...this.#actionStats,
+      ...this.#defenseStats,
+      ...this.#passiveStats,
     };
   }
-  get isAlive() {
-    return this.currentHealth > 0;
-  }
-  get health() {
-    return this.currentHealth;
+
+  get zoneId() {
+    return this.#zoneId;
   }
 
-  set health(value: number) {
-    this.currentHealth = value;
+  set zoneId(value: string) {
+    this.#zoneId = value;
   }
 
-  get maxHealth() {
-    return this._passiveStats.maxHealth;
-  }
-
-  set maxHealth(value: number) {
-    this._passiveStats.maxHealth = value;
-  }
-
-  get name() {
-    return this._name;
-  }
-
-  attackResolution = (target: Actor, defenseStat: keyof DefenseStats) => {
+  attackResolution = (target: ActorType, defenseStat: keyof DefenseStats) => {
     const hitChance =
       Math.floor(Math.random() * 100) +
       Math.floor(this.stats.accuracy - target.stats[defenseStat]);
     if (hitChance >= 101) {
-      return ATTACK_RESULT.CRITICAL;
+      return 'CRITICAL';
     } else if (hitChance >= 50) {
-      return ATTACK_RESULT.HIT;
+      return 'HIT';
     } else if (hitChance >= 16) {
-      return ATTACK_RESULT.GRAZE;
+      return 'GRAZE';
     } else {
-      return ATTACK_RESULT.MISS;
+      return 'MISS';
     }
   };
 
   calculateDamage = (
-    target: Actor,
+    target: ActorType,
     defenseStat: keyof DefenseStats,
     minDamage: number,
     maxDamage: number
@@ -198,14 +211,18 @@ export class Actor {
           (1 + this.stats.damageMod)
       );
     switch (attackResult) {
-      case ATTACK_RESULT.CRITICAL:
+      case 'CRITICAL':
         return Math.floor(damage() * 1.5);
-      case ATTACK_RESULT.HIT:
+      case 'HIT':
         return damage();
-      case ATTACK_RESULT.GRAZE:
+      case 'GRAZE':
         return Math.floor(damage() * 0.5);
-      case ATTACK_RESULT.MISS:
-        return 'miss';
+      case 'MISS':
+        return 'MISS';
     }
   };
+
+  calculateStat(base: number, modifiers: number) {
+    return Math.ceil(base * 1 + modifiers);
+  }
 }

@@ -1,9 +1,11 @@
+import { Vector3 } from '@babylonjs/core';
 import { Action, ActionResult, FAILED, NOT_DONE, SUCCEEDED } from './action';
 import { Actor } from './actor';
 import { Attributes } from './attribute';
 
 const actor = new Actor(
-  'hero',
+  'test',
+  'Ricard',
   new Attributes({
     CON: 14,
     DEX: 16,
@@ -13,18 +15,27 @@ const actor = new Actor(
     RES: 10,
   }),
   {
-    accuracy: 46,
-    deflection: 37,
-    fortitude: 41,
-    health: 117,
-    reflex: 53,
-    willpower: 30,
+    accuracy: 46, // 47
+    deflection: 37, // 37
+    fortitude: 41, // 42
+    health: 117, // 118
+    reflex: 53, // 54
+    willpower: 30, // 30
+    actionSpeed: 1,
+    areaOfEffect: 0,
+    damageMod: 0.03,
+    duration: 0,
+    healing: 1,
   },
-  'HUMANOID'
+
+  new Vector3(0, 0, 0), // Example argument for rotation
+  new Vector3(0, 0, 0), // Example argument for position
+  'HUMANOID' // Example argument for type
 );
 
 const target = new Actor(
   'bat',
+  'Bat',
   new Attributes({
     CON: 10,
     DEX: 10,
@@ -34,13 +45,20 @@ const target = new Actor(
     RES: 10,
   }),
   {
-    accuracy: 47,
-    deflection: 37,
-    fortitude: 42,
-    health: 118,
-    reflex: 54,
-    willpower: 30,
+    accuracy: 46, // 47
+    deflection: 37, // 37
+    fortitude: 41, // 42
+    health: 117, // 118
+    reflex: 53, // 54
+    willpower: 30, // 30
+    actionSpeed: 1,
+    areaOfEffect: 0,
+    damageMod: 0.03,
+    duration: 0,
+    healing: 1,
   },
+  new Vector3(1, 0, 0), // Example argument for rotation
+  new Vector3(1, 1, 0), // Example argument for position
   'BEAST'
 );
 

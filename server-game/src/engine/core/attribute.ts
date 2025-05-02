@@ -1,4 +1,4 @@
-import { Attribute as AttributeName } from '@dungeon-delvers/types';
+import { Attribute as AttributeName } from 'types/game';
 export const ATTRIBUTE_MAX_VALUE = 18;
 export const ATTRIBUTE_MIN_VALUE = 3;
 

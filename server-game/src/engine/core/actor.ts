@@ -1,4 +1,9 @@
-import { ActorType, BaseStats, DefenseStats, MonsterType } from 'types/game';
+import {
+  ActorCreationType,
+  ActorType,
+  DefenseStats,
+  MonsterType,
+} from 'types/game';
 
 import { Attributes } from './attribute';
 import { Vector3 } from '@babylonjs/core';
@@ -17,12 +22,12 @@ const MOD_REFLEX = 0.02;
 const MOD_WILLPOWER = 0.02;
 
 export class Actor implements ActorType {
-  #id: string;
+  #id: number;
   #attributes: Attributes;
   #name: string;
   #position: Vector3;
   #rotation: Vector3;
-  #zoneId: string;
+  #zoneId: number;
   // Action stats are calculated based on actor's action/weapon
   #actionStats: {
     accuracy: number;
@@ -47,18 +52,20 @@ export class Actor implements ActorType {
     maxHealth: number;
   };
 
-  constructor(
-    id: string,
-    name: string,
-    attributes: Attributes,
-    baseStats: BaseStats,
-    position: Vector3,
-    rotation: Vector3,
-    _type: MonsterType
-  ) {
+  #type: MonsterType;
+
+  constructor({
+    id,
+    name,
+    attributes,
+    baseStats,
+    position,
+    rotation,
+    type,
+  }: ActorCreationType) {
     this.#id = id;
     this.#name = name;
-    this.#attributes = attributes;
+    this.#attributes = new Attributes(attributes);
     this.#actionStats = {
       accuracy: this.calculateStat(
         baseStats.accuracy,
@@ -84,21 +91,21 @@ export class Actor implements ActorType {
     };
     this.#defenseStats = {
       deflection: this.calculateStat(
-        baseStats.deflection,
+        baseStats.defense.deflection,
         this.#attributes.getAttribute('RES').calculateModifier(MOD_DEFLECTION)
       ),
       fortitude: this.calculateStat(
-        baseStats.fortitude,
+        baseStats.defense.fortitude,
         this.#attributes.getAttribute('CON').calculateModifier(MOD_FORTITUDE) +
           this.#attributes.getAttribute('MIG').calculateModifier(MOD_FORTITUDE)
       ),
       reflex: this.calculateStat(
-        baseStats.reflex,
+        baseStats.defense.reflex,
         this.#attributes.getAttribute('DEX').calculateModifier(MOD_REFLEX) +
           this.#attributes.getAttribute('PER').calculateModifier(MOD_REFLEX)
       ),
       willpower: this.calculateStat(
-        baseStats.willpower,
+        baseStats.defense.willpower,
         this.#attributes.getAttribute('INT').calculateModifier(MOD_WILLPOWER) +
           this.#attributes.getAttribute('RES').calculateModifier(MOD_WILLPOWER)
       ),
@@ -118,6 +125,11 @@ export class Actor implements ActorType {
     };
     this.#position = position;
     this.#rotation = rotation;
+    this.#type = type;
+  }
+
+  get attributes() {
+    return this.#attributes.attributes;
   }
 
   get health() {
@@ -132,7 +144,7 @@ export class Actor implements ActorType {
     return this.#id;
   }
 
-  set id(inId: string) {
+  set id(inId: number) {
     this.#id = inId;
   }
 
@@ -175,11 +187,15 @@ export class Actor implements ActorType {
     };
   }
 
+  get type() {
+    return this.#type;
+  }
+
   get zoneId() {
     return this.#zoneId;
   }
 
-  set zoneId(value: string) {
+  set zoneId(value: number) {
     this.#zoneId = value;
   }
 

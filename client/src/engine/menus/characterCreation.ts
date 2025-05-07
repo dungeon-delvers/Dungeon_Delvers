@@ -1,5 +1,12 @@
 import { Grid, Rectangle, StackPanel, TextBlock } from '@babylonjs/gui';
-import { Attribute, PLAYER_CLASS, PlayerClass, RACE, Race, RaceData } from '@dungeon-delvers/types';
+import {
+  Attribute,
+  PLAYER_CLASS,
+  PlayerClass,
+  RACE,
+  Race,
+  RaceData,
+} from 'types/game';
 
 // import { CharacterModelsProps } from '../graphics/race/race';
 // import { Zone } from '../graphics/zone';
@@ -25,7 +32,7 @@ export const fetchRaces = async () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-    },
+    }
   );
   const { races } = await response.json();
   return races;
@@ -53,7 +60,9 @@ export default class CharacterCreate extends Grid {
     console.log(this.#raceDescription);
     this.#raceDescription = new TextBlock(
       `${menu_id}_racial_description`,
-      this.#raceData.find(element => element.race === this.#selectedRace)?.description,
+      this.#raceData.find(
+        (element) => element.race === this.#selectedRace
+      )?.description
     );
     const changeCallbacks = {
       upChange: () => {
@@ -63,14 +72,14 @@ export default class CharacterCreate extends Grid {
           this.isCreateEnabled();
         }
       },
-      upDisabled: value => !(this.#availablePoints === 0 || value === 20),
+      upDisabled: (value) => !(this.#availablePoints === 0 || value === 20),
       downChange: () => {
         if (this.#availablePoints < 15) {
           this.#availablePoints++;
           this.#availablePointsLabel.text = `Available Points: ${this.#availablePoints}`;
         }
       },
-      downDisabled: value => !(this.#availablePoints === 15 || value === 5),
+      downDisabled: (value) => !(this.#availablePoints === 15 || value === 5),
     };
     this.#attributes = {
       CON: new Rocker(`${menu_id}_con`, 'CONSTITUTION', 10, changeCallbacks),
@@ -125,17 +134,22 @@ export default class CharacterCreate extends Grid {
         };
       }),
       this.#selectedRace,
-      value => {
+      (value) => {
         this.#selectedRace = value as Race;
-        const description = this.#raceData.find(element => element.race === this.#selectedRace)?.description || '';
+        const description =
+          this.#raceData.find((element) => element.race === this.#selectedRace)
+            ?.description || '';
         this.#raceDescription.text = description;
         this.renderAttributes();
         // this.updateCharacter();
-      },
+      }
     );
     this.#leftStack.addControl(raceSelectDropdown);
     this.addLine(this.#leftStack);
-    const playerClassLabel = new Label(`${menu_id}_player_class_label`, 'Class');
+    const playerClassLabel = new Label(
+      `${menu_id}_player_class_label`,
+      'Class'
+    );
     playerClassLabel.color = colors.gold.primary;
     playerClassLabel.fontSize = '25px';
     playerClassLabel.paddingTop = '10px';
@@ -150,7 +164,7 @@ export default class CharacterCreate extends Grid {
         };
       }),
       this.#selectedClass,
-      value => (this.#selectedClass = value as PlayerClass),
+      (value) => (this.#selectedClass = value as PlayerClass)
     );
     this.#leftStack.addControl(playerClassSelectDropdown);
     this.addLine(this.#leftStack);
@@ -181,7 +195,10 @@ export default class CharacterCreate extends Grid {
     genderStack.addControl(femaleButton);
     this.#leftStack.addControl(genderStack);
     this.#leftStack.addControl(this.#raceDescription);
-    const AttributeLabel = new Label(`${menu_id}_attributes_label`, 'Attributes');
+    const AttributeLabel = new Label(
+      `${menu_id}_attributes_label`,
+      'Attributes'
+    );
     AttributeLabel.color = colors.gold.primary;
     AttributeLabel.height = '80px';
     AttributeLabel.fontSize = '25px';
@@ -189,7 +206,7 @@ export default class CharacterCreate extends Grid {
     this.#rightStack.addControl(AttributeLabel);
     this.#availablePointsLabel = new Label(
       `${menu_id}_available_points_label`,
-      `Available Points: ${this.#availablePoints}`,
+      `Available Points: ${this.#availablePoints}`
     );
     this.#availablePointsLabel.color = colors.gold.primary;
     this.#availablePointsLabel.height = '60px';
@@ -197,7 +214,7 @@ export default class CharacterCreate extends Grid {
     this.#availablePointsLabel.paddingBottom = '20px';
     this.#rightStack.addControl(this.#availablePointsLabel);
     this.renderAttributes();
-    Object.values(this.#attributes).forEach(attribute => {
+    Object.values(this.#attributes).forEach((attribute) => {
       this.#rightStack.addControl(attribute);
     });
     const navStack = new StackPanel(`${menu_id}_nav_stack`);
@@ -241,7 +258,9 @@ export default class CharacterCreate extends Grid {
   // }
 
   renderAttributes() {
-    const attributes = this.#raceData.find(element => element.race === this.#selectedRace) as RaceData;
+    const attributes = this.#raceData.find(
+      (element) => element.race === this.#selectedRace
+    ) as RaceData;
     for (const key in this.#attributes) {
       if (Object.prototype.hasOwnProperty.call(this.#attributes, key)) {
         const attribute = this.#attributes[key];
@@ -251,7 +270,8 @@ export default class CharacterCreate extends Grid {
   }
 
   isCreateEnabled() {
-    this.#createButton.isEnabled = this.#availablePoints === 0 && this.#nameInput.text.length >= 5;
+    this.#createButton.isEnabled =
+      this.#availablePoints === 0 && this.#nameInput.text.length >= 5;
   }
 
   createCharacter = async () => {
@@ -279,7 +299,7 @@ export default class CharacterCreate extends Grid {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(character),
-      },
+      }
     );
     console.log(response);
   };

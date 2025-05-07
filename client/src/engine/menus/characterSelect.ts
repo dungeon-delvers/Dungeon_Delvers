@@ -1,5 +1,5 @@
-// import { Race } from '@dungeon-delvers/types';
-import { PlayerCharacter } from '@dungeon-delvers/types';
+// import { Race } from 'types/game';
+import { PlayerCharacter } from 'types/game';
 
 // import { CharacterModelsProps } from '../graphics/race/race';
 // import { CharacterScene } from '../graphics/scenes/characterScene';
@@ -21,7 +21,7 @@ export const fetchPlayerCharacters = async () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-    },
+    }
   );
   const { characters } = await response.json();
   return characters;
@@ -55,7 +55,11 @@ export default class CharacterSelect extends StyledStack {
   // #selectedGender: 'MALE' | 'FEMALE' | null = null;
   #goToCharacterCreate: () => void;
 
-  constructor(_goToLogin: () => void, _goToCharacterCreate: () => void, characters: PlayerCharacter[]) {
+  constructor(
+    _goToLogin: () => void,
+    _goToCharacterCreate: () => void,
+    characters: PlayerCharacter[]
+  ) {
     super(menu_id, {
       width: '20% ',
       height: '100%',
@@ -70,27 +74,27 @@ export default class CharacterSelect extends StyledStack {
       }),
       [CHARACTER_ELEMENTS.CHARACTER_1]: new Button(
         `${menu_id}_character_1`,
-        this._renderCharacterSlot(CHARACTER_ELEMENTS.CHARACTER_1, 0),
+        this._renderCharacterSlot(CHARACTER_ELEMENTS.CHARACTER_1, 0)
       ),
       [CHARACTER_ELEMENTS.CHARACTER_2]: new Button(
         `${menu_id}_character_2`,
-        this._renderCharacterSlot(CHARACTER_ELEMENTS.CHARACTER_2, 1),
+        this._renderCharacterSlot(CHARACTER_ELEMENTS.CHARACTER_2, 1)
       ),
       [CHARACTER_ELEMENTS.CHARACTER_3]: new Button(
         `${menu_id}_character_3`,
-        this._renderCharacterSlot(CHARACTER_ELEMENTS.CHARACTER_3, 2),
+        this._renderCharacterSlot(CHARACTER_ELEMENTS.CHARACTER_3, 2)
       ),
       [CHARACTER_ELEMENTS.CHARACTER_4]: new Button(
         `${menu_id}_character_4`,
-        this._renderCharacterSlot(CHARACTER_ELEMENTS.CHARACTER_4, 3),
+        this._renderCharacterSlot(CHARACTER_ELEMENTS.CHARACTER_4, 3)
       ),
       [CHARACTER_ELEMENTS.CHARACTER_5]: new Button(
         `${menu_id}_character_5`,
-        this._renderCharacterSlot(CHARACTER_ELEMENTS.CHARACTER_5, 4),
+        this._renderCharacterSlot(CHARACTER_ELEMENTS.CHARACTER_5, 4)
       ),
       [CHARACTER_ELEMENTS.CHARACTER_6]: new Button(
         `${menu_id}_character_6`,
-        this._renderCharacterSlot(CHARACTER_ELEMENTS.CHARACTER_6, 5),
+        this._renderCharacterSlot(CHARACTER_ELEMENTS.CHARACTER_6, 5)
       ),
       [LOGOUT]: new Cancel(`${menu_id}_logout`, 'Logout'),
       [LOGIN]: new Accept(`${menu_id}_logout`, 'Enter World'),
@@ -138,7 +142,7 @@ export default class CharacterSelect extends StyledStack {
         body: JSON.stringify({
           id: user.id,
         }),
-      },
+      }
     );
     localStorage.removeItem('dd_auth');
   }

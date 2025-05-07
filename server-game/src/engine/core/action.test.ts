@@ -1,70 +1,62 @@
 import { Vector3 } from '@babylonjs/core';
 import { Action, ActionResult, FAILED, NOT_DONE, SUCCEEDED } from './action';
 import { Actor } from './actor';
-import { Attributes } from './attribute';
+import { Player } from './player';
 
-const actor = new Actor(
-  'test',
-  'Ricard',
-  new Attributes({
+const player = new Player({
+  id: 0,
+  name: 'Ricard',
+  level: 1,
+  attributes: {
     CON: 14,
     DEX: 16,
     INT: 9,
     MIG: 11,
     PER: 15,
     RES: 10,
-  }),
-  {
-    accuracy: 46, // 47
-    deflection: 37, // 37
-    fortitude: 41, // 42
-    health: 117, // 118
-    reflex: 53, // 54
-    willpower: 30, // 30
-    actionSpeed: 1,
-    areaOfEffect: 0,
-    damageMod: 0.03,
-    duration: 0,
-    healing: 1,
   },
+  gender: 'MALE',
+  race: 'HUMAN',
+  playerClass: 'FIGHTER',
+  isAlive: true,
+  position: new Vector3(0, 0, 0), // Example argument for rotation
+  rotation: new Vector3(0, 0, 0), // Example argument for position
+  visibility: 'PUBLIC',
+  userId: 1,
+  zoneId: 1,
+});
 
-  new Vector3(0, 0, 0), // Example argument for rotation
-  new Vector3(0, 0, 0), // Example argument for position
-  'HUMANOID' // Example argument for type
-);
-
-const target = new Actor(
-  'bat',
-  'Bat',
-  new Attributes({
-    CON: 10,
-    DEX: 10,
-    INT: 4,
-    MIG: 10,
+const bat = new Actor({
+  id: 0,
+  name: 'A bat',
+  attributes: {
+    CON: 14,
+    DEX: 16,
+    INT: 9,
+    MIG: 11,
     PER: 15,
     RES: 10,
-  }),
-  {
-    accuracy: 46, // 47
-    deflection: 37, // 37
-    fortitude: 41, // 42
-    health: 117, // 118
-    reflex: 53, // 54
-    willpower: 30, // 30
-    actionSpeed: 1,
-    areaOfEffect: 0,
-    damageMod: 0.03,
-    duration: 0,
-    healing: 1,
   },
-  new Vector3(1, 0, 0), // Example argument for rotation
-  new Vector3(1, 1, 0), // Example argument for position
-  'BEAST'
-);
+  baseStats: {
+    accuracy: 46, // 47
+    health: 117, // 118
+    defense: {
+      deflection: 37, // 37
+      fortitude: 41, // 42
+      reflex: 53, // 54
+      willpower: 30, // 30
+    },
+  },
+  isAlive: true,
+  position: new Vector3(0, 0, 0), // Example argument for rotation
+  rotation: new Vector3(0, 0, 0), // Example argument for position
+  type: 'BEAST', // Example argument for type
+  zoneId: 1,
+});
 
 const idle = new Action({
-  actor,
-  target: actor,
+  actor: player,
+  target: bat,
   name: 'idle',
   description: 'Do nothing',
   onPerform: () => SUCCEEDED,

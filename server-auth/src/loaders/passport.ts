@@ -7,7 +7,7 @@ import Logger from '@/loaders/logger';
 import { userFromUsernameQuery } from '@/queries/user';
 import { authenticateJWT, login } from '@/services/auth';
 import config from '@/config';
-import { User } from '@dungeon-delvers/types';
+import { User } from 'types/game';
 
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
@@ -25,7 +25,7 @@ const strategy = new JwtStrategy(
     } else {
       next(null, false);
     }
-  },
+  }
 );
 
 export default (app: Application) => {

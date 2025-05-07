@@ -1,4 +1,4 @@
-import { Vector3 } from '@babylonjs/core';
+import { Scene, Vector3 } from '@babylonjs/core';
 export const ABILITY_EFFECT_TYPE = [
   'ALTERATION',
   'BUFF',
@@ -19,13 +19,14 @@ export type ActionStats = {
 };
 
 export type ActorType = {
-  id: string;
-  stats: ActionStats & DefenseStats & PassiveStats;
+  attributes: AttributesType;
+  id: number;
   isAlive: boolean;
   name: string;
   position: Vector3;
   rotation: Vector3;
-  zoneId: string;
+  stats: ActionStats & DefenseStats & PassiveStats;
+  zoneId: number;
   attackResolution: (
     target: ActorType,
     defenseStat: keyof DefenseStats
@@ -36,6 +37,14 @@ export type ActorType = {
     minDamage: number,
     maxDamage: number
   ) => number | 'MISS';
+  type: MonsterType;
+};
+
+export type ActorCreationType = Omit<
+  ActorType,
+  'attackResolution' | 'calculateDamage' | 'stats'
+> & {
+  baseStats: BaseStats;
 };
 
 export const ATTACK_RESULTS = ['CRITICAL', 'HIT', 'MISS', 'GRAZE'] as const;
@@ -46,13 +55,25 @@ export const ATTRIBUTES = ['CON', 'DEX', 'INT', 'MIG', 'PER', 'RES'] as const;
 
 export type Attribute = (typeof ATTRIBUTES)[number];
 
-export type Attributes = Record<Attribute, number>;
+export type AttributesType = Record<Attribute, number>;
 
-export type BaseStats = DefenseStats &
-  ActionStats & {
+export type BaseStats = {
+  accuracy: number;
+  defense: DefenseStats;
+  health: number;
+};
+
+export type ClassStats = {
+  base: {
+    accuracy: number;
+    defense: DefenseStats;
+    health: number;
+  };
+  levelMod: {
     accuracy: number;
     health: number;
   };
+};
 
 export type DefenseStats = {
   deflection: number;
@@ -151,36 +172,50 @@ export type PassiveStats = {
   maxHealth: number;
 };
 
-export const PLAYER_CLASS = ['FIGHTER', 'MAGE', 'SCOUT', 'HEALER'] as const;
+export type PlayerClass = {
+  defense: DefenseStats;
+  description: string;
+  name: PlayerClassName;
+  calculateAccuracy: (level: number) => number;
+  calculateHealth: (level: number) => number;
+};
 
-export type PlayerClass = (typeof PLAYER_CLASS)[number];
+export type PlayerClassCreation = Omit<
+  PlayerClass,
+  'calculateAccuracy' | 'defense' | 'calculateHealth'
+> & {
+  classStats: ClassStats;
+};
+
+export const PLAYER_CLASS_NAMES = [
+  'FIGHTER',
+  'MAGE',
+  'SCOUT',
+  'HEALER',
+] as const;
+
+export type PlayerClassName = (typeof PLAYER_CLASS_NAMES)[number];
 
 export type PlayerCharacter = ActorType & {
-  userId: string;
-  surname?: string;
-  race: Race;
   gender: Gender;
-  playerClass: PlayerClass;
   level: number;
-  visibility: Visiblity;
+  playerClass: PlayerClassName;
+  race: Race;
+  surname?: string;
+  userId: number;
+  visibility: Visibility;
 };
+
 export type PlayerCharacterCreation = Omit<
   PlayerCharacter,
-  | 'id'
-  | 'level'
-  | 'surname'
-  | 'current_health'
-  | 'zoneId'
-  | 'locX'
-  | 'locY'
-  | 'locZ'
+  'attackResolution' | 'calculateDamage' | 'type' | 'stats'
 >;
 
 export const RACE = ['DWARF', 'GOBLIN', 'HUMAN', 'ORC'] as const;
 
 export type Race = (typeof RACE)[number];
 
-export type RaceData = Attributes & {
+export type RaceData = AttributesType & {
   race: Race;
   description: string;
 };
@@ -201,15 +236,15 @@ export const STATS = [
 export type Stat = (typeof STATS)[number];
 
 export interface User {
-  id: number;
-  email: string;
-  password_hash: string;
-  username: string;
-  role: UserRole;
-  loggedin: boolean;
-  currentCharacterId: number | null;
   createdAt: string;
+  currentCharacterId: number | null;
+  email: string;
+  id: number;
+  loggedin: boolean;
+  password_hash: string;
+  role: UserRole;
   updatedAt: string;
+  username: string;
 }
 
 export const USER_ROLE = ['ADMIN', 'BANNED', 'PLAYER'] as const;
@@ -217,4 +252,13 @@ export const USER_ROLE = ['ADMIN', 'BANNED', 'PLAYER'] as const;
 export type UserRole = (typeof USER_ROLE)[number];
 
 export const VISIBILITY = ['PUBLIC', 'ANONYMOUS', 'ROLEPLAY'] as const;
-export type Visiblity = (typeof VISIBILITY)[number];
+
+export type Visibility = (typeof VISIBILITY)[number];
+
+export type ZoneType = {
+  fileName: string;
+  id: number;
+  scene: Scene;
+  initialize: () => Promise<void>;
+  serializeScene: () => Promise<any>;
+};

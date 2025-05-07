@@ -1,19 +1,19 @@
 import {
-  AppendSceneAsync,
   Color3,
   Engine,
+  LoadSceneAsync,
   MeshBuilder,
   Scene,
   StandardMaterial,
-  UniversalCamera,
   Vector3,
 } from '@babylonjs/core';
 // import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
 import '@babylonjs/inspector';
 import { Socket, io } from 'socket.io-client';
+import Zone from './core/zone';
 
 // import '@babylonjs/loaders/glTF';
-// import { Gender, Race } from '@dungeon-delvers/types';
+// import { Gender, Race } from 'types/game';
 
 // import CharacterCreate, { fetchRaces } from './menus/characterCreation';
 // import CharacterSelect, { fetchPlayerCharacters } from './menus/characterSelect';
@@ -160,9 +160,11 @@ export class Game {
   #socket: Socket;
   #scene: Scene;
   constructor(engine: Engine) {
-    this.#socket = io(`${process.env.SERVER_GAME_URL}:${process.env.SERVER_GAME_PORT}`);
+    this.#socket = io(
+      `${process.env.SERVER_GAME_URL}:${process.env.SERVER_GAME_PORT}`
+    );
     this.#scene = new Scene(engine);
-    window.addEventListener('keydown', ev => {
+    window.addEventListener('keydown', (ev) => {
       // Shift+Ctrl+I
       if (ev.shiftKey && ev.ctrlKey && ev.key === 'I') {
         console.log('Debug layer');
@@ -176,27 +178,14 @@ export class Game {
     this.#socket.on('connect', () => {
       console.log('Connected to server');
     });
-    this.#socket.on('zoneLoaded', async serializedZone => {
-      await AppendSceneAsync(`data:${serializedZone}`, this.#scene);
-      const camera = this.#scene.getNodeById('camera') as UniversalCamera;
-      console.log(camera);
-      camera.attachControl();
-      engine.runRenderLoop(() => {
-        this.#scene.render();
-      });
+    this.#socket.on('connection:success', () => {
+      this.#socket.emit('character:load', 1);
     });
-    this.#socket.on('actorsLoaded', actors => {
-      console.log('Actors loaded', actors);
-      for (const actor of Object.values(actors)) {
-        const { id, name, position, rotation } = actor;
-        console.log(this.#scene);
-        const actorMesh = MeshBuilder.CreateCapsule(name, { height: 1.75 }, this.#scene);
-        console.log(actorMesh);
-        actorMesh.position = new Vector3(position.x, position.y + 1.75, position.z);
-        const actorMaterial = new StandardMaterial('actorMaterial', this.#scene);
-        actorMaterial.diffuseColor = new Color3(Math.random(), Math.random(), Math.random());
-        actorMesh.material = actorMaterial;
-      }
+    this.#socket.on('zoneLoaded', async (serializedZone) => {
+      console.log('Zone loaded', serializedZone);
+      const scene = await LoadSceneAsync(`data:${serializedZone}`, engine);
+      console.log('Scene loaded', scene);
+      this.#scene = scene;
     });
     this.#socket.on('disconnect', () => {
       console.log('Disconnected from server');

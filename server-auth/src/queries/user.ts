@@ -1,5 +1,5 @@
 import { pool } from '@/services/database/postgres';
-import { User as DDUser } from '@dungeon-delvers/types';
+import { User as DDUser } from 'types/game';
 
 declare global {
   namespace Express {
@@ -7,7 +7,11 @@ declare global {
   }
 }
 
-export const createUserQuery = async (email: string, username: string, passwordHash: string) => {
+export const createUserQuery = async (
+  email: string,
+  username: string,
+  passwordHash: string
+) => {
   const query = {
     text: 'INSERT INTO app_user (email, password_hash, username) VALUES ($1, $2, $3) RETURNING *',
     values: [email, passwordHash, username],

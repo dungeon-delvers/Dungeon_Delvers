@@ -1,4 +1,5 @@
-import { ActorType } from 'types/game';
+import { Actor } from './actor';
+import { Player } from './player';
 
 export type ActionResultArgs = {
   succeeded: boolean;
@@ -7,14 +8,14 @@ export type ActionResultArgs = {
 };
 
 export type ActionArgs = {
-  actor: ActorType;
+  actor: Actor | Player;
   cooldown?: number;
   cost?: number;
   description: string;
   name: string;
   onPerform: () => ActionResult;
   range?: number;
-  target: ActorType | null;
+  target: Actor | Player | null;
 };
 
 export class ActionResult {
@@ -57,8 +58,8 @@ export const NOT_DONE = (alternative: Action) =>
   });
 
 export class Action {
-  #actor: ActorType;
-  #target: ActorType | null = null;
+  #actor: Actor | Player;
+  #target: Actor | Player | null = null;
   #cooldown: number;
   #cost: number;
   #description: string;
@@ -94,7 +95,7 @@ export class Action {
     return this.#target;
   }
 
-  set target(inTarget: ActorType | null) {
+  set target(inTarget: Actor | null) {
     this.#target = inTarget;
   }
 

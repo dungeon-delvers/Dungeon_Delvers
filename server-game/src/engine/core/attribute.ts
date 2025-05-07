@@ -1,4 +1,4 @@
-import { Attribute as AttributeName } from 'types/game';
+import { Attribute as AttributeName, AttributesType } from 'types/game';
 export const ATTRIBUTE_MAX_VALUE = 18;
 export const ATTRIBUTE_MIN_VALUE = 3;
 
@@ -67,14 +67,16 @@ export class Resolve extends Attribute {
 }
 
 export class Attributes {
-  #attributes: Record<AttributeName, Attribute> | {} = {};
+  #attributes: Record<AttributeName, Attribute>;
   constructor(attributes: AttributeValues) {
-    this.#attributes['CON'] = new Constitution(attributes['CON']);
-    this.#attributes['DEX'] = new Dexterity(attributes['DEX']);
-    this.#attributes['INT'] = new Intellect(attributes['INT']);
-    this.#attributes['MIG'] = new Might(attributes['MIG']);
-    this.#attributes['PER'] = new Perception(attributes['PER']);
-    this.#attributes['RES'] = new Resolve(attributes['RES']);
+    this.#attributes = {
+      CON: new Constitution(attributes['CON']),
+      DEX: new Dexterity(attributes['DEX']),
+      INT: new Intellect(attributes['INT']),
+      MIG: new Might(attributes['MIG']),
+      PER: new Perception(attributes['PER']),
+      RES: new Resolve(attributes['RES']),
+    };
   }
 
   setAttributes(attributes: AttributeValues) {
@@ -86,8 +88,15 @@ export class Attributes {
     this.#attributes['RES'] = new Resolve(attributes['RES']);
   }
 
-  getAttributes() {
-    return this.#attributes;
+  get attributes(): AttributesType {
+    return {
+      CON: this.#attributes['CON'].value,
+      DEX: this.#attributes['DEX'].value,
+      INT: this.#attributes['INT'].value,
+      MIG: this.#attributes['MIG'].value,
+      PER: this.#attributes['PER'].value,
+      RES: this.#attributes['RES'].value,
+    };
   }
 
   setAttribute(attribute: AttributeName, value: number) {

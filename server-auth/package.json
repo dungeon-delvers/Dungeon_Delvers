@@ -24,6 +24,7 @@
   "author": "Shawn Mealey",
   "license": "ISC",
   "dependencies": {
+    "@babylonjs/core": "^8.2.0",
     "bcrypt": "5.1.1",
     "celebrate": "^15.0.3",
     "cors": "2.8.5",

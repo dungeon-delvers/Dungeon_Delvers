@@ -1,4 +1,4 @@
-import { ATTRIBUTE, RACE } from '@dungeon-delvers/types'
+import { ATTRIBUTE, RACE } from 'types/game'
 import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate'
 
 export const shorthands: ColumnDefinitions | undefined = undefined

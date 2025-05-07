@@ -1,54 +1,45 @@
+import LoggerInstance from '@/loaders/logger';
 import {
-  GroundMesh,
-  MeshBuilder,
+  Engine,
+  LoadSceneAsync,
+  NullEngine,
   Scene,
-  StandardMaterial,
+  SceneSerializer,
 } from '@babylonjs/core';
+import '@babylonjs/loaders/glTF';
 
-export type ZoneType = {
-  id: string;
-  ground: GroundMesh;
-  scene: Scene;
-  name: string;
-};
+import { ZoneType } from 'types/game';
 
 export class Zone implements ZoneType {
-  #id: string;
-  #name: string;
+  #engine: Engine;
   #scene: Scene;
-  #ground: GroundMesh;
-
-  constructor(scene: Scene) {
-    this.#scene = scene;
-    const subdivisions = 5;
-
-    this.#ground = MeshBuilder.CreateGround(
-      'ground',
-      { width: 100, height: 100, subdivisions },
-      scene
-    );
-    this.#ground.position.y = 0;
-    this.#ground.material = new StandardMaterial('groundMaterial', scene);
+  #id: number;
+  #fileName: string;
+  constructor(id: number, fileName: string) {
+    this.#engine = new NullEngine();
+    this.#scene = new Scene(this.#engine);
+    this.#id = id;
+    this.#fileName = fileName;
   }
-
-  public get scene(): Scene {
-    return this.#scene;
-  }
-
-  public get ground(): GroundMesh {
-    return this.#ground;
-  }
-
-  public get id(): string {
+  get id(): number {
     return this.#id;
   }
-  public set id(inId: string) {
-    this.#id = inId;
+
+  get fileName(): string {
+    return this.#fileName;
   }
-  public get name(): string {
-    return this.#name;
+
+  async initialize(): Promise<void> {
+    const zoneUrl = `${process.env.SERVER_FILE_SERVICE}:${process.env.SERVER_FILE_PORT}/models/zones/${this.#fileName}.glb`;
+    this.#scene = await LoadSceneAsync(`data:${zoneUrl}`, this.#engine);
+    LoggerInstance.info(`Loading zone: ${this.#scene}`);
   }
-  public set name(inName: string) {
-    this.#name = inName;
+
+  async serializeScene(): Promise<any> {
+    return SceneSerializer.SerializeAsync(this.#scene);
+  }
+
+  get scene(): Scene {
+    return this.#scene;
   }
 }

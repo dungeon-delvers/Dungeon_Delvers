@@ -1,5 +1,4 @@
-import { Color4, Vector2 } from '@babylonjs/core';
-import * as fs from 'fs';
+import { Vector2 } from '@babylonjs/core';
 
 import { DiffusionLimitedAggregation } from './diffusionLimitedAggregation';
 

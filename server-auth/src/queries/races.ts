@@ -1,5 +1,5 @@
 import { pool } from '@/services/database/postgres';
-import { RaceData } from '@dungeon-delvers/types';
+import { RaceData } from 'types/game';
 
 export const getRaces = async () => {
   const query = `SELECT * FROM race_data`;

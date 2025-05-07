@@ -1,4 +1,4 @@
-import { User } from '@dungeon-delvers/types';
+import { User } from 'types/game';
 import express from 'express';
 import passport from 'passport';
 import passportJWT from 'passport-jwt';
@@ -54,9 +54,12 @@ describe('Passport Loader', () => {
     const mockUser: User = { id: 1, username: 'testuser' } as User;
     const done = jest.fn();
     require('./passport').default(app);
-    const serializeUser = (passport.serializeUser as jest.Mock).mock.calls[0][0];
+    const serializeUser = (passport.serializeUser as jest.Mock).mock
+      .calls[0][0];
     serializeUser(mockUser, done);
-    expect(Logger.info).toHaveBeenCalledWith(`Serializing user: ${mockUser.username}`);
+    expect(Logger.info).toHaveBeenCalledWith(
+      `Serializing user: ${mockUser.username}`
+    );
     expect(done).toHaveBeenCalledWith(null, mockUser);
   });
 
@@ -65,9 +68,12 @@ describe('Passport Loader', () => {
     const done = jest.fn();
     (userFromUsernameQuery as jest.Mock).mockResolvedValue(mockUser);
     require('./passport').default(app);
-    const deserializeUser = (passport.deserializeUser as jest.Mock).mock.calls[0][0];
+    const deserializeUser = (passport.deserializeUser as jest.Mock).mock
+      .calls[0][0];
     await deserializeUser(mockUser, done);
-    expect(Logger.info).toHaveBeenCalledWith(`Serializing user: ${mockUser.username}`);
+    expect(Logger.info).toHaveBeenCalledWith(
+      `Serializing user: ${mockUser.username}`
+    );
     expect(userFromUsernameQuery).toHaveBeenCalledWith(mockUser.username);
     expect(done).toHaveBeenCalledWith(null, mockUser);
   });

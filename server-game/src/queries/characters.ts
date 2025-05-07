@@ -1,7 +1,9 @@
 import { pool } from '@/services/database/postgres';
-import { IPlayerCharacter } from '@/interfaces/IPlayerCharacter';
+import { PlayerCharacter } from 'types/game';
 
-export const createPlayerCharacter = async (playerCharacter: IPlayerCharacter) => {
+export const createPlayerCharacter = async (
+  playerCharacter: PlayerCharacter
+) => {
   const query = {
     text: `INSERT INTO player_character
     (
@@ -23,25 +25,25 @@ export const createPlayerCharacter = async (playerCharacter: IPlayerCharacter) =
     VALUES
     ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *`,
     values: [
-      playerCharacter.user_id,
+      playerCharacter.userId,
       playerCharacter.name,
       playerCharacter.surname,
-      playerCharacter.class,
-      playerCharacter.con,
-      playerCharacter.dex,
-      playerCharacter.int,
-      playerCharacter.mig,
-      playerCharacter.per,
-      playerCharacter.res,
+      playerCharacter.playerClass,
+      playerCharacter.attributes.CON,
+      playerCharacter.attributes.DEX,
+      playerCharacter.attributes.INT,
+      playerCharacter.attributes.MIG,
+      playerCharacter.attributes.PER,
+      playerCharacter.attributes.RES,
       playerCharacter.level,
-      playerCharacter.current_health,
+      playerCharacter.stats.currentHealth,
       playerCharacter.zoneId,
-      playerCharacter.locX,
-      playerCharacter.locY,
-      playerCharacter.locZ,
+      playerCharacter.position._x,
+      playerCharacter.position._y,
+      playerCharacter.position._z,
     ],
   };
-  return (await pool.query<IPlayerCharacter>(query)).rows[0];
+  return (await pool.query<PlayerCharacter>(query)).rows[0];
 };
 
 export const getPlayerCharactersByUserID = async (userID: number) => {
@@ -49,13 +51,14 @@ export const getPlayerCharactersByUserID = async (userID: number) => {
     text: 'SELECT * FROM player_character WHERE user_id = $1',
     values: [userID],
   };
-  return (await pool.query<IPlayerCharacter>(query)).rows;
+  return (await pool.query<PlayerCharacter>(query)).rows;
 };
 
 export const getCharacterByID = async (id: number) => {
   const query = {
-    text: 'SELECT * FROM character WHERE id = $1',
+    text: 'SELECT * FROM player_character WHERE id = $1',
     values: [id],
   };
-  return (await pool.query<IPlayerCharacter>(query)).rows[0];
+  const result = await pool.query<PlayerCharacter>(query);
+  return result.rows[0];
 };

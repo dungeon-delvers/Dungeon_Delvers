@@ -1,4 +1,4 @@
-import { ITEM_SLOT } from '@dungeon-delvers/types'
+import { ITEM_SLOT } from 'types/game'
 import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate'
 
 export const shorthands: ColumnDefinitions | undefined = undefined

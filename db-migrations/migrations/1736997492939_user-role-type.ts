@@ -1,4 +1,4 @@
-import { USER_ROLE } from '@dungeon-delvers/types'
+import { USER_ROLE } from 'types/game'
 import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate'
 
 export const shorthands: ColumnDefinitions | undefined = undefined

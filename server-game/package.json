@@ -21,7 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "@babylonjs/core": "^8.2.0",
-    "@babylonjs/loaders": "^7.34.2",
+    "@babylonjs/loaders": "^8.2.1",
     "@dungeon-delvers/config": "0.0.27",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/pg": "^8.11.8",
@@ -33,7 +33,8 @@
     "simplex-noise": "^4.0.3",
     "socket.io": "^4.7.5",
     "tsx": "^4.19.2",
-    "winston": "^3.17.0"
+    "winston": "^3.17.0",
+    "xhr2": "^0.2.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

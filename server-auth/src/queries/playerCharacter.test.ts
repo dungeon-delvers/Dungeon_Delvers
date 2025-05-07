@@ -1,8 +1,11 @@
-import { ATTRIBUTE, PlayerCharacterCreation } from '@dungeon-delvers/types';
+import { PlayerCharacterCreation } from 'types/game';
 
 import { pool } from '@/services/database/postgres';
 
-import { createPlayerCharacter, getPlayerCharactersByUserID } from './playerCharacter';
+import {
+  createPlayerCharacter,
+  getPlayerCharactersByUserID,
+} from './playerCharacter';
 
 jest.mock('@/services/database/postgres', () => ({
   pool: {
@@ -14,17 +17,19 @@ describe('PlayerCharacter Queries', () => {
   describe('createPlayerCharacter', () => {
     it('should create a player character and return the result', async () => {
       const mockPlayerCharacter: PlayerCharacterCreation = {
-        user_id: 1,
+        userId: 0,
         name: 'Test Character',
         race: 'HUMAN',
         gender: 'MALE',
-        class: 'FIGHTER',
-        CON: 10,
-        DEX: 10,
-        INT: 10,
-        MIG: 10,
-        PER: 10,
-        RES: 10,
+        playerClass: 'FIGHTER',
+        attributes: {
+          CON: 10,
+          DEX: 10,
+          INT: 10,
+          MIG: 10,
+          PER: 10,
+          RES: 10,
+        },
       };
 
       const mockQueryResult = { rows: [mockPlayerCharacter] };
@@ -52,13 +57,13 @@ describe('PlayerCharacter Queries', () => {
           mockPlayerCharacter.name,
           mockPlayerCharacter.race,
           mockPlayerCharacter.gender,
-          mockPlayerCharacter.class,
-          mockPlayerCharacter[ATTRIBUTE.CON],
-          mockPlayerCharacter[ATTRIBUTE.DEX],
-          mockPlayerCharacter[ATTRIBUTE.INT],
-          mockPlayerCharacter[ATTRIBUTE.MIG],
-          mockPlayerCharacter[ATTRIBUTE.PER],
-          mockPlayerCharacter[ATTRIBUTE.RES],
+          mockPlayerCharacter.playerClass,
+          mockPlayerCharacter.attributes.CON,
+          mockPlayerCharacter.attributes.DEX,
+          mockPlayerCharacter.attributes.INT,
+          mockPlayerCharacter.attributes.MIG,
+          mockPlayerCharacter.attributes.PER,
+          mockPlayerCharacter.attributes.RES,
         ],
       });
       expect(result).toEqual(mockPlayerCharacter);
@@ -69,30 +74,34 @@ describe('PlayerCharacter Queries', () => {
     it('should return player characters for a given user ID', async () => {
       const mockPlayerCharacters: PlayerCharacterCreation[] = [
         {
-          user_id: 1,
+          userId: 1,
           name: 'Test Character 1',
           race: 'HUMAN',
           gender: 'MALE',
-          class: 'FIGHTER',
-          CON: 10,
-          DEX: 10,
-          INT: 10,
-          MIG: 10,
-          PER: 10,
-          RES: 10,
+          playerClass: 'FIGHTER',
+          attributes: {
+            CON: 10,
+            DEX: 10,
+            INT: 10,
+            MIG: 10,
+            PER: 10,
+            RES: 10,
+          },
         },
         {
-          user_id: 1,
+          userId: 1,
           name: 'Test Character 2',
           race: 'HUMAN',
           gender: 'MALE',
-          class: 'FIGHTER',
-          CON: 10,
-          DEX: 10,
-          INT: 10,
-          MIG: 10,
-          PER: 10,
-          RES: 10,
+          playerClass: 'FIGHTER',
+          attributes: {
+            CON: 10,
+            DEX: 10,
+            INT: 10,
+            MIG: 10,
+            PER: 10,
+            RES: 10,
+          },
         },
       ];
 

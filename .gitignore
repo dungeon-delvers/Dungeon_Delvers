@@ -1,12 +1,10 @@
 .DS_Store
 .env
-.parcel-cache
 .npmrc
+.parcel-cache
 .vercel
-server-auth/.env
-server-auth/coverage
-server-auth/dist
-server-authauth/node_modules
+*.key
+*.pem
 client/.env
 client/.parcel-cache
 client/coverage
@@ -15,6 +13,10 @@ client/node_modules
 db_migration/.env
 db_migration/node_modules
 node_modules
+server-auth/.env
+server-auth/coverage
+server-auth/dist
+server-authauth/node_modules
 server-file/.env
 server-file/coverage
 server-file/dist
@@ -23,5 +25,3 @@ server-game/.env
 server-game/coverage
 server-game/dist
 server-game/node_modules
-*.key
-*.pem

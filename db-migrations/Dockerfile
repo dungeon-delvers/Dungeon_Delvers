@@ -2,7 +2,7 @@
 FROM node:22-alpine
 
 # Set the working directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 4001
 
 # Command to run the application
-CMD ["npm", "run", "migrate:up"]
+# CMD ["npm", "run", "migrate:up"]

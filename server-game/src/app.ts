@@ -1,10 +1,12 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import XMLHttpRequest from 'xhr2';
 
 import config from '@/config';
 import Logger from '@/loaders/logger';
 
 async function startServer() {
+  global.XMLHttpRequest = XMLHttpRequest;
   const httpServer = createServer();
   const io = new Server(httpServer, {
     cors: {

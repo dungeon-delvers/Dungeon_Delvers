@@ -1,4 +1,4 @@
-import { PLAYER_CLASS } from '@dungeon-delvers/types'
+import { PLAYER_CLASS } from 'types/game'
 import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate'
 
 export const shorthands: ColumnDefinitions | undefined = undefined

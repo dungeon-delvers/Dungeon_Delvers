@@ -1,10 +1,9 @@
 import { Race } from './race';
-import { Race as RaceName } from '@dungeon-delvers/types';
 import { Attributes } from './attribute';
 
 describe('Race', () => {
   it('should correctly initialize with name, attributes, and description', () => {
-    const mockName: RaceName = 'DWARF';
+    const mockName = 'DWARF';
     const mockAttributes = new Attributes({
       CON: 14,
       DEX: 8,
@@ -14,7 +13,7 @@ describe('Race', () => {
       RES: 8,
     });
     const mockDescription =
-      'A mystical race with high dexterity and intelligence.';
+      'An ancient race of stout and hardy folk, known for their resilience and craftsmanship.';
 
     const race = new Race(mockName, mockAttributes, mockDescription);
 

@@ -1,4 +1,4 @@
-import { Color4, Vector2 } from '@babylonjs/core';
+import { Vector2 } from '@babylonjs/core';
 import * as fs from 'fs';
 import * as PImage from 'pureimage';
 
@@ -8,7 +8,6 @@ type Coordinate = {
   loc: Vector2;
   particle: boolean;
 };
-type Particles = GridKey[];
 type DLAPRops = {
   width: number;
   height: number;
@@ -23,7 +22,12 @@ export class DiffusionLimitedAggregation {
   #maxParticles: number;
   #currentLocation: Vector2;
 
-  constructor({ width, height, seed, maxParticles = Math.round(width * height * 0.05) }: DLAPRops) {
+  constructor({
+    width,
+    height,
+    seed,
+    maxParticles = Math.round(width * height * 0.05),
+  }: DLAPRops) {
     this.#width = width;
     this.#height = height;
     this.#maxParticles = maxParticles;
@@ -38,7 +42,8 @@ export class DiffusionLimitedAggregation {
         };
       }
     }
-    this.#currentLocation = seed ?? new Vector2(Math.round(width * 0.5), Math.round(height * 0.5));
+    this.#currentLocation =
+      seed ?? new Vector2(Math.round(width * 0.5), Math.round(height * 0.5));
     const currentKey = `${this.#currentLocation.x}_${this.#currentLocation.y}`;
     if (this.#grid[currentKey]) {
       this.#grid[currentKey]!.particle = true;
@@ -66,8 +71,11 @@ export class DiffusionLimitedAggregation {
       ];
       const randomIndex = Math.floor(Math.random() * (direction.length - 1));
       this.#currentLocation.addInPlace(direction[randomIndex]);
-      if (`${this.#currentLocation.x}_${this.#currentLocation.y}` in this.#grid) {
-        const { particle } = this.#grid[`${this.#currentLocation.x}_${this.#currentLocation.y}`];
+      if (
+        `${this.#currentLocation.x}_${this.#currentLocation.y}` in this.#grid
+      ) {
+        const { particle } =
+          this.#grid[`${this.#currentLocation.x}_${this.#currentLocation.y}`];
         if (particle === false) {
           const key: GridKey = `${this.#currentLocation.x}_${this.#currentLocation.y}`;
           this.#grid[key]!.particle = true;
@@ -78,7 +86,7 @@ export class DiffusionLimitedAggregation {
         // If the current location is out of bounds, reset it to a random position
         this.#currentLocation = new Vector2(
           Math.floor(Math.random() * this.#width),
-          Math.floor(Math.random() * this.#height),
+          Math.floor(Math.random() * this.#height)
         );
       }
     }
@@ -120,8 +128,8 @@ export class DiffusionLimitedAggregation {
       .then(() => {
         console.log(`wrote out the png file to ${fileName}.jpg`);
       })
-      .catch(e => {
-        console.log('there was an error writing');
+      .catch((e) => {
+        console.log('there was an error writing', e);
       });
   }
 }

@@ -1,36 +1,33 @@
 import { Vector3 } from '@babylonjs/core';
 import { Actor } from './actor';
-import { Attributes } from './attribute';
 
-const actor = new Actor(
-  'test',
-  'Ricard',
-  new Attributes({
+const actor = new Actor({
+  id: 0,
+  name: 'Ricard',
+  attributes: {
     CON: 14,
     DEX: 16,
     INT: 9,
     MIG: 11,
     PER: 15,
     RES: 10,
-  }),
-  {
-    accuracy: 46, // 47
-    deflection: 37, // 37
-    fortitude: 41, // 42
-    health: 117, // 118
-    reflex: 53, // 54
-    willpower: 30, // 30
-    actionSpeed: 1,
-    areaOfEffect: 0,
-    damageMod: 0.03,
-    duration: 0,
-    healing: 1,
   },
-
-  new Vector3(0, 0, 0), // Example argument for rotation
-  new Vector3(0, 0, 0), // Example argument for position
-  'HUMANOID' // Example argument for type
-);
+  baseStats: {
+    accuracy: 46, // 47
+    health: 117, // 118
+    defense: {
+      deflection: 37, // 37
+      fortitude: 41, // 42
+      reflex: 53, // 54
+      willpower: 30, // 30
+    },
+  },
+  isAlive: true,
+  position: new Vector3(0, 0, 0), // Example argument for rotation
+  rotation: new Vector3(0, 0, 0), // Example argument for position
+  type: 'HUMANOID', // Example argument for type
+  zoneId: 1,
+});
 
 afterEach(() => {
   jest.restoreAllMocks();

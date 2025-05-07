@@ -11,7 +11,7 @@ import {
   RACE,
   STATS,
   USER_ROLE,
-} from '@dungeon-delvers/types'
+} from 'types/game'
 
 export async function up(pgm: MigrationBuilder): Promise<void> {
   pgm.createType('ability_effect_type', [

@@ -10,6 +10,7 @@ services:
       - db_data:/var/lib/postgresql/data
   db-migrations:
     build: db-migrations
+    command: tail -f /dev/null
     links:
       - db
     depends_on:
@@ -17,9 +18,7 @@ services:
     env_file:
       - .env
     volumes:
-      - type: bind
-        source: ./types/
-        target: /app/@types
+      - ./types:/app/types
   server-auth:
     develop:
       watch:
@@ -31,6 +30,7 @@ services:
             - node_modules/
             - dist/
     build: server-auth
+    command: tail -f /dev/null
     depends_on:
       - db
       - db-migrations
@@ -39,9 +39,7 @@ services:
     env_file:
       - .env
     volumes:
-      - type: bind
-        source: ./types/
-        target: /app/@types
+      - ./types:/app/types
   server-file:
     develop:
       watch:
@@ -58,9 +56,7 @@ services:
     env_file:
       - .env
     volumes:
-      - type: bind
-        source: ./types/
-        target: /app/@types
+      - ./types:/app/types
   server-game:
     develop:
       watch:
@@ -80,9 +76,7 @@ services:
     env_file:
       - .env
     volumes:
-      - type: bind
-        source: ./types/
-        target: /app/@types
+      - ./types:/app/types
   client:
     build: client
     depends_on:
@@ -99,8 +93,6 @@ services:
       - type: bind
         source: ./client/public
         target: /app/public
-      - type: bind
-        source: ./types/
-        target: /app/@types
+      - ./types:/app/types
 volumes:
   db_data:

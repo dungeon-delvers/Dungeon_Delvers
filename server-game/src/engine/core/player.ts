@@ -1,36 +1,52 @@
 import {
-  BaseStats,
-  PlayerClass,
-  Visiblity,
+  PlayerClassName,
+  Visibility,
   PlayerCharacter,
   Race,
   Gender,
+  PlayerCharacterCreation,
 } from 'types/game';
-import { Attributes } from './attribute';
 import { Actor } from './actor';
 import { Vector3 } from '@babylonjs/core';
+import { getCharacterByID } from '@/queries/characters';
+import { PlayerClasses } from './playerClass';
 export class Player extends Actor implements PlayerCharacter {
   #gender: Gender;
   #level: number = 1;
-  #playerClass: PlayerClass;
+  #playerClass: PlayerClassName;
   #race: Race;
   #surname?: string;
-  #userId: string;
-  #visibility: Visiblity;
+  #userId: number;
+  #visibility: Visibility;
 
-  constructor(
-    id: string,
-    name: string,
-    attributes: Attributes,
-    baseStats: BaseStats,
-    gender: Gender,
-    playerClass: PlayerClass,
-    position: Vector3,
-    race: Race,
-    rotation: Vector3,
-    userId: string
-  ) {
-    super(id, name, attributes, baseStats, position, rotation, 'HUMANOID');
+  constructor({
+    id,
+    name,
+    attributes,
+    gender,
+    level,
+    playerClass,
+    position,
+    race,
+    rotation,
+    userId,
+  }: PlayerCharacterCreation) {
+    const baseStats = {
+      accuracy: PlayerClasses[playerClass].calculateAccuracy(level),
+      defense: PlayerClasses[playerClass].defense,
+      health: PlayerClasses[playerClass].calculateHealth(level),
+    };
+    super({
+      id,
+      name,
+      attributes,
+      baseStats,
+      position,
+      rotation,
+      type: 'HUMANOID',
+      isAlive: true,
+      zoneId: 0,
+    });
     this.#playerClass = playerClass;
     this.#visibility = 'PUBLIC';
     this.#userId = userId;
@@ -66,7 +82,7 @@ export class Player extends Actor implements PlayerCharacter {
     return this.#visibility;
   }
 
-  set visibility(inVisibility: Visiblity) {
+  set visibility(inVisibility: Visibility) {
     this.#visibility = inVisibility;
   }
 
@@ -86,7 +102,7 @@ export class Player extends Actor implements PlayerCharacter {
     return this.#playerClass;
   }
 
-  set playerClass(inPlayerClass: PlayerClass) {
+  set playerClass(inPlayerClass: PlayerClassName) {
     this.#playerClass = inPlayerClass;
   }
 
@@ -94,3 +110,8 @@ export class Player extends Actor implements PlayerCharacter {
     return `${this.name} (${this.#playerClass})`;
   }
 }
+
+export const getPlayerById = async (playerID: number): Promise<Player> => {
+  const result = await getCharacterByID(playerID);
+  return new Player(result);
+};

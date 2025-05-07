@@ -1,5 +1,5 @@
-// import { User } from '@dungeon-delvers/types';
-import { User } from '@dungeon-delvers/types';
+// import { User } from 'types/game';
+import { User } from 'types/game';
 import { errors } from 'celebrate';
 import express from 'express';
 import passport from 'passport';
@@ -24,58 +24,92 @@ describe('Auth Routes', () => {
   describe('POST /login', () => {
     it('should return 200 and token for valid credentials', async () => {
       const mockUser = { id: 1, username: 'testuser' };
-      const loginHandler = jest.fn((_user: User, _options: passport.LogInOptions, done: (err: any) => void) => {
-        done(null);
-      });
+      const loginHandler = jest.fn(
+        (
+          _user: User,
+          _options: passport.LogInOptions,
+          done: (err: any) => void
+        ) => {
+          done(null);
+        }
+      );
       const mockToken = 'mockToken';
-      (passport.authenticate as jest.Mock).mockImplementation((_strategy, _options, callback) => (req, _res) => {
-        req.login = loginHandler;
-        callback(null, mockUser);
-      });
+      (passport.authenticate as jest.Mock).mockImplementation(
+        (_strategy, _options, callback) => (req, _res) => {
+          req.login = loginHandler;
+          callback(null, mockUser);
+        }
+      );
       (generateToken as jest.Mock).mockResolvedValue(mockToken);
 
-      const response = await request(app).post('/login').send({ username: 'testuser', password: 'password' });
+      const response = await request(app)
+        .post('/login')
+        .send({ username: 'testuser', password: 'password' });
 
       expect(response.status).toBe(200);
       expect(response.body.token).toBe(mockToken);
     });
 
     it('should return 401 for invalid credentials', async () => {
-      (passport.authenticate as jest.Mock).mockImplementation((_strategy, _options, callback) => (_req, _res) => {
-        callback(null, false);
-      });
+      (passport.authenticate as jest.Mock).mockImplementation(
+        (_strategy, _options, callback) => (_req, _res) => {
+          callback(null, false);
+        }
+      );
 
-      const response = await request(app).post('/login').send({ username: 'testuser', password: 'wrongpassword' });
+      const response = await request(app)
+        .post('/login')
+        .send({ username: 'testuser', password: 'wrongpassword' });
 
       expect(response.status).toBe(401);
       expect(response.body.error).toBe('Invalid username or password');
     });
     it('should handle errors when authenticating', async () => {
-      const loginHandler = jest.fn((_user: User, _options: passport.LogInOptions, _done: (err: any) => void) => {
-        _done(new Error('Authentication error'));
-      });
-      (passport.authenticate as jest.Mock).mockImplementation((_strategy, _options, callback) => (req, _res) => {
-        req.login = loginHandler;
-        callback(new Error('Authentication error'));
-      });
+      const loginHandler = jest.fn(
+        (
+          _user: User,
+          _options: passport.LogInOptions,
+          _done: (err: any) => void
+        ) => {
+          _done(new Error('Authentication error'));
+        }
+      );
+      (passport.authenticate as jest.Mock).mockImplementation(
+        (_strategy, _options, callback) => (req, _res) => {
+          req.login = loginHandler;
+          callback(new Error('Authentication error'));
+        }
+      );
 
-      const response = await request(app).post('/login').send({ username: 'testuser', password: 'password' });
+      const response = await request(app)
+        .post('/login')
+        .send({ username: 'testuser', password: 'password' });
 
       expect(response.status).toBe(500);
     });
     it('should handle errors when logging in', async () => {
       const mockUser = { id: 1, username: 'testuser' };
-      const loginHandler = jest.fn((_user: User, _options: passport.LogInOptions, _done: (err: any) => void) => {
-        _done(new Error('Login error'));
-      });
+      const loginHandler = jest.fn(
+        (
+          _user: User,
+          _options: passport.LogInOptions,
+          _done: (err: any) => void
+        ) => {
+          _done(new Error('Login error'));
+        }
+      );
       const mockToken = 'mockToken';
-      (passport.authenticate as jest.Mock).mockImplementation((_strategy, _options, callback) => (req, _res) => {
-        req.login = loginHandler;
-        callback(null, mockUser);
-      });
+      (passport.authenticate as jest.Mock).mockImplementation(
+        (_strategy, _options, callback) => (req, _res) => {
+          req.login = loginHandler;
+          callback(null, mockUser);
+        }
+      );
       (generateToken as jest.Mock).mockResolvedValue(mockToken);
 
-      const response = await request(app).post('/login').send({ username: 'testuser', password: 'password' });
+      const response = await request(app)
+        .post('/login')
+        .send({ username: 'testuser', password: 'password' });
 
       expect(response.status).toBe(500);
     });
@@ -168,7 +202,7 @@ describe('Auth Routes', () => {
 
       expect(response.status).toBe(500);
       expect(response.text).toContain(
-        'Encountered unexpected error when trying to return error, might not have been an Error thrown.',
+        'Encountered unexpected error when trying to return error, might not have been an Error thrown.'
       );
     });
   });

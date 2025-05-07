@@ -1,4 +1,4 @@
-import { User } from '@dungeon-delvers/types';
+import { User } from 'types/game';
 import { Joi, celebrate } from 'celebrate';
 import { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
@@ -11,28 +11,32 @@ export default (router: Router) => {
     '/login',
     celebrate({ body: { username: Joi.string(), password: Joi.string() } }),
     async (req: Request, res: Response, next) => {
-      passport.authenticate('local', { session: false }, (error: Error | null, user: User) => {
-        if (error) {
-          Logger.error(error);
-          next(error);
-          return;
-        }
-        if (!user) {
-          res.status(401).json({ error: 'Invalid username or password' });
-          return;
-        }
-        req.login(user, { session: false }, async loginError => {
-          if (loginError) {
-            console.log({ loginError });
-            Logger.error(loginError);
-            next(loginError);
+      passport.authenticate(
+        'local',
+        { session: false },
+        (error: Error | null, user: User) => {
+          if (error) {
+            Logger.error(error);
+            next(error);
             return;
           }
-          const token = await generateToken(user);
-          res.status(200).json({ token });
-        });
-      })(req, res);
-    },
+          if (!user) {
+            res.status(401).json({ error: 'Invalid username or password' });
+            return;
+          }
+          req.login(user, { session: false }, async (loginError) => {
+            if (loginError) {
+              console.log({ loginError });
+              Logger.error(loginError);
+              next(loginError);
+              return;
+            }
+            const token = await generateToken(user);
+            res.status(200).json({ token });
+          });
+        }
+      )(req, res);
+    }
   );
   router.post(
     '/logout',
@@ -45,7 +49,7 @@ export default (router: Router) => {
         Logger.error(error);
         next(error);
       }
-    },
+    }
   );
 
   router.post(
@@ -60,7 +64,11 @@ export default (router: Router) => {
     }),
     async (req: Request, res: Response, next) => {
       try {
-        const { token } = await signup(req.body.email, req.body.username, req.body.password);
+        const { token } = await signup(
+          req.body.email,
+          req.body.username,
+          req.body.password
+        );
         if (!token) {
           res.status(500).json({ error: 'User not created' });
           return;
@@ -71,10 +79,12 @@ export default (router: Router) => {
           next(error);
         } else {
           next(
-            new Error('Encountered unexpected error when trying to return error, might not have been an Error thrown.'),
+            new Error(
+              'Encountered unexpected error when trying to return error, might not have been an Error thrown.'
+            )
           );
         }
       }
-    },
+    }
   );
 };

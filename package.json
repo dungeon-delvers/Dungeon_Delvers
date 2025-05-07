@@ -23,7 +23,7 @@
     "test:auth": "npm run test  --workspace=server-auth",
     "test:client": "npm run test  --workspace=client",
     "test:game": "npm run test  --workspace=server-game",
-    "test": "npm run test --ws",
+    "test": "npm run test --ws -- --passWithNoTests",
     "lint": "./node_modules/.bin/eslint"
   },
   "keywords": [

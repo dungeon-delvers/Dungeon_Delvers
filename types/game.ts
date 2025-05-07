@@ -208,7 +208,7 @@ export type PlayerCharacter = ActorType & {
 
 export type PlayerCharacterCreation = Omit<
   PlayerCharacter,
-  'attackResolution' | 'calculateDamage' | 'type' | 'stats'
+  'attackResolution' | 'calculateDamage' | 'id' | 'type' | 'stats'
 >;
 
 export const RACE = ['DWARF', 'GOBLIN', 'HUMAN', 'ORC'] as const;

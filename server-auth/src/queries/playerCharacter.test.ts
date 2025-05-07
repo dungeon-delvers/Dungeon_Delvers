@@ -6,6 +6,7 @@ import {
   createPlayerCharacter,
   getPlayerCharactersByUserID,
 } from './playerCharacter';
+import { Vector3 } from '@babylonjs/core';
 
 jest.mock('@/services/database/postgres', () => ({
   pool: {
@@ -30,6 +31,12 @@ describe('PlayerCharacter Queries', () => {
           PER: 10,
           RES: 10,
         },
+        isAlive: true,
+        position: new Vector3(0, 0, 0),
+        rotation: new Vector3(0, 0, 0),
+        zoneId: 0,
+        level: 1,
+        visibility: 'PUBLIC',
       };
 
       const mockQueryResult = { rows: [mockPlayerCharacter] };
@@ -40,17 +47,18 @@ describe('PlayerCharacter Queries', () => {
       expect(pool.query).toHaveBeenCalledWith({
         text: `
     INSERT INTO player_character (
-    user_id,
-    name,
-    race,
-    gender,
-    class,
-    \"CON\",
-    \"DEX\",
-    \"INT\",
-    \"MIG\",
-    \"PER\",
-    \"RES\")
+      user_id,
+      name,
+      race,
+      gender,
+      class,
+      \"CON\",
+      \"DEX\",
+      \"INT\",
+      \"MIG\",
+      \"PER\",
+      \"RES\"
+    )
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
         values: [
           1,
@@ -74,7 +82,7 @@ describe('PlayerCharacter Queries', () => {
     it('should return player characters for a given user ID', async () => {
       const mockPlayerCharacters: PlayerCharacterCreation[] = [
         {
-          userId: 1,
+          userId: 0,
           name: 'Test Character 1',
           race: 'HUMAN',
           gender: 'MALE',
@@ -87,9 +95,15 @@ describe('PlayerCharacter Queries', () => {
             PER: 10,
             RES: 10,
           },
+          isAlive: true,
+          position: new Vector3(0, 0, 0),
+          rotation: new Vector3(0, 0, 0),
+          zoneId: 0,
+          level: 1,
+          visibility: 'PUBLIC',
         },
         {
-          userId: 1,
+          userId: 0,
           name: 'Test Character 2',
           race: 'HUMAN',
           gender: 'MALE',
@@ -102,6 +116,12 @@ describe('PlayerCharacter Queries', () => {
             PER: 10,
             RES: 10,
           },
+          isAlive: true,
+          position: new Vector3(0, 0, 0),
+          rotation: new Vector3(0, 0, 0),
+          zoneId: 0,
+          level: 1,
+          visibility: 'PUBLIC',
         },
       ];
 

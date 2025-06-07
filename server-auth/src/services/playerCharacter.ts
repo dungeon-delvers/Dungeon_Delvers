@@ -1,8 +1,8 @@
 import {
   createPlayerCharacter,
   getPlayerCharactersByUserID,
+  PlayerCharacter,
 } from '@/queries/playerCharacter';
-import { PlayerCharacter } from 'types/game';
 
 export const getCharacters = async (id: number) => {
   return getPlayerCharactersByUserID(id);

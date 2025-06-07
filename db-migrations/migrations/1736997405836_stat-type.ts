@@ -1,4 +1,4 @@
-import { STATS } from 'types/game'
+import { STATS } from '../consts'
 import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate'
 
 export const shorthands: ColumnDefinitions | undefined = undefined

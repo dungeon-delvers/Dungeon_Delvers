@@ -1,11 +1,9 @@
 {
   "extends": "@dungeon-delvers/config/tsconfig.json",
-  "allowJs": true,
   "compilerOptions": {
     "outDir": "./dist",
     "paths": {
-      "@/*": ["./src/*"],
-      "types/*": ["./types/*"]
+      "@/*": ["./src/*"]
     },
     "preserveSymlinks": true
   },

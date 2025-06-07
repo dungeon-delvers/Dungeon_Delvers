@@ -1,4 +1,4 @@
-import { NPC_TYPE } from 'types/game'
+import { NPC_TYPE } from '../consts'
 import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate'
 
 export const shorthands: ColumnDefinitions | undefined = undefined

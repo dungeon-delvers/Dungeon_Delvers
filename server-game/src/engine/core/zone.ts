@@ -8,7 +8,13 @@ import {
 } from '@babylonjs/core';
 import '@babylonjs/loaders/glTF';
 
-import { ZoneType } from 'types/game';
+export type ZoneType = {
+  fileName: string;
+  id: number;
+  scene: Scene;
+  initialize: () => Promise<void>;
+  serializeScene: () => Promise<any>;
+};
 
 export class Zone implements ZoneType {
   #engine: Engine;

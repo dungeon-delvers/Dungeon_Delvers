@@ -1,4 +1,4 @@
-import { MESSAGE_TYPE } from 'types/game'
+import { MESSAGE_TYPE } from '../consts'
 import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate'
 
 export const shorthands: ColumnDefinitions | undefined = undefined

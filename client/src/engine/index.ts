@@ -1,16 +1,7 @@
-import {
-  Color3,
-  Engine,
-  LoadSceneAsync,
-  MeshBuilder,
-  Scene,
-  StandardMaterial,
-  Vector3,
-} from '@babylonjs/core';
+import { Engine, LoadSceneAsync, Scene } from '@babylonjs/core';
 // import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
 import '@babylonjs/inspector';
 import { Socket, io } from 'socket.io-client';
-import Zone from './core/zone';
 
 // import '@babylonjs/loaders/glTF';
 // import { Gender, Race } from 'types/game';
@@ -179,7 +170,10 @@ export class Game {
       console.log('Connected to server');
     });
     this.#socket.on('connection:success', () => {
-      this.#socket.emit('character:load', 1);
+      this.#socket.emit('player:load', 1);
+    });
+    this.#socket.on('player:loaded', (result) => {
+      console.log({ result });
     });
     this.#socket.on('zoneLoaded', async (serializedZone) => {
       console.log('Zone loaded', serializedZone);

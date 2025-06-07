@@ -1,4 +1,4 @@
-import { ABILITY_EFFECT_TYPE } from 'types/game'
+import { ABILITY_EFFECT_TYPE } from '../consts'
 import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate'
 
 export const shorthands: ColumnDefinitions | undefined = undefined

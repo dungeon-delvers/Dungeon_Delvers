@@ -1,4 +1,4 @@
-import { GENDER } from 'types/game'
+import { GENDER } from '../consts'
 import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate'
 
 export const shorthands: ColumnDefinitions | undefined = undefined

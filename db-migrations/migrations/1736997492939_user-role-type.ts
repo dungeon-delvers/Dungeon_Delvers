@@ -1,4 +1,4 @@
-import { USER_ROLE } from 'types/game'
+import { USER_ROLE } from '../consts'
 import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate'
 
 export const shorthands: ColumnDefinitions | undefined = undefined

@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 4001
 
 # Command to run the application
-# CMD ["npm", "run", "migrate:up"]
+ CMD ["npm", "run", "migrate:up"]

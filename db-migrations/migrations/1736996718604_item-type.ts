@@ -1,4 +1,4 @@
-import { ITEM_TYPE } from 'types/game'
+import { ITEM_TYPE } from '../consts'
 import { ColumnDefinitions, MigrationBuilder } from 'node-pg-migrate'
 
 export const shorthands: ColumnDefinitions | undefined = undefined

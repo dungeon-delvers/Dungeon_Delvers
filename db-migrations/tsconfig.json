@@ -1,14 +1,13 @@
 {
   "extends": "@dungeon-delvers/config/tsconfig.json",
+  "allowJs": true,
   "compilerOptions": {
+    "outDir": "./dist",
     "paths": {
       "types/*": ["./types/*"]
     },
     "preserveSymlinks": true
   },
-  "include": [
-    "migrations/**/*.ts",
-    "migrations/1731608476360_init-database.ts.old"
-  ],
+  "include": ["migrations/**/*.ts", "types/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

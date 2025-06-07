@@ -10,7 +10,6 @@ services:
       - db_data:/var/lib/postgresql/data
   db-migrations:
     build: db-migrations
-    command: tail -f /dev/null
     links:
       - db
     depends_on:
@@ -30,7 +29,7 @@ services:
             - node_modules/
             - dist/
     build: server-auth
-    command: tail -f /dev/null
+    command:
     depends_on:
       - db
       - db-migrations

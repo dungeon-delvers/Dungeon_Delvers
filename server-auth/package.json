@@ -41,7 +41,7 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
-    "@dungeon-delvers/config": "^0.0.27",
+    "@dungeon-delvers/config": "^0.0.28",
     "@types/bcrypt": "5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express-session": "1.18.1",

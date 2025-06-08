@@ -1,0 +1,9 @@
+{
+  "extends": "@dungeon-delvers/config/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "preserveSymlinks": true
+  },
+  "include": ["**/*.ts", "types/defense.ts"],
+  "exclude": ["node_modules", "dist"]
+}

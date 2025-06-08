@@ -17,7 +17,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./types:/app/types
+      - ./shared:/app/shared
   server-auth:
     develop:
       watch:
@@ -38,7 +38,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./types:/app/types
+      - ./shared:/app/shared
   server-file:
     develop:
       watch:
@@ -55,7 +55,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./types:/app/types
+      - ./shared:/app/shared
   server-game:
     develop:
       watch:
@@ -75,7 +75,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./types:/app/types
+      - ./shared:/app/shared
   client:
     build: client
     depends_on:
@@ -92,6 +92,6 @@ services:
       - type: bind
         source: ./client/public
         target: /app/public
-      - ./types:/app/types
+      - ./shared:/app/shared
 volumes:
   db_data:

@@ -33,7 +33,7 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
-    "@dungeon-delvers/config": "^0.0.27",
+    "@dungeon-delvers/config": "^0.0.28",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
     "ts-node": "10.9.2",

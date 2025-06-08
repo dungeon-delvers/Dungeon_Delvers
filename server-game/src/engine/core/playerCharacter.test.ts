@@ -1,5 +1,7 @@
-import { PlayerCharacter, PlayerCharacterProps } from './playerCharacter';
+import { PlayerCharacterProps } from '@shared/types/playerCharacter';
+
 import { CharacterClasses } from './characterClass';
+import { PlayerCharacter } from './playerCharacter';
 
 describe('PlayerCharacter', () => {
   const baseProps = {
@@ -31,6 +33,8 @@ describe('PlayerCharacter', () => {
     resourceMax: 30,
     resourceValue: 30,
     willpower: 10,
+    userId: 1,
+    zoneId: 1,
   };
 
   it('should construct and expose className', () => {

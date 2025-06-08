@@ -6,7 +6,7 @@ import {
   Perception,
   Resolve,
 } from './attribute';
-import { random, randomChoice } from './random';
+import { randomChoice } from './random';
 
 const attributes = [
   Constitution,

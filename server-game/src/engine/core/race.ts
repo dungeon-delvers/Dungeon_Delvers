@@ -1,21 +1,16 @@
-export const RACE_NAMES = ['HUMAN', 'DWARF', 'ORC', 'GOBLIN'] as const;
-
-export type RaceName = (typeof RACE_NAMES)[number];
-
-type RaceProps = {
-  name: RaceName;
-  description: string;
-  constitution: number;
-  dexterity: number;
-  intellect: number;
-  might: number;
-  perception: number;
-  resolve: number;
-};
+import { RaceName, RaceProps } from '@shared/types/race';
 
 export class Race {
-  #name: RaceName;
-  #description: string;
+  get attributes() {
+    return this.#attributes;
+  }
+  get description() {
+    return this.#description;
+  }
+  get name() {
+    return this.#name;
+  }
+
   #attributes: {
     constitution: number;
     dexterity: number;
@@ -24,6 +19,10 @@ export class Race {
     perception: number;
     resolve: number;
   };
+
+  #description: string;
+
+  #name: RaceName;
 
   constructor(props: RaceProps) {
     this.#name = props.name;
@@ -37,62 +36,50 @@ export class Race {
       resolve: props.resolve,
     };
   }
-
-  get name() {
-    return this.#name;
-  }
-
-  get description() {
-    return this.#description;
-  }
-
-  get attributes() {
-    return this.#attributes;
-  }
 }
 
 export const Races = {
   DWARF: new Race({
-    name: 'DWARF',
+    constitution: 12,
     description:
       'Sturdy and resilient, dwarves are known for their craftsmanship and endurance.',
-    constitution: 12,
     dexterity: 8,
     intellect: 9,
     might: 11,
+    name: 'DWARF',
     perception: 10,
     resolve: 12,
   }),
+  GOBLIN: new Race({
+    constitution: 9,
+    description:
+      'Cunning and resourceful, goblins are often underestimated but can be formidable.',
+    dexterity: 12,
+    intellect: 10,
+    might: 10,
+    name: 'GOBLIN',
+    perception: 11,
+    resolve: 10,
+  }),
   HUMAN: new Race({
-    name: 'HUMAN',
-    description: 'Versatile and adaptable, humans excel in various roles.',
     constitution: 10,
+    description: 'Versatile and adaptable, humans excel in various roles.',
     dexterity: 10,
     intellect: 10,
     might: 11,
+    name: 'HUMAN',
     perception: 10,
     resolve: 11,
   }),
   ORC: new Race({
-    name: 'ORC',
+    constitution: 11,
     description:
       'Fierce and strong, orcs are known for their combat prowess and resilience.',
-    constitution: 11,
     dexterity: 10,
     intellect: 9,
     might: 12,
+    name: 'ORC',
     perception: 10,
-    resolve: 10,
-  }),
-  GOBLIN: new Race({
-    name: 'GOBLIN',
-    description:
-      'Cunning and resourceful, goblins are often underestimated but can be formidable.',
-    constitution: 9,
-    dexterity: 12,
-    intellect: 10,
-    might: 10,
-    perception: 11,
     resolve: 10,
   }),
 };

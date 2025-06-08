@@ -1,8 +1,8 @@
 import {
   createPlayerCharacter,
   getPlayerCharactersByUserID,
-  PlayerCharacter,
 } from '@/queries/playerCharacter';
+import { PlayerCharacterCreationProps } from '@shared/types/playerCharacter';
 
 export const getCharacters = async (id: number) => {
   return getPlayerCharactersByUserID(id);
@@ -10,7 +10,7 @@ export const getCharacters = async (id: number) => {
 
 export const createCharacter = async (
   id: number,
-  character: PlayerCharacter
+  character: PlayerCharacterCreationProps
 ) => {
   return createPlayerCharacter(id, character);
 };

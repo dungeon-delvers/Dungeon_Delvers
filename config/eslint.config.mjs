@@ -1,9 +1,15 @@
 // @ts-check
-
 import eslint from '@eslint/js';
+import eslintConfigPrettier from 'eslint-config-prettier/flat';
+import perfectionist from 'eslint-plugin-perfectionist';
 import tseslint from 'typescript-eslint';
-import eslintConfigPrettier from "eslint-config-prettier/flat";
 
-export default tseslint.config(eslint.configs.recommended, tseslint.configs.recommended, eslintConfigPrettier,{
-  ignores: ['node_modules', '**/node_modules', '**/dist', '**/*.config.js'],
-});
+export default tseslint.config(
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  perfectionist.configs['recommended-natural'],
+  eslintConfigPrettier,
+  {
+    ignores: ['node_modules', '**/node_modules', '**/dist', '**/*.config.js'],
+  },
+);

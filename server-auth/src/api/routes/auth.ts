@@ -1,7 +1,7 @@
-import { User } from 'types/game';
 import { Joi, celebrate } from 'celebrate';
 import { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
+import { User } from '@shared/types/user';
 
 import Logger from '@/loaders/logger';
 import { generateToken, logout, signup } from '@/services/auth';

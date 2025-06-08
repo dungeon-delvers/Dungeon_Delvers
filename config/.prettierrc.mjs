@@ -1,5 +1,5 @@
 export default {
-  plugins: ['@trivago/prettier-plugin-sort-imports'],
+  plugins: ['@trivago/prettier-plugin-sort-imports', 'prettier-plugin-organize-class-members'],
   arrowParens: 'avoid',
   bracketSpacing: true,
   htmlWhitespaceSensitivity: 'css',

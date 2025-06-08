@@ -1,0 +1,18 @@
+{
+  "name": "@dungeon-delvers/shared",
+  "version": "0.0.1",
+  "description": "Directory of shared types to be used across the dungeon_delvers monorepo",
+  "keywords": [
+    "Typescript"
+  ],
+  "license": "ISC",
+  "author": "Shawn Mealey",
+  "type": "commonjs",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@dungeon-delvers/config": "^0.0.28"
+  }
+}

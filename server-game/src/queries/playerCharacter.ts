@@ -1,72 +1,34 @@
-import { Actor } from '@/engine/core/actor';
 import { pool } from '@/services/database/postgres';
-import {
-  Gender,
-  PlayerCharacter,
-  PlayerClassName,
-  Race,
-  Visibility,
-} from 'types/game';
+import { PlayerCharacter } from '@/engine/core/playerCharacter';
+import { PlayerCharacterQueryResult } from '@shared/types/playerCharacter';
 
-type PlayerResult = {
-  id: number;
-  user_id: number;
-  logged_in: boolean;
-  name: string;
-  surname: string | null;
-  race: Race;
-  gender: Gender;
-  player_class: PlayerClassName;
-  con: number;
-  dex: number;
-  int: number;
-  mig: number;
-  per: number;
-  res: number;
-  deflection: number;
-  fortitude: number;
-  reflex: number;
-  accuracy: number;
-  max_health: number;
-  current_health: number;
-  is_alive: boolean;
-  visibility: Visibility;
-  level: number;
-  zone_id: number;
-  loc_x: number;
-  loc_y: number;
-  loc_z: number;
-  rot_x: number;
-  rot_y: number;
-  rot_z: number;
-};
-
-export const createPlayerCharacter = async (playerCharacter: Actor) => {
+export const createPlayerCharacter = async (
+  playerCharacter: PlayerCharacter
+) => {
   const query = {
     text: `INSERT INTO player_character
     (
       accuracy,
-      con,
+      constitution,
       current_health,
       deflection,
-      dex,
+      dexterity,
       fortitude,
       gender,
-      int,
-      is_alive,
+      intellect,
       level,
       loc_x,
       loc_y,
       loc_z,
       logged_in,
       max_health,
-      mig,
+      might,
       name,
-      per,
+      perception,
       player_class,
       race,
       reflex,
-      res,
+      resolve,
       rot_x,
       rot_y,
       rot_z,
@@ -104,34 +66,32 @@ export const createPlayerCharacter = async (playerCharacter: Actor) => {
       $25,
       $26,
       $27,
-      $28,
-      $29
+      $28
     ) RETURNING *`,
     values: [
       playerCharacter.userId,
       playerCharacter.loggedIn,
-      playerCharacter.general.name,
+      playerCharacter.name,
       playerCharacter.surname,
-      playerCharacter.race,
+      playerCharacter.raceName,
       playerCharacter.gender,
-      playerCharacter.playerClass,
-      playerCharacter.attributes.con,
-      playerCharacter.attributes.dex,
-      playerCharacter.attributes.int,
-      playerCharacter.attributes.mig,
-      playerCharacter.attributes.per,
-      playerCharacter.attributes.res,
-      playerCharacter.passiveStats.currentHealth,
-      playerCharacter.general.isAlive,
+      playerCharacter.className,
+      playerCharacter.attributes.constitution,
+      playerCharacter.attributes.dexterity,
+      playerCharacter.attributes.intellect,
+      playerCharacter.attributes.might,
+      playerCharacter.attributes.perception,
+      playerCharacter.attributes.resolve,
+      playerCharacter.health,
       playerCharacter.visibility,
-      playerCharacter.general.level,
-      playerCharacter.general.zoneId,
-      playerCharacter.general.location.x,
-      playerCharacter.general.location.y,
-      playerCharacter.general.location.z,
-      playerCharacter.general.rotation.x,
-      playerCharacter.general.rotation.y,
-      playerCharacter.general.rotation.z,
+      playerCharacter.level,
+      playerCharacter.zoneId,
+      playerCharacter.location.x,
+      playerCharacter.location.y,
+      playerCharacter.location.z,
+      playerCharacter.rotation.x,
+      playerCharacter.rotation.y,
+      playerCharacter.rotation.z,
     ],
   };
   return (await pool.query<PlayerCharacter>(query)).rows[0];
@@ -152,6 +112,6 @@ export const getCharacterByID = async (id: number) => {
     WHERE id = $1`,
     values: [id],
   };
-  const result = await pool.query<PlayerResult>(query);
+  const result = await pool.query<PlayerCharacterQueryResult>(query);
   return result.rows[0];
 };

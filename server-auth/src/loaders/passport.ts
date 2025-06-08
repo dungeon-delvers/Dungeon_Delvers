@@ -7,7 +7,7 @@ import Logger from '@/loaders/logger';
 import { userFromUsernameQuery } from '@/queries/user';
 import { authenticateJWT, login } from '@/services/auth';
 import config from '@/config';
-import { User } from 'types/game';
+import { User } from '@shared/user';
 
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
@@ -33,7 +33,7 @@ export default (app: Application) => {
   app.use(passport.session());
   passport.use(new LocalStrategy(login));
   passport.use(strategy);
-  passport.serializeUser((user: User, done) => {
+  passport.serializeUser((user, done) => {
     Logger.info(`Serializing user: ${user.username}`);
 
     done(null, user);

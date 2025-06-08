@@ -4,7 +4,7 @@
     "type": "git",
     "url": "git+https://github.com/HarlemLineHustle/Dungeon_Delvers.git"
   },
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "This contains shared configurations for the multiple services of Dungeon Delvers.",
   "main": "index.ts",
   "scripts": {
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-perfectionist": "^4.14.0",
     "eslint-plugin-prettier": "^5.2.6",
     "prettier": "^3.5.3",
     "typescript-eslint": "^8.18.1"

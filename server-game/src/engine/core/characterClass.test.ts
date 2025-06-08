@@ -1,8 +1,5 @@
-import {
-  CharacterClass,
-  CharacterClasses,
-  ClassStatistics,
-} from './characterClass';
+import { ClassStatistics } from '@shared/types/characterClass';
+import { CharacterClass, CharacterClasses } from './characterClass';
 
 describe('PlayerClass', () => {
   const stats: ClassStatistics = {
@@ -10,21 +7,21 @@ describe('PlayerClass', () => {
     baseHealth: 20,
     deflection: 5,
     fortitude: 6,
+    healthModifier: 2,
     reflex: 7,
     willpower: 8,
-    healthModifier: 2,
   };
 
   it('should construct and expose properties', () => {
     const pc = new CharacterClass({
-      name: 'FIGHTER',
       description: 'A strong fighter',
-      statistics: stats,
+      name: 'FIGHTER',
       resource: {
-        name: 'STAMINA',
         baseValue: 30,
+        name: 'STAMINA',
         valueModifier: 10,
       },
+      statistics: stats,
     });
     expect(pc.name).toBe('FIGHTER');
     expect(pc.description).toBe('A strong fighter');

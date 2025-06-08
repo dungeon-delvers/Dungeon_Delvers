@@ -4,7 +4,6 @@ import '@babylonjs/inspector';
 import { Socket, io } from 'socket.io-client';
 
 // import '@babylonjs/loaders/glTF';
-// import { Gender, Race } from 'types/game';
 
 // import CharacterCreate, { fetchRaces } from './menus/characterCreation';
 // import CharacterSelect, { fetchPlayerCharacters } from './menus/characterSelect';

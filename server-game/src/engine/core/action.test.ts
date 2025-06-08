@@ -1,13 +1,16 @@
 import {
+  ActionProps,
+  AttackProps,
+  BuffProps,
+  HealProps,
+} from '@shared/types/action';
+
+import {
+  AbilityAttackAction,
   AttackAction,
   HealAction,
-  AbilityAttackAction,
-  SpellBuffAction,
-  ActionProps,
   resolveAttack,
-  AttackProps,
-  HealProps,
-  BuffProps,
+  SpellBuffAction,
 } from './action';
 import { Character } from './character';
 
@@ -39,12 +42,13 @@ describe('Action Strategies', () => {
       might: 10,
       name: 'Hero',
       perception: 10,
-      resourceName: 'STAMINA',
-      resourceValue: 100,
-      resourceMax: 100,
       reflex: 10,
       resolve: 10,
+      resourceMax: 100,
+      resourceName: 'STAMINA',
+      resourceValue: 100,
       willpower: 10,
+      zoneId: 1,
     });
 
     target = new Character({
@@ -70,12 +74,13 @@ describe('Action Strategies', () => {
       might: 10,
       name: 'Monster',
       perception: 10,
-      resourceName: 'STAMINA',
-      resourceValue: 100,
-      resourceMax: 100,
       reflex: 10,
       resolve: 10,
+      resourceMax: 100,
+      resourceName: 'STAMINA',
+      resourceValue: 100,
       willpower: 10,
+      zoneId: 1,
     });
   });
 
@@ -97,12 +102,12 @@ describe('Action Strategies', () => {
   it('AttackAction: should resolve a critical hit and apply increased damage', () => {
     jest.spyOn(global.Math, 'random').mockReturnValue(1);
     source.accuracy = 100;
-    target.setDefense({
+    target.defense = {
       deflection: 0,
       fortitude: 10,
       reflex: 10,
       willpower: 10,
-    });
+    };
     const actionProps = {
       baseDamage: 20,
       defenseStat: 'deflection',
@@ -123,12 +128,12 @@ describe('Action Strategies', () => {
     // Let's set accuracy = 10, defense = 0, roll = 20 (so result = 30)
     jest.spyOn(global.Math, 'random').mockReturnValue(0.2); // roll = 20
     source.accuracy = 10;
-    target.setDefense({
+    target.defense = {
       deflection: 0,
       fortitude: 10,
       reflex: 10,
       willpower: 10,
-    });
+    };
     const actionProps = {
       baseDamage: 20,
       defenseStat: 'deflection',
@@ -145,13 +150,12 @@ describe('Action Strategies', () => {
   it('AttackAction: should resolve a miss', () => {
     jest.spyOn(global.Math, 'random').mockReturnValue(0); // low roll for MISS
     source.accuracy = 0;
-    console.log(target);
-    target.setDefense({
+    target.defense = {
       deflection: 30,
       fortitude: 10,
       reflex: 10,
       willpower: 10,
-    });
+    };
     const actionProps = {
       baseDamage: 20,
       defenseStat: 'deflection',
@@ -179,11 +183,11 @@ describe('Action Strategies', () => {
     jest.spyOn(global.Math, 'random').mockReturnValue(0.8); // high roll for HIT
     source.resourceValue = 50;
     const actionProps = {
-      actionText: (source, target) =>
+      actionText: (source: Character, target: Character) =>
         `${source.name} casts fireball at ${target.name}!`,
       areaOfEffect: 10,
-      cost: 10,
       baseDamage: 25,
+      cost: 10,
       defenseStat: 'reflex',
       name: 'Fireball',
     } as ActionProps & AttackProps;
@@ -198,12 +202,12 @@ describe('Action Strategies', () => {
   it('AbilityAttackAction: should fail if not enough resource', () => {
     source.resourceValue = 5;
     const actionProps = {
-      actionText: (source, target) =>
+      actionText: (source: Character, target: Character) =>
         `${source.name} casts fireball at ${target.name}!`,
       areaOfEffect: 10,
       baseDamage: 25,
-      defenseStat: 'reflex',
       cost: 10,
+      defenseStat: 'reflex',
       name: 'Fireball',
     } as ActionProps & AttackProps;
     const ability = new AbilityAttackAction();
@@ -217,18 +221,18 @@ describe('Action Strategies', () => {
   it('SpellBuffAction: should apply a buff and consume resource', () => {
     source.resourceValue = 20;
     const actionProps = {
-      id: 1,
-      buffStat: 'deflection',
-      buffAmount: 5,
-      duration: 3000,
-      cost: 10,
-      name: 'Arcane Shield',
-      actionText: (source: any, target: any) =>
+      actionText: (source: Character, target: Character) =>
         `${source.name} casts Arcane Shield on ${target.name}!`,
+      buffAmount: 5,
+      buffStat: 'deflection',
       cooldown: 0,
+      cost: 10,
       description: 'Buffs deflection',
+      duration: 3000,
       executionTime: 0,
       icon: '',
+      id: 1,
+      name: 'Arcane Shield',
       range: 500,
       type: 'buff',
     } as ActionProps & BuffProps;
@@ -245,18 +249,18 @@ describe('Action Strategies', () => {
   it('SpellBuffAction: should fail if not enough resource', () => {
     source.resourceValue = 5;
     const actionProps = {
-      id: 1,
-      buffStat: 'deflection',
-      buffAmount: 5,
-      duration: 3000,
-      cost: 10,
-      name: 'Arcane Shield',
-      actionText: (source: any, target: any) =>
+      actionText: (source: Character, target: Character) =>
         `${source.name} casts Arcane Shield on ${target.name}!`,
+      buffAmount: 5,
+      buffStat: 'deflection',
       cooldown: 0,
+      cost: 10,
       description: 'Buffs deflection',
+      duration: 3000,
       executionTime: 0,
       icon: '',
+      id: 1,
+      name: 'Arcane Shield',
       range: 500,
       type: 'buff',
     } as ActionProps & BuffProps;
@@ -271,24 +275,24 @@ describe('Action Strategies', () => {
   it('resolveAttack: returns correct outcomes and damage', () => {
     // MISS
     source.accuracy = 0;
-    target.setDefense({
+    target.defense = {
       deflection: 100,
       fortitude: 10,
       reflex: 10,
       willpower: 10,
-    });
+    };
     let res = resolveAttack(source, target, 20, 'deflection');
     expect(res.outcome).toBe('MISS');
     expect(res.damage).toBe(0);
 
     // GRAZE
     source.accuracy = 10;
-    target.setDefense({
+    target.defense = {
       deflection: 10,
       fortitude: 10,
       reflex: 10,
       willpower: 10,
-    });
+    };
     res = resolveAttack(source, target, 20, 'deflection');
     // roll = 0, result = 10, should be GRAZE if result <= 50 and >= 16
     expect(['MISS', 'GRAZE', 'HIT', 'CRITICAL']).toContain(res.outcome);
@@ -296,12 +300,12 @@ describe('Action Strategies', () => {
     // CRITICAL
     jest.spyOn(global.Math, 'random').mockReturnValue(1); // roll = 100
     source.accuracy = 100;
-    target.setDefense({
+    target.defense = {
       deflection: 0,
       fortitude: 10,
       reflex: 10,
       willpower: 10,
-    });
+    };
     res = resolveAttack(source, target, 20, 'deflection');
     expect(res.outcome).toBe('CRITICAL');
     expect(res.damage).toBe(30);

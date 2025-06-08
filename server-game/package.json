@@ -8,7 +8,8 @@
     "build": "tsc && tsc-alias",
     "clean": "rm -rf dist/** node_modules",
     "start": "tsx watch ./src/app.ts",
-    "test": "NODE_ENV=test && jest"
+    "test": "NODE_ENV=test && jest",
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [
     "Node",

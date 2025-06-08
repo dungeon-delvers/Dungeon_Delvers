@@ -1,15 +1,5 @@
 import { Grid, Rectangle, StackPanel, TextBlock } from '@babylonjs/gui';
-import {
-  Attribute,
-  PLAYER_CLASS,
-  PlayerClass,
-  RACE,
-  Race,
-  RaceData,
-} from 'types/game';
 
-// import { CharacterModelsProps } from '../graphics/race/race';
-// import { Zone } from '../graphics/zone';
 import { Accept, Cancel } from '../gui/components/Buttons';
 import Button from '../gui/components/Buttons/Button';
 import StyledInputText from '../gui/components/InputText';

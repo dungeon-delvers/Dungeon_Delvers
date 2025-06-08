@@ -1,4 +1,3 @@
-import { User } from 'types/game';
 import express from 'express';
 import passport from 'passport';
 import passportJWT from 'passport-jwt';
@@ -7,6 +6,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import Logger from '@/loaders/logger';
 import { userFromUsernameQuery } from '@/queries/user';
 import { authenticateJWT } from '@/services/auth';
+import { User } from '@shared/types/user';
 
 jest.mock('passport', () => ({
   initialize: jest.fn(() => (_req, _res, next) => next()),

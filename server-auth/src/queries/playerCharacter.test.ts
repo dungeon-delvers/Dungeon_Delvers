@@ -3,9 +3,12 @@ import { pool } from '@/services/database/postgres';
 import {
   createPlayerCharacter,
   getPlayerCharactersByUserID,
-  PlayerCharacter,
 } from './playerCharacter';
 import { Vector3 } from '@babylonjs/core';
+import {
+  PlayerCharacterCreationProps,
+  PlayerCharacterQueryResult,
+} from '@shared/types/playerCharacter';
 
 jest.mock('@/services/database/postgres', () => ({
   pool: {
@@ -16,12 +19,12 @@ jest.mock('@/services/database/postgres', () => ({
 describe('PlayerCharacter Queries', () => {
   describe('createPlayerCharacter', () => {
     it('should create a player character and return the result', async () => {
-      const mockPlayerCharacter: PlayerCharacter = {
+      const mockPlayerCharacter: PlayerCharacterCreationProps = {
         userId: 0,
         name: 'Test Character',
         race: 'HUMAN',
         gender: 'MALE',
-        class: 'FIGHTER',
+        playerClass: 'FIGHTER',
         constitution: 10,
         dexterity: 10,
         intellect: 10,
@@ -43,13 +46,14 @@ describe('PlayerCharacter Queries', () => {
       name,
       race,
       gender,
-      class,
-      \"CON\",
-      \"DEX\",
-      \"INT\",
-      \"MIG\",
-      \"PER\",
-      \"RES\"
+      player_class,
+      constitution,
+      dexterity,
+      intellect,
+      might,
+      perception,
+      resolve,
+      zone_id
     )
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
         values: [
@@ -57,13 +61,14 @@ describe('PlayerCharacter Queries', () => {
           mockPlayerCharacter.name,
           mockPlayerCharacter.race,
           mockPlayerCharacter.gender,
-          mockPlayerCharacter.class,
+          mockPlayerCharacter.playerClass,
           mockPlayerCharacter.constitution,
           mockPlayerCharacter.dexterity,
           mockPlayerCharacter.intellect,
           mockPlayerCharacter.might,
           mockPlayerCharacter.perception,
           mockPlayerCharacter.resolve,
+          mockPlayerCharacter.zoneId,
         ],
       });
       expect(result).toEqual(mockPlayerCharacter);
@@ -72,48 +77,60 @@ describe('PlayerCharacter Queries', () => {
 
   describe('getPlayerCharactersByUserID', () => {
     it('should return player characters for a given user ID', async () => {
-      const mockPlayerCharacters: PlayerCharacter[] = [
+      const mockPlayerCharacters: PlayerCharacterQueryResult[] = [
         {
-          userId: 0,
+          id: 1,
+          user_id: 1,
+          logged_in: false,
           name: 'Test Character 1',
+          surname: null,
           race: 'HUMAN',
           gender: 'MALE',
-          playerClass: 'FIGHTER',
-          attributes: {
-            CON: 10,
-            DEX: 10,
-            INT: 10,
-            MIG: 10,
-            PER: 10,
-            RES: 10,
-          },
-          isAlive: true,
-          position: new Vector3(0, 0, 0),
-          rotation: new Vector3(0, 0, 0),
-          zoneId: 0,
-          level: 1,
+          player_class: 'FIGHTER',
+          constitution: 10,
+          dexterity: 10,
+          intellect: 10,
+          might: 10,
+          perception: 10,
+          resolve: 10,
+          current_health: 100,
+          max_health: 100,
           visibility: 'PUBLIC',
+          level: 1,
+          zone_id: 0,
+          location_x: 0,
+          location_y: 0,
+          location_z: 0,
+          rotation_x: 0,
+          rotation_y: 0,
+          rotation_z: 0,
         },
         {
-          userId: 0,
+          id: 2,
+          user_id: 2,
+          logged_in: false,
           name: 'Test Character 2',
+          surname: null,
           race: 'HUMAN',
           gender: 'MALE',
-          playerClass: 'FIGHTER',
-          attributes: {
-            CON: 10,
-            DEX: 10,
-            INT: 10,
-            MIG: 10,
-            PER: 10,
-            RES: 10,
-          },
-          isAlive: true,
-          position: new Vector3(0, 0, 0),
-          rotation: new Vector3(0, 0, 0),
-          zoneId: 0,
-          level: 1,
+          player_class: 'FIGHTER',
+          constitution: 10,
+          dexterity: 10,
+          intellect: 10,
+          might: 10,
+          perception: 10,
+          resolve: 10,
+          current_health: 100,
+          max_health: 100,
           visibility: 'PUBLIC',
+          level: 1,
+          zone_id: 0,
+          location_x: 1,
+          location_y: 0,
+          location_z: 0,
+          rotation_x: 0,
+          rotation_y: 0,
+          rotation_z: 0,
         },
       ];
 

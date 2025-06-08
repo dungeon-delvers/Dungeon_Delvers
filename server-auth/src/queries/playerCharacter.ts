@@ -1,35 +1,12 @@
-export const CHARACTER_CLASS_NAMES = [
-  'FIGHTER',
-  'MAGE',
-  'SCOUT',
-  'HEALER',
-] as const;
-
-export type CharacterClassName = (typeof CHARACTER_CLASS_NAMES)[number];
-
-type Gender = 'MALE' | 'FEMALE' | 'NON-BINARY' | 'OTHER';
-
-export type PlayerCharacter = {
-  class: CharacterClassName;
-  constitution: number;
-  dexterity: number;
-  intellect: number;
-  gender: Gender;
-  might: number;
-  name: string;
-  perception: number;
-  race: RaceName;
-  resolve: number;
-  userId: number;
-  zoneId: number;
-};
-
 import { pool } from '@/services/database/postgres';
-import { RaceName } from './races';
+import {
+  PlayerCharacterCreationProps,
+  PlayerCharacterQueryResult,
+} from '@shared/types/playerCharacter';
 
 export const createPlayerCharacter = async (
   id: number,
-  playerCharacter: PlayerCharacter
+  playerCharacter: PlayerCharacterCreationProps
 ) => {
   const query = {
     text: `
@@ -38,7 +15,7 @@ export const createPlayerCharacter = async (
       name,
       race,
       gender,
-      character_class,
+      player_class,
       constitution,
       dexterity,
       intellect,
@@ -53,7 +30,7 @@ export const createPlayerCharacter = async (
       playerCharacter.name,
       playerCharacter.race,
       playerCharacter.gender,
-      playerCharacter.class,
+      playerCharacter.playerClass,
       playerCharacter.constitution,
       playerCharacter.dexterity,
       playerCharacter.intellect,
@@ -63,7 +40,7 @@ export const createPlayerCharacter = async (
       1, // Default zone_id, can be changed later
     ],
   };
-  return (await pool.query<PlayerCharacter>(query)).rows[0];
+  return (await pool.query<PlayerCharacterQueryResult>(query)).rows[0];
 };
 
 export const getPlayerCharactersByUserID = async (userID: number) => {
@@ -71,7 +48,7 @@ export const getPlayerCharactersByUserID = async (userID: number) => {
     text: 'SELECT * FROM player_character WHERE user_id = $1',
     values: [userID],
   };
-  return (await pool.query<PlayerCharacter>(query)).rows;
+  return (await pool.query<PlayerCharacterQueryResult>(query)).rows;
 };
 
 export const getCharacterByID = async (id: number) => {
@@ -79,5 +56,5 @@ export const getCharacterByID = async (id: number) => {
     text: 'SELECT * FROM character WHERE id = $1',
     values: [id],
   };
-  return (await pool.query<PlayerCharacter>(query)).rows[0];
+  return (await pool.query<PlayerCharacterQueryResult>(query)).rows[0];
 };

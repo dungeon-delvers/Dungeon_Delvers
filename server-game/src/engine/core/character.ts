@@ -1,3 +1,12 @@
+import { Vector3 } from '@babylonjs/core';
+import {
+  AppliedBuff,
+  Buff,
+  CharacterProps,
+  Gender,
+} from '@shared/types/character';
+
+import { DEFENSE_TYPES, DefenseType } from '../../../../shared/types/defense';
 import {
   Constitution,
   Dexterity,
@@ -6,134 +15,45 @@ import {
   Perception,
   Resolve,
 } from './attribute';
-import { DEFENSE_TYPES, DefenseStats, DefenseType } from './defense';
 
-type Gender = 'MALE' | 'FEMALE' | 'NON-BINARY' | 'OTHER';
-
-export type CharacterProps = DefenseStats & {
-  baseAccuracy: number;
-  constitution: number;
-  currentHealth: number;
-  dexterity: number;
-  drArcane: number;
-  drCold: number;
-  drCorrosion: number;
-  drCrush: number;
-  drFire: number;
-  drPierce: number;
-  drPoison: number;
-  drShock: number;
-  drSlash: number;
-  gender: Gender;
-  intellect: number;
-  level: number;
-  maxHealth: number;
-  might: number;
-  name: string;
-  perception: number;
-  resourceName: 'MANA' | 'STAMINA' | 'FAITH' | 'OPPORTUNITY';
-  resourceMax: number;
-  resourceValue: number;
-  resolve: number;
-};
-
-const BUFFABLE_STATS = [
-  'deflection',
-  'fortitude',
-  'reflex',
-  'willpower',
-  'drArcane',
-  'drCold',
-  'drCorrosion',
-  'drCrush',
-  'drFire',
-  'drPierce',
-  'drPoison',
-  'drShock',
-  'drSlash',
-  'constitution',
-  'dexterity',
-  'intellect',
-  'might',
-  'perception',
-  'resolve',
-  'maxHealth',
-  'accuracy',
-] as const;
-
-export type BuffableStat = (typeof BUFFABLE_STATS)[number];
-
-export type Buff = {
-  buffAmount: number;
-  duration: number;
-  id: number;
-  name: string;
-  buffStat: BuffableStat;
-};
-
-export type AppliedBuff = Buff & {
-  timeout: NodeJS.Timeout;
-  appliedAt: number;
-};
-
-const MOD_LEVEL = 3;
+// const MOD_LEVEL = 3;
 const MOD_ACCURACY = 1;
 
 export class Character {
-  #props: CharacterProps;
   #attributes: {
-    con: Constitution;
-    dex: Dexterity;
-    int: Intellect;
-    mig: Might;
-    per: Perception;
-    res: Resolve;
+    constitution: Constitution;
+    dexterity: Dexterity;
+    intellect: Intellect;
+    might: Might;
+    perception: Perception;
+    resolve: Resolve;
   };
+
   #buffs: Record<number, AppliedBuff> = {};
+
+  #location: Vector3 = new Vector3(0, 0, 0);
+
+  #props: CharacterProps;
+
+  #rotation: Vector3 = new Vector3(0, 0, 0);
+
   constructor(props: CharacterProps) {
     this.#props = props;
     this.#attributes = {
-      con: new Constitution(props.constitution),
-      dex: new Dexterity(props.dexterity),
-      int: new Intellect(props.intellect),
-      mig: new Might(props.might),
-      per: new Perception(props.perception),
-      res: new Resolve(props.resolve),
+      constitution: new Constitution(props.constitution),
+      dexterity: new Dexterity(props.dexterity),
+      intellect: new Intellect(props.intellect),
+      might: new Might(props.might),
+      perception: new Perception(props.perception),
+      resolve: new Resolve(props.resolve),
     };
-  }
-
-  get name(): string {
-    return this.#props.name;
-  }
-
-  get might(): number {
-    return this.#props.might;
-  }
-
-  public setDefense(value: { [key in DefenseType]: number }) {
-    for (const type of DEFENSE_TYPES) {
-      if (value[type] !== undefined) {
-        this.#props[type] = value[type];
-      }
-    }
-  }
-
-  takeDamage(amount: number): void {
-    this.#props.currentHealth -= amount;
-    if (this.#props.currentHealth < 0) {
-      this.#props.currentHealth = 0;
-    }
-  }
-
-  getDefense(defenseType: DefenseType): number {
-    return this.#props[defenseType];
   }
 
   get accuracy(): number {
     return (
       this.#props.baseAccuracy +
       (this.#props.level - 1) +
-      this.#attributes.per.calculateModifier(MOD_ACCURACY)
+      this.#attributes.perception.calculateModifier(MOD_ACCURACY)
     );
   }
 
@@ -168,6 +88,32 @@ export class Character {
     };
   }
 
+  get attributes(): {
+    constitution: number;
+    dexterity: number;
+    intellect: number;
+    might: number;
+    perception: number;
+    resolve: number;
+  } {
+    return {
+      constitution: this.#props.constitution,
+      dexterity: this.#props.dexterity,
+      intellect: this.#props.intellect,
+      might: this.#props.might,
+      perception: this.#props.perception,
+      resolve: this.#props.resolve,
+    };
+  }
+
+  set defense(value: { [key in DefenseType]: number }) {
+    for (const type of DEFENSE_TYPES) {
+      if (value[type] !== undefined) {
+        this.#props[type] = value[type];
+      }
+    }
+  }
+
   get gender(): Gender {
     return this.#props.gender;
   }
@@ -183,11 +129,41 @@ export class Character {
     }
   }
 
+  get level(): number {
+    return this.#props.level;
+  }
+
+  set level(value: number) {
+    this.#props.level = value;
+    // Update attributes based on level if needed
+    // For example, you might want to increase health or other stats
+  }
+
+  get location(): Vector3 {
+    return this.#location;
+  }
+
+  set location(value: Vector3) {
+    this.#location = value;
+  }
+
   get maxHealth(): number {
     return this.#props.maxHealth;
   }
 
-  get resourceName(): 'MANA' | 'STAMINA' | 'FAITH' | 'OPPORTUNITY' {
+  get might(): number {
+    return this.#props.might;
+  }
+
+  get name(): string {
+    return this.#props.name;
+  }
+
+  get resourceMax(): number {
+    return this.#props.resourceMax;
+  }
+
+  get resourceName(): 'FAITH' | 'MANA' | 'OPPORTUNITY' | 'STAMINA' {
     return this.#props.resourceName;
   }
 
@@ -195,14 +171,37 @@ export class Character {
     return this.#props.resourceValue;
   }
 
-  get resourceMax(): number {
-    return this.#props.resourceMax;
-  }
-
   set resourceValue(value: number) {
     this.#props.resourceValue = value;
     if (this.#props.resourceValue > this.#props.resourceMax) {
       this.#props.resourceValue = this.#props.resourceMax;
+    }
+  }
+
+  get rotation(): Vector3 {
+    return this.#rotation;
+  }
+
+  set rotation(value: Vector3) {
+    this.#rotation = value;
+  }
+
+  get zoneId(): number {
+    return this.#props.zoneId;
+  }
+
+  set zoneId(value: number) {
+    this.#props.zoneId = value;
+  }
+
+  getDefense(defenseType: DefenseType): number {
+    return this.#props[defenseType];
+  }
+
+  takeDamage(amount: number): void {
+    this.#props.currentHealth -= amount;
+    if (this.#props.currentHealth < 0) {
+      this.#props.currentHealth = 0;
     }
   }
 }

@@ -1,5 +1,3 @@
-// import { User } from 'types/game';
-import { User } from 'types/game';
 import { errors } from 'celebrate';
 import express from 'express';
 import passport from 'passport';
@@ -8,6 +6,7 @@ import request from 'supertest';
 import { generateToken, logout, signup } from '@/services/auth';
 
 import authRoutes from './auth';
+import { User } from '@shared/user';
 
 jest.mock('@/services/auth');
 

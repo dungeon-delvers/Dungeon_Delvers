@@ -1,5 +1,5 @@
 import { pool } from '@/services/database/postgres';
-import { User as DDUser } from 'types/game';
+import { User as DDUser } from '@shared/types/user';
 
 declare global {
   namespace Express {

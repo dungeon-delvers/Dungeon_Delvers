@@ -1,4 +1,6 @@
-import { Character, CharacterProps, Buff } from './character';
+import { Buff, CharacterProps } from '@shared/types/character';
+
+import { Character } from './character';
 
 describe('Character', () => {
   let props: CharacterProps;
@@ -32,6 +34,7 @@ describe('Character', () => {
       resourceName: 'MANA',
       resourceValue: 30,
       willpower: 15,
+      zoneId: 1,
     };
   });
 
@@ -47,7 +50,7 @@ describe('Character', () => {
 
   it('should set and get defense values', () => {
     const c = new Character(props);
-    c.setDefense({ deflection: 20, fortitude: 21, reflex: 22, willpower: 23 });
+    c.defense = { deflection: 20, fortitude: 21, reflex: 22, willpower: 23 };
     expect(c.getDefense('deflection')).toBe(20);
     expect(c.getDefense('fortitude')).toBe(21);
     expect(c.getDefense('reflex')).toBe(22);
@@ -89,11 +92,11 @@ describe('Character', () => {
     jest.useFakeTimers();
     const c = new Character(props);
     const buff: Buff = {
+      buffAmount: 5,
+      buffStat: 'deflection',
+      duration: 1000,
       id: 1,
       name: 'TestBuff',
-      buffAmount: 5,
-      duration: 1000,
-      buffStat: 'deflection',
     };
     c.activeBuffs = buff;
     const buffs = c.activeBuffs;

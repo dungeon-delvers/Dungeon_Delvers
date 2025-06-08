@@ -3,11 +3,12 @@
   "compilerOptions": {
     "outDir": "./dist",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@shared/*": ["../shared/*", "./shared/*"]
     },
     "preserveSymlinks": true
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "../shared/types/defense.ts"],
   "exclude": ["node_modules", "dist"],
   "files": ["./src/app.ts"]
 }

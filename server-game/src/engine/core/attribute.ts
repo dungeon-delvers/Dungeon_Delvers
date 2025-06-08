@@ -1,12 +1,12 @@
 export class Attribute {
-  private _value: number;
-  constructor(_value: number) {
-    this._value = _value;
-  }
   get value() {
     return this._value;
   }
   set value(_value) {
+    this._value = _value;
+  }
+  private _value: number;
+  constructor(_value: number) {
     this._value = _value;
   }
   calculateModifier(modifier: number) {

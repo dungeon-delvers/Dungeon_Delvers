@@ -1,4 +1,3 @@
-import LoggerInstance from '@/loaders/logger';
 import {
   Engine,
   LoadSceneAsync,
@@ -6,33 +5,41 @@ import {
   Scene,
   SceneSerializer,
 } from '@babylonjs/core';
+
+import LoggerInstance from '@/loaders/logger';
+
 import '@babylonjs/loaders/glTF';
 
 export type ZoneType = {
   fileName: string;
   id: number;
-  scene: Scene;
   initialize: () => Promise<void>;
+  scene: Scene;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   serializeScene: () => Promise<any>;
 };
 
 export class Zone implements ZoneType {
+  get fileName(): string {
+    return this.#fileName;
+  }
+  get id(): number {
+    return this.#id;
+  }
+  get scene(): Scene {
+    return this.#scene;
+  }
   #engine: Engine;
-  #scene: Scene;
-  #id: number;
   #fileName: string;
+  #id: number;
+
+  #scene: Scene;
+
   constructor(id: number, fileName: string) {
     this.#engine = new NullEngine();
     this.#scene = new Scene(this.#engine);
     this.#id = id;
     this.#fileName = fileName;
-  }
-  get id(): number {
-    return this.#id;
-  }
-
-  get fileName(): string {
-    return this.#fileName;
   }
 
   async initialize(): Promise<void> {
@@ -41,11 +48,8 @@ export class Zone implements ZoneType {
     LoggerInstance.info(`Loading zone: ${this.#scene}`);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async serializeScene(): Promise<any> {
     return SceneSerializer.SerializeAsync(this.#scene);
-  }
-
-  get scene(): Scene {
-    return this.#scene;
   }
 }

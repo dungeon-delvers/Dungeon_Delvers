@@ -4,7 +4,6 @@ import {
   createPlayerCharacter,
   getPlayerCharactersByUserID,
 } from './playerCharacter';
-import { Vector3 } from '@babylonjs/core';
 import {
   PlayerCharacterCreationProps,
   PlayerCharacterQueryResult,

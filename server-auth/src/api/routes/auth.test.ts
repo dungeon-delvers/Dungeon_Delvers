@@ -6,7 +6,7 @@ import request from 'supertest';
 import { generateToken, logout, signup } from '@/services/auth';
 
 import authRoutes from './auth';
-import { User } from '@shared/user';
+import { User } from '@shared/types/user';
 
 jest.mock('@/services/auth');
 

@@ -7,7 +7,7 @@ import Logger from '@/loaders/logger';
 import { userFromUsernameQuery } from '@/queries/user';
 import { authenticateJWT, login } from '@/services/auth';
 import config from '@/config';
-import { User } from '@shared/user';
+import { User } from '@shared/types/user';
 
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;

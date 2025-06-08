@@ -1,5 +1,6 @@
-import { getRaces, RaceData } from '@/queries/races';
+import { getRaces } from '@/queries/races';
 import { pool } from '@/services/database/postgres';
+import { RaceQueryResult } from '@shared/types/race';
 
 jest.mock('@/services/database/postgres', () => ({
   pool: {
@@ -9,49 +10,49 @@ jest.mock('@/services/database/postgres', () => ({
 
 describe('getRaces', () => {
   it('should return a list of races', async () => {
-    const mockRaces: RaceData[] = [
+    const mockRaces: RaceQueryResult[] = [
       {
         id: 1,
         name: 'DWARF',
-        base_constitution: 10,
-        base_dexterity: 8,
-        base_intellect: 7,
-        base_might: 9,
-        base_perception: 6,
-        base_resolve: 5,
+        constitution: 10,
+        dexterity: 8,
+        intellect: 7,
+        might: 9,
+        perception: 6,
+        resolve: 5,
         description: 'Sturdy and resilient',
       },
       {
         id: 2,
         name: 'HUMAN',
-        base_constitution: 8,
-        base_dexterity: 10,
-        base_intellect: 9,
-        base_might: 7,
-        base_perception: 6,
-        base_resolve: 8,
+        constitution: 8,
+        dexterity: 10,
+        intellect: 9,
+        might: 7,
+        perception: 6,
+        resolve: 8,
         description: 'Versatile and adaptable',
       },
       {
         id: 3,
         name: 'ORC',
-        base_constitution: 12,
-        base_dexterity: 6,
-        base_intellect: 5,
-        base_might: 11,
-        base_perception: 7,
-        base_resolve: 9,
+        constitution: 12,
+        dexterity: 6,
+        intellect: 5,
+        might: 11,
+        perception: 7,
+        resolve: 9,
         description: 'Strong and fierce',
       },
       {
         id: 4,
         name: 'GOBLIN',
-        base_constitution: 6,
-        base_dexterity: 12,
-        base_intellect: 8,
-        base_might: 5,
-        base_perception: 10,
-        base_resolve: 7,
+        constitution: 6,
+        dexterity: 12,
+        intellect: 8,
+        might: 5,
+        perception: 10,
+        resolve: 7,
         description: 'Cunning and agile',
       },
     ];

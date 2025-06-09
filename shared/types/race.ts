@@ -12,3 +12,7 @@ export type RaceProps = {
   perception: number;
   resolve: number;
 };
+
+export type RaceQueryResult = RaceProps & {
+  id: number;
+};

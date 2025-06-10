@@ -16,6 +16,7 @@ export type CharacterProps = DefenseStats & {
   drPoison: number;
   drShock: number;
   drSlash: number;
+  id: number;
   gender: Gender;
   intellect: number;
   level: number;
@@ -68,3 +69,63 @@ export type AppliedBuff = Buff & {
   timeout: NodeJS.Timeout;
   appliedAt: number;
 };
+
+export type CharacterQueryResult = {
+  id: number;
+  name: string;
+  constitution: number;
+  dexterity: number;
+  intellect: number;
+  might: number;
+  perception: number;
+  resolve: number;
+  deflection: number;
+  fortitude: number;
+  reflex: number;
+  willpower: number;
+  accuracy: number;
+  damage_min: number;
+  damage_max: number;
+  current_health: number;
+  max_health: number;
+  npc_type: NpcType;
+  monster_type: MonsterType;
+  level: number;
+  zone_id: number;
+  location_x: number;
+  location_y: number;
+  location_z: number;
+  rotation_x: number;
+  rotation_y: number;
+  rotation_z: number;
+};
+
+export const MONSTER_TYPE = [
+  'ABERRATION',
+  'BEAST',
+  'CONSTRUCT',
+  'DRAGON',
+  'ELEMENTAL',
+  'ETHEREAL',
+  'FAIRY',
+  'GIANT',
+  'HUMANOID',
+  'INFERNAL',
+  'MAGICAL_BEAST',
+  'OOZE',
+  'OUTSIDER',
+  'PLANT',
+  'UNDEAD',
+] as const;
+
+export type MonsterType = (typeof MONSTER_TYPE)[number];
+
+export const NPC_TYPE = [
+  'BANKER',
+  'MERCHANT',
+  'MONSTER',
+  'QUEST_GIVER',
+  'TRAINER',
+] as const;
+
+export type NpcType = (typeof NPC_TYPE)[number];

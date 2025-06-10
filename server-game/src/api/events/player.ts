@@ -7,7 +7,7 @@ export const playerEvents = (socket: Socket) => {
     const result = await getPlayerById(playerId);
     console.log('player:load', result);
     socket.emit('player:loaded', {
-      ...result.stats,
+      ...result,
     });
   });
 };

@@ -22,6 +22,7 @@ describe('Character', () => {
       drSlash: 9,
       fortitude: 13,
       gender: 'MALE',
+      id: 1,
       intellect: 7,
       level: 2,
       maxHealth: 100,

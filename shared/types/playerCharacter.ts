@@ -8,7 +8,6 @@ export type PlayerCharacterProps = Omit<
   'baseAccuracy' | DefenseType | 'resourceName'
 > & {
   className: CharacterClassName;
-  id: number;
   raceName: RaceName;
   userId: number;
 };

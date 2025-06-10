@@ -205,3 +205,40 @@ export class Character {
     }
   }
 }
+
+export const getCharacterById = (characterId: number): Character => {
+  // This function should retrieve the character from the database or in-memory store.
+  // For now, we will return a dummy character for demonstration purposes.
+  return new Character({
+    baseAccuracy: 5,
+    constitution: 10,
+    currentHealth: 80,
+    deflection: 12,
+    dexterity: 8,
+    drArcane: 1,
+    drCold: 2,
+    drCorrosion: 3,
+    drCrush: 4,
+    drFire: 5,
+    drPierce: 6,
+    drPoison: 7,
+    drShock: 8,
+    drSlash: 9,
+    fortitude: 13,
+    gender: 'MALE',
+    id: characterId,
+    intellect: 7,
+    level: 2,
+    maxHealth: 100,
+    might: 6,
+    name: 'TestHero',
+    perception: 9,
+    reflex: 14,
+    resolve: 5,
+    resourceMax: 30,
+    resourceName: 'MANA',
+    resourceValue: 30,
+    willpower: 15,
+    zoneId: 1,
+  });
+};

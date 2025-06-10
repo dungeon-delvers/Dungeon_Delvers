@@ -1,4 +1,4 @@
-import { IUser } from '@/interfaces/IUser';
+import { User } from '@shared/types/user';
 import { pool } from '@/services/database/postgres';
 
 export const getUserFromID = async (id: number) => {
@@ -6,5 +6,5 @@ export const getUserFromID = async (id: number) => {
     text: 'SELECT * FROM app_user WHERE id = $1',
     values: [id],
   };
-  return (await pool.query<IUser>(query)).rows[0];
+  return (await pool.query<User>(query)).rows[0];
 };

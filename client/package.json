@@ -54,7 +54,7 @@
     "@parcel/types": "^2.9.2",
     "@types/earcut": "^2.1.1",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.10.2",
+    "@types/node": "^24.0.3",
     "jest": "^29.7.0",
     "serve": "^14.2.4",
     "ts-jest": "^29.2.5",

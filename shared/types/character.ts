@@ -1,6 +1,5 @@
 import { DefenseStats } from './defense';
-
-export type Gender = 'MALE' | 'FEMALE' | 'NON-BINARY' | 'OTHER';
+import { Resource } from './resource';
 
 export type CharacterProps = DefenseStats & {
   baseAccuracy: number;
@@ -16,20 +15,22 @@ export type CharacterProps = DefenseStats & {
   drPoison: number;
   drShock: number;
   drSlash: number;
-  id: number;
   gender: Gender;
+  id: number;
   intellect: number;
   level: number;
   maxHealth: number;
   might: number;
   name: string;
   perception: number;
-  resourceName: 'MANA' | 'STAMINA' | 'FAITH' | 'OPPORTUNITY';
-  resourceMax: number;
-  resourceValue: number;
   resolve: number;
+  resourceMax: number;
+  resourceName: Pick<Resource, 'name'>['name'];
+  resourceValue: number;
   zoneId: number;
 };
+
+export type Gender = 'FEMALE' | 'MALE' | 'NON-BINARY' | 'OTHER';
 
 export const BUFFABLE_STATS = [
   'deflection',
@@ -55,49 +56,49 @@ export const BUFFABLE_STATS = [
   'accuracy',
 ] as const;
 
-export type BuffableStat = (typeof BUFFABLE_STATS)[number];
+export type AppliedBuff = Buff & {
+  appliedAt: number;
+  timeout: NodeJS.Timeout;
+};
 
 export type Buff = {
   buffAmount: number;
+  buffStat: BuffableStat;
   duration: number;
   id: number;
   name: string;
-  buffStat: BuffableStat;
 };
 
-export type AppliedBuff = Buff & {
-  timeout: NodeJS.Timeout;
-  appliedAt: number;
-};
+export type BuffableStat = (typeof BUFFABLE_STATS)[number];
 
 export type CharacterQueryResult = {
-  id: number;
-  name: string;
-  constitution: number;
-  dexterity: number;
-  intellect: number;
-  might: number;
-  perception: number;
-  resolve: number;
-  deflection: number;
-  fortitude: number;
-  reflex: number;
-  willpower: number;
   accuracy: number;
-  damage_min: number;
-  damage_max: number;
+  constitution: number;
   current_health: number;
-  max_health: number;
-  npc_type: NpcType;
-  monster_type: MonsterType;
+  damage_max: number;
+  damage_min: number;
+  deflection: number;
+  dexterity: number;
+  fortitude: number;
+  id: number;
+  intellect: number;
   level: number;
-  zone_id: number;
   location_x: number;
   location_y: number;
   location_z: number;
+  max_health: number;
+  might: number;
+  monster_type: MonsterType;
+  name: string;
+  npc_type: NpcType;
+  perception: number;
+  reflex: number;
+  resolve: number;
   rotation_x: number;
   rotation_y: number;
   rotation_z: number;
+  willpower: number;
+  zone_id: number;
 };
 
 export const MONSTER_TYPE = [

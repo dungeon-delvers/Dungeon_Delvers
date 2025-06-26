@@ -8,7 +8,7 @@ import {
 } from '@shared/types/action';
 import { DefenseType } from '@shared/types/defense';
 
-import { Character } from './character';
+import { Character } from '../core/character';
 
 export interface IActionStrategy {
   perform(

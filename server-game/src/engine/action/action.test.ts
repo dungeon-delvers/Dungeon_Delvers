@@ -12,7 +12,7 @@ import {
   resolveAttack,
   SpellBuffAction,
 } from './action';
-import { Character } from './character';
+import { Character } from '../core/character';
 
 describe('Action Strategies', () => {
   let source: Character;

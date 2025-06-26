@@ -35,5 +35,3 @@ This should load up a local development server that you can hit at http://localh
 ## Licenses
 
 This project is under the [ISC](https://github.com/mealeyst/dungeon_delvers/blob/main/LICENSE) license.
-
-Testing pre-push

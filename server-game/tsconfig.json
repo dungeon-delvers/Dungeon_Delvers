@@ -8,7 +8,7 @@
     },
     "preserveSymlinks": true
   },
-  "include": ["**/*.ts", "../shared/types/defense.ts"],
+  "include": ["**/*.ts", "../shared/types/defense.ts", "../shared/types/resource.ts"],
   "exclude": ["node_modules", "dist"],
   "files": ["./src/app.ts"]
 }

@@ -4,7 +4,7 @@ export const shorthands: ColumnDefinitions | undefined = undefined
 
 export async function up(pgm: MigrationBuilder): Promise<void> {
   pgm.sql(`
-    INSERT INTO zone (name, asset)
+    INSERT INTO zone (name, file_name)
     VALUES
     ('Character Creation', 'character-create_scene.glb'),
     ('Rook Tower', 'rook_tower_06_25_2024.glb'),

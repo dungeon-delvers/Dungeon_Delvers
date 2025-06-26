@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io';
 
-import { getPlayerById } from '@/engine/core/playerCharacter';
+import { getPlayerById } from '@/engine/player/playerCharacter';
 
 export const playerEvents = (socket: Socket) => {
   socket.on('player:load', async (playerId: number) => {

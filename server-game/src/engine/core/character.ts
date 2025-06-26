@@ -6,6 +6,8 @@ import {
   Gender,
 } from '@shared/types/character';
 
+import { Resource } from '@shared/types/resource';
+
 import { DEFENSE_TYPES, DefenseType } from '../../../../shared/types/defense';
 import {
   Constitution,
@@ -163,7 +165,7 @@ export class Character {
     return this.#props.resourceMax;
   }
 
-  get resourceName(): 'FAITH' | 'MANA' | 'OPPORTUNITY' | 'STAMINA' {
+  get resourceName(): Pick<Resource, 'name'>['name'] {
     return this.#props.resourceName;
   }
 

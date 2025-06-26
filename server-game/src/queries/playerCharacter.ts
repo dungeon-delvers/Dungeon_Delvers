@@ -1,5 +1,5 @@
 import { pool } from '@/services/database/postgres';
-import { PlayerCharacter } from '@/engine/core/playerCharacter';
+import { PlayerCharacter } from '@/engine/player/playerCharacter';
 import { PlayerCharacterQueryResult } from '@shared/types/playerCharacter';
 
 export const createPlayerCharacter = async (

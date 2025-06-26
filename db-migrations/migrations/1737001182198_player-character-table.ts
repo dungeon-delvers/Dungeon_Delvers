@@ -13,7 +13,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
     surname: { type: 'varchar(300)' },
     race: { type: 'race', notNull: true },
     gender: { type: 'gender', notNull: true },
-    player_class: { type: 'player_class', notNull: true },
+    character_class: { type: 'player_class', notNull: true },
     constitution: { type: 'integer', notNull: true },
     dexterity: { type: 'integer', notNull: true },
     intellect: { type: 'integer', notNull: true },

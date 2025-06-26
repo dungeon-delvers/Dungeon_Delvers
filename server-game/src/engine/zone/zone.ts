@@ -15,8 +15,6 @@ export type ZoneType = {
   id: number;
   initialize: () => Promise<void>;
   scene: Scene;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  serializeScene: () => Promise<any>;
 };
 
 export class Zone implements ZoneType {
@@ -48,8 +46,9 @@ export class Zone implements ZoneType {
     LoggerInstance.info(`Loading zone: ${this.#scene}`);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async serializeScene(): Promise<any> {
-    return SceneSerializer.SerializeAsync(this.#scene);
+  loadNPCs(): void {
+    // Placeholder for loading NPCs logic
+    LoggerInstance.info(`Loading NPCs for zone: ${this.#fileName}`);
   }
+
 }

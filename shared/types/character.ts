@@ -1,3 +1,6 @@
+import { Vector3 } from '@babylonjs/core';
+
+import { IAttribute } from './attributes';
 import { DefenseStats } from './defense';
 import { Resource } from './resource';
 
@@ -94,9 +97,6 @@ export type CharacterQueryResult = {
   perception: number;
   reflex: number;
   resolve: number;
-  rotation_x: number;
-  rotation_y: number;
-  rotation_z: number;
   willpower: number;
   zone_id: number;
 };
@@ -128,5 +128,20 @@ export const NPC_TYPE = [
   'QUEST_GIVER',
   'TRAINER',
 ] as const;
+
+export interface ICharacter {
+  applyBuff(buffId: number): void;
+  attributes: {
+    constitution: IAttribute;
+    dexterity: IAttribute;
+    intellect: IAttribute;
+    might: IAttribute;
+    perception: IAttribute;
+    resolve: IAttribute;
+  };
+  health: number;
+  removeBuff(buffId: number): void;
+  takeDamage(amount: number): void;
+}
 
 export type NpcType = (typeof NPC_TYPE)[number];

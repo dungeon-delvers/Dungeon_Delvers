@@ -1,7 +1,7 @@
 import { Server } from 'socket.io';
 
-import { events } from '@/api';
-import { isAuthSocket } from '@/api/middlewares/isAuth';
+import { events } from '@/events';
+import { isAuthSocket } from '@/events/middlewares/isAuth';
 
 import Logger from './logger';
 

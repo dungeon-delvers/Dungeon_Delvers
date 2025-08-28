@@ -5,6 +5,6 @@ export const DEFENSE_TYPES = [
   'willpower',
 ] as const;
 
-export type DefenseType = (typeof DEFENSE_TYPES)[number];
-
 export type DefenseStats = Record<DefenseType, number>;
+
+export type DefenseType = (typeof DEFENSE_TYPES)[number];

@@ -23,7 +23,7 @@
   "dependencies": {
     "@babylonjs/core": "^8.2.0",
     "@babylonjs/loaders": "^8.2.1",
-    "@dungeon-delvers/config": "0.0.27",
+    "@dungeon-delvers/config": "0.0.28",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/pg": "^8.11.8",
     "jsonwebtoken": "^9.0.2",

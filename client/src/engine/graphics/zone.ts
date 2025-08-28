@@ -1,50 +1,27 @@
-import { Engine, LoadSceneAsync, Scene, SceneLoader } from '@babylonjs/core';
+import { Engine, LoadSceneAsync } from '@babylonjs/core';
 
-type ZoneOptions = {
-  name: string;
-  fileName: string;
-};
-
-export class Zone {
-  #engine: Engine;
-  #fileName: string;
-  #name: string;
-  public scene: Scene;
-  constructor(engine: Engine, options: ZoneOptions) {
-    this.#engine = engine;
-    this.#fileName = options.fileName;
-    this.#name = options.name;
-    this.loadZone();
-  }
-
-  async loadZone() {
-    try {
-      this.scene = await LoadSceneAsync(
-        `${process.env.SERVER_FILE_URL}:${process.env.SERVER_FILE_PORT}/models/zones/${this.#fileName}`,
-        this.#engine,
-      );
-      this.scene.lights.forEach(light => {
-        light.intensity = 20;
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async addActor(name: string) {
-    try {
-      const actor = await SceneLoader.AppendAsync(
-        `${process.env.SERVER_FILE_URL}:${process.env.SERVER_FILE_PORT}/models/actors/`,
-        name,
-        this.scene,
-      );
-      return actor;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  get name() {
-    return this.#name;
-  }
+export const renderZoneFile = async (zoneFilename: string, engine: Engine): Promise<void> => {
+  LoadSceneAsync(`${process.env.SERVER_FILE_URL}:${process.env.SERVER_FILE_PORT}/models/zones/${zoneFilename}`, engine).then((scene) => {
+        console.log(scene)
+        scene.activeCamera = scene.cameras[0]
+        scene.activeCamera.attachControl()
+        
+        // scene.lights.forEach(light => {
+        //   light.intensity = 20;
+        // })
+        engine.runRenderLoop( () => {
+          scene.render();
+        });
+        window.addEventListener('keydown', (ev) => {
+        // Shift+Ctrl+I
+        if (ev.shiftKey && ev.ctrlKey && ev.key === 'I') {
+          if (scene.debugLayer.isVisible()) {
+            scene.debugLayer.hide();
+          } else {
+            scene.debugLayer.show();
+          }
+        }
+    });
+      })
 }
+

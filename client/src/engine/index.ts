@@ -1,7 +1,9 @@
-import { Engine, LoadSceneAsync, Scene } from '@babylonjs/core';
+import { ArcRotateCamera, Engine, HemisphericLight, LoadSceneAsync, MeshBuilder, Scene, Vector3 } from '@babylonjs/core';
 // import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
 import '@babylonjs/inspector';
-import { Socket, io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
+
+import events from '../network'
 
 // import '@babylonjs/loaders/glTF';
 
@@ -147,41 +149,39 @@ import { Socket, io } from 'socket.io-client';
 // }
 
 export class Game {
-  #socket: Socket;
   #scene: Scene;
+  #socket: Socket;
   constructor(engine: Engine) {
     this.#socket = io(
       `${process.env.SERVER_GAME_URL}:${process.env.SERVER_GAME_PORT}`
     );
-    this.#scene = new Scene(engine);
-    window.addEventListener('keydown', (ev) => {
-      // Shift+Ctrl+I
-      if (ev.shiftKey && ev.ctrlKey && ev.key === 'I') {
-        console.log('Debug layer');
-        if (this.#scene.debugLayer.isVisible()) {
-          this.#scene.debugLayer.hide();
-        } else {
-          this.#scene.debugLayer.show();
-        }
-      }
-    });
-    this.#socket.on('connect', () => {
-      console.log('Connected to server');
-    });
+    // this.#scene = new Scene(engine);
+    // new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 3, new Vector3(0, 0, 0), this.#scene)
+    // new HemisphericLight("light", new Vector3(0, 1, 0), this.#scene);
+    // MeshBuilder.CreateBox("box", {});
+    
     this.#socket.on('connection:success', () => {
-      this.#socket.emit('player:load', 1);
-    });
-    this.#socket.on('player:loaded', (result) => {
-      console.log({ result });
-    });
-    this.#socket.on('zoneLoaded', async (serializedZone) => {
-      console.log('Zone loaded', serializedZone);
-      const scene = await LoadSceneAsync(`data:${serializedZone}`, engine);
-      console.log('Scene loaded', scene);
-      this.#scene = scene;
-    });
-    this.#socket.on('disconnect', () => {
-      console.log('Disconnected from server');
-    });
+      console.log('Client connected!');
+      events(this.#socket, engine);
+    })
+    // console.log(this.#socket)
+    // this.#socket.on('connect', () => {
+    //   console.log('Connected to server');
+    // });
+    // this.#socket.on('connection:success', () => {
+    //   this.#socket.emit('player:load', 1);
+    // });
+    // this.#socket.on('player:loaded', (result) => {
+    //   console.log({ result });
+    // });
+    // this.#socket.on('zoneLoaded', async (serializedZone) => {
+    //   console.log('Zone loaded', serializedZone);
+    //   const scene = await LoadSceneAsync(`data:${serializedZone}`, engine);
+    //   console.log('Scene loaded', scene);
+    //   this.#scene = scene;
+    // });
+    // this.#socket.on('disconnect', () => {
+    //   console.log('Disconnected from server');
+    // });
   }
 }

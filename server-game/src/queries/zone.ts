@@ -1,6 +1,6 @@
 import { pool } from '@/services/database/postgres';
 
-export const getZoneById = async (zoneId: number) => {
+export const selectZoneById = async (zoneId: number) => {
   const query = {
     text: `SELECT * FROM zone WHERE id = $1`,
     values: [zoneId],

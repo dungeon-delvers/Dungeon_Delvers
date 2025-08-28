@@ -37,7 +37,7 @@
     "@babylonjs/inspector": "^8.2.1",
     "@babylonjs/loaders": "^8.2.1",
     "@babylonjs/materials": "^8.2.1",
-    "@dungeon-delvers/config": "0.0.27",
+    "@dungeon-delvers/config": "0.0.28",
     "@dungeon-delvers/types": "^0.0.40",
     "@parcel/config-default": "^2.9.2",
     "@parcel/watcher": "^2.5.1",

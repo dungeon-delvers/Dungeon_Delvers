@@ -9,6 +9,7 @@ import {
 import LoggerInstance from '@/loaders/logger';
 
 import '@babylonjs/loaders/glTF';
+import { selectZoneById } from '@/queries/zone';
 
 export type ZoneType = {
   fileName: string;
@@ -51,4 +52,8 @@ export class Zone implements ZoneType {
     LoggerInstance.info(`Loading NPCs for zone: ${this.#fileName}`);
   }
 
+}
+
+export const loadZoneById = (zoneId: number) => {
+  return selectZoneById(zoneId)
 }

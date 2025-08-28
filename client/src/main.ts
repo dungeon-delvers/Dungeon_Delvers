@@ -1,4 +1,5 @@
 import { Engine, EngineFactory } from '@babylonjs/core';
+import "@babylonjs/loaders/glTF";
 
 import { Game } from './engine';
 
@@ -23,7 +24,8 @@ const createCanvas = () => {
 };
 
 const initializeGame = async () => {
-  const engine = (await EngineFactory.CreateAsync(createCanvas(), undefined)) as Engine;
+  const canvas = createCanvas();
+  const engine = (await EngineFactory.CreateAsync(canvas, undefined)) as Engine;
   new Game(engine);
 };
 

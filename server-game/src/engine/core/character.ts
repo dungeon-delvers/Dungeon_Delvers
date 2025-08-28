@@ -4,11 +4,12 @@ import {
   Buff,
   CharacterProps,
   Gender,
+  ICharacter,
 } from '@shared/types/character';
 
 import { Resource } from '@shared/types/resource';
 
-import { DEFENSE_TYPES, DefenseType } from '../../../../shared/types/defense';
+import { DEFENSE_TYPES, DefenseType } from '@shared/types/defense';
 import {
   Constitution,
   Dexterity,
@@ -21,8 +22,8 @@ import {
 // const MOD_LEVEL = 3;
 const MOD_ACCURACY = 1;
 
-export class Character {
-  #attributes: {
+export class Character implements ICharacter {
+  attributes: {
     constitution: Constitution;
     dexterity: Dexterity;
     intellect: Intellect;
@@ -33,15 +34,15 @@ export class Character {
 
   #buffs: Record<number, AppliedBuff> = {};
 
-  #location: Vector3 = new Vector3(0, 0, 0);
+  location: Vector3 = new Vector3(0, 0, 0);
 
-  #props: CharacterProps;
+  props: CharacterProps;
 
-  #rotation: Vector3 = new Vector3(0, 0, 0);
+  rotation: Vector3 = new Vector3(0, 0, 0);
 
   constructor(props: CharacterProps) {
-    this.#props = props;
-    this.#attributes = {
+    this.props = props;
+    this.attributes = {
       constitution: new Constitution(props.constitution),
       dexterity: new Dexterity(props.dexterity),
       intellect: new Intellect(props.intellect),
@@ -53,19 +54,17 @@ export class Character {
 
   get accuracy(): number {
     return (
-      this.#props.baseAccuracy +
-      (this.#props.level - 1) +
-      this.#attributes.perception.calculateModifier(MOD_ACCURACY)
+      this.props.baseAccuracy +
+      (this.props.level - 1) +
+      this.attributes.perception.calculateModifier(MOD_ACCURACY)
     );
   }
 
   set accuracy(value: number) {
-    this.#props.baseAccuracy = value;
+    this.props.baseAccuracy = value;
   }
 
-  get activeBuffs(): {
-    [id: string]: AppliedBuff;
-  } {
+  applyBuff(buffId: number) {
     const now = Date.now();
     const activeBuffs: {
       [id: number]: AppliedBuff;
@@ -75,10 +74,9 @@ export class Character {
         activeBuffs[id] = buff;
       }
     }
-    return activeBuffs;
   }
 
-  set activeBuffs(buff: Omit<Buff, 'appliedAt' | 'timeout'>) {
+  removeBuffs(buff: Omit<Buff, 'appliedAt' | 'timeout'>) {
     this.#buffs[buff.id] = {
       ...buff,
       appliedAt: Date.now(),
@@ -90,157 +88,86 @@ export class Character {
     };
   }
 
-  get attributes(): {
-    constitution: number;
-    dexterity: number;
-    intellect: number;
-    might: number;
-    perception: number;
-    resolve: number;
-  } {
-    return {
-      constitution: this.#props.constitution,
-      dexterity: this.#props.dexterity,
-      intellect: this.#props.intellect,
-      might: this.#props.might,
-      perception: this.#props.perception,
-      resolve: this.#props.resolve,
-    };
-  }
-
   set defense(value: { [key in DefenseType]: number }) {
     for (const type of DEFENSE_TYPES) {
       if (value[type] !== undefined) {
-        this.#props[type] = value[type];
+        this.props[type] = value[type];
       }
     }
   }
 
   get gender(): Gender {
-    return this.#props.gender;
+    return this.props.gender;
   }
 
   get health(): number {
-    return this.#props.currentHealth;
+    return this.props.currentHealth;
   }
 
   set health(value: number) {
-    this.#props.currentHealth = value;
-    if (this.#props.currentHealth > this.#props.maxHealth) {
-      this.#props.currentHealth = this.#props.maxHealth;
+    this.props.currentHealth = value;
+    if (this.props.currentHealth > this.props.maxHealth) {
+      this.props.currentHealth = this.props.maxHealth;
     }
   }
 
   get level(): number {
-    return this.#props.level;
+    return this.props.level;
   }
 
   set level(value: number) {
-    this.#props.level = value;
+    this.props.level = value;
     // Update attributes based on level if needed
     // For example, you might want to increase health or other stats
   }
 
-  get location(): Vector3 {
-    return this.#location;
-  }
-
-  set location(value: Vector3) {
-    this.#location = value;
-  }
-
   get maxHealth(): number {
-    return this.#props.maxHealth;
+    return this.props.maxHealth;
   }
 
   get might(): number {
-    return this.#props.might;
+    return this.props.might;
   }
 
   get name(): string {
-    return this.#props.name;
+    return this.props.name;
   }
 
   get resourceMax(): number {
-    return this.#props.resourceMax;
+    return this.props.resourceMax;
   }
 
   get resourceName(): Pick<Resource, 'name'>['name'] {
-    return this.#props.resourceName;
+    return this.props.resourceName;
   }
 
   get resourceValue(): number {
-    return this.#props.resourceValue;
+    return this.props.resourceValue;
   }
 
   set resourceValue(value: number) {
-    this.#props.resourceValue = value;
-    if (this.#props.resourceValue > this.#props.resourceMax) {
-      this.#props.resourceValue = this.#props.resourceMax;
+    this.props.resourceValue = value;
+    if (this.props.resourceValue > this.props.resourceMax) {
+      this.props.resourceValue = this.props.resourceMax;
     }
-  }
-
-  get rotation(): Vector3 {
-    return this.#rotation;
-  }
-
-  set rotation(value: Vector3) {
-    this.#rotation = value;
   }
 
   get zoneId(): number {
-    return this.#props.zoneId;
+    return this.props.zoneId;
   }
 
   set zoneId(value: number) {
-    this.#props.zoneId = value;
+    this.props.zoneId = value;
   }
 
   getDefense(defenseType: DefenseType): number {
-    return this.#props[defenseType];
+    return this.props[defenseType];
   }
 
   takeDamage(amount: number): void {
-    this.#props.currentHealth -= amount;
-    if (this.#props.currentHealth < 0) {
-      this.#props.currentHealth = 0;
+    this.props.currentHealth -= amount;
+    if (this.props.currentHealth < 0) {
+      this.props.currentHealth = 0;
     }
   }
 }
-
-export const getCharacterById = (characterId: number): Character => {
-  // This function should retrieve the character from the database or in-memory store.
-  // For now, we will return a dummy character for demonstration purposes.
-  return new Character({
-    baseAccuracy: 5,
-    constitution: 10,
-    currentHealth: 80,
-    deflection: 12,
-    dexterity: 8,
-    drArcane: 1,
-    drCold: 2,
-    drCorrosion: 3,
-    drCrush: 4,
-    drFire: 5,
-    drPierce: 6,
-    drPoison: 7,
-    drShock: 8,
-    drSlash: 9,
-    fortitude: 13,
-    gender: 'MALE',
-    id: characterId,
-    intellect: 7,
-    level: 2,
-    maxHealth: 100,
-    might: 6,
-    name: 'TestHero',
-    perception: 9,
-    reflex: 14,
-    resolve: 5,
-    resourceMax: 30,
-    resourceName: 'MANA',
-    resourceValue: 30,
-    willpower: 15,
-    zoneId: 1,
-  });
-};

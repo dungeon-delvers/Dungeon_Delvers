@@ -43,7 +43,7 @@
     "@parcel/watcher": "^2.5.1",
     "alea": "^1.0.1",
     "delaunay-triangulate": "^1.1.6",
-    "dotenv": "^16.4.5",
+    "dotenv": "^17.2.1",
     "earcut": "^3.0.0",
     "parcel": "^2.14.4",
     "parcel-reporter-static-files-copy": "^1.5.3",
